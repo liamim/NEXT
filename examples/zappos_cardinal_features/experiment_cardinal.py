@@ -20,7 +20,6 @@ features_url = 'https://dl.dropboxusercontent.com/u/9160935/features_allshoes_8_
 
 mat_file = loadmat(filename)
 X = mat_file['features_all'].T
-print(mat_file.keys())
 # X = X[:m, :n].copy()
 print('X.shape = {}'.format(X.shape))
 
@@ -28,7 +27,7 @@ feature_filenames = pickle.load(open(input_dir + 'filenames.pkl', 'rb'))
 names = loadmat('/Users/scott/Desktop/Rudi-features-matlab/ColorLabel_new.mat')
 names = names['Names']
 feature_filenames = [name[0][0][0] for name in names]
-feature_filenames = feature_filenames[:10]
+# feature_filenames = feature_filenames[:10]
 
 image_urls_file = 'urls-50k-launch-python.csv'
 # image_urls_file = 'urls-50k-launch-python.csv'
@@ -52,7 +51,7 @@ delta = 0.05
 
 labels = [{'label':'no', 'reward':-1.0},
           {'label':'yes','reward':1.0}]
-R = 2.0
+R = 1e-2
 
 true_means = numpy.array(range(num_arms)[::-1]) / float(num_arms)
 total_pulls_per_client = 200

@@ -119,6 +119,7 @@ def argmax_reward(X, theta, invV, beta, do_not_ask=[], k=0):
     sqrt = np.sqrt
     utils.debug_print("OFUL28: do_not_ask = {}".format(do_not_ask))
 
+    # MATLAB script: theta.T @ X + k*sqrt(beta)
     rewards = X.T.dot(theta) + sqrt(k)*sqrt(beta)
     rewards[do_not_ask] = -np.inf
     return X[:, np.argmax(rewards)], np.argmax(rewards)
@@ -157,7 +158,7 @@ class OFUL(ImageSearchPrototype):
         d = X.shape[0]  # number of dimensions in feature
         lambda_ = 1.0 / d
         # V = lambda_ * np.eye(d)
-        R = 2.0
+        R = 1e-2
 
         # initial sampling arm
         # theta_hat = X[:, np.random.randint(X.shape[1])]
@@ -213,9 +214,10 @@ class OFUL(ImageSearchPrototype):
         if not 'invV_filename' in participant_doc.keys():
             # * V, b, theta_hat need to be stored per user
 
-            d = {'invV_filename': 'invV_{}.npy'.format(time.time() * 100), #np.eye(initExp['d']) / initExp['lambda_'],
+            d = {'invV_filename': 'invV_{}.npy'.format(time.time() * 100), 
+                    #np.eye(initExp['d']) / initExp['lambda_'],
                  'beta': np.ones(X.shape[1]) / initExp['lambda_'],
-                 't': 0,
+                 't': 1,
                  'b': np.zeros(initExp['d']),
                  'participant_uid': args['participant_uid']}
             participant_doc.update(d)
@@ -245,6 +247,8 @@ class OFUL(ImageSearchPrototype):
         t = participant_doc['t']
         log_div = (1 + t * 1.0/initExp['lambda_']) * 1.0 / initExp['failure_probability']
         k = initExp['R'] * np.sqrt(initExp['d'] * np.log(log_div)) + np.sqrt(initExp['lambda_'])
+        utils.debug_print("OFUL250, R = {}".format(initExp['R'])
+        utils.debug_print("OFUL 249, d = {}".format(initExp['d'])
 
         # invV = np.array(participant_doc['invV'])
         invV = np.load(participant_doc['invV_filename'])
@@ -288,7 +292,7 @@ class OFUL(ImageSearchPrototype):
             return True
 
         args = butler.algorithms.get()
-        butler.participants.increment(uid=participant_doc['participant_uid'],key='tx')
+        butler.participants.increment(uid=participant_doc['participant_uid'],key='t')
 
         # this makes sure the reward propogates from getQuery to processAnswer
         reward = target_reward
@@ -303,11 +307,10 @@ class OFUL(ImageSearchPrototype):
 
 
         arm_pulled = X[:, target_id]
-
         u = invV.dot(arm_pulled)
         invV -= np.outer(u, u) / (1 + np.inner(arm_pulled, u))
 
-        beta -= (X.T.dot(u))**2 / (1 + beta[target_id])
+        beta -= (X.T.dot(u))**2 / (1 + np.inner(arm_pulled, u))#beta[target_id])
 
         b += reward * arm_pulled
         theta_hat = invV.dot(b)
