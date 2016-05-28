@@ -130,6 +130,8 @@ def calc_reward(x, theta, R=2):
 @timeit(fn_name="get_feature_vectors")
 def get_feature_vectors(butler):
     features = np.load('features.npy')
+    utils.debug_print(type(features))
+    utils.debug_print(features.ndim)
     utils.debug_print("OFUL.py 120, features.shape = {}".format(features.shape))
     return features
 
@@ -158,7 +160,6 @@ class OFUL(ImageSearchPrototype):
         d = X.shape[0]  # number of dimensions in feature
         lambda_ = 1.0 / d
         # V = lambda_ * np.eye(d)
-        R = 1e-2
 
         # initial sampling arm
         # theta_hat = X[:, np.random.randint(X.shape[1])]
@@ -214,7 +215,7 @@ class OFUL(ImageSearchPrototype):
         if not 'invV_filename' in participant_doc.keys():
             # * V, b, theta_hat need to be stored per user
 
-            d = {'invV_filename': 'invV_{}.npy'.format(time.time() * 100), 
+            d = {'invV_filename': 'invV_{}.npy'.format(time.time() * 100),
                     #np.eye(initExp['d']) / initExp['lambda_'],
                  'beta': np.ones(X.shape[1]) / initExp['lambda_'],
                  't': 1,
@@ -247,8 +248,6 @@ class OFUL(ImageSearchPrototype):
         t = participant_doc['t']
         log_div = (1 + t * 1.0/initExp['lambda_']) * 1.0 / initExp['failure_probability']
         k = initExp['R'] * np.sqrt(initExp['d'] * np.log(log_div)) + np.sqrt(initExp['lambda_'])
-        utils.debug_print("OFUL250, R = {}".format(initExp['R'])
-        utils.debug_print("OFUL 249, d = {}".format(initExp['d'])
 
         # invV = np.array(participant_doc['invV'])
         invV = np.load(participant_doc['invV_filename'])
@@ -296,7 +295,6 @@ class OFUL(ImageSearchPrototype):
 
         # this makes sure the reward propogates from getQuery to processAnswer
         reward = target_reward
-        utils.debug_print("OFUL:301 reward of answer = {}".format(reward))
 
         # theta_star = np.array(participant_doc['theta_star'])
         X = get_feature_vectors(butler) # np.asarray(args['X'], dtype=float)
@@ -304,7 +302,6 @@ class OFUL(ImageSearchPrototype):
         # invV = np.array(participant_doc['invV'], dtype=float)
         invV = np.load(participant_doc['invV_filename'])
         beta = np.array(participant_doc['beta'], dtype=float)
-
 
         arm_pulled = X[:, target_id]
         u = invV.dot(arm_pulled)

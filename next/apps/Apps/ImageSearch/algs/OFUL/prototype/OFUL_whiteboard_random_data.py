@@ -74,6 +74,7 @@ def OFUL(X=None, R=None, theta_hat=None, theta_star=None, invV=None, S=1, T=25,
     """
     if PRINT:
         print("theta_star = {}".format(theta_star))
+    norm = np.linalg.norm
 
     # On NEXT, only save one reward and one arm
     rewards, arms = [], []
@@ -90,7 +91,8 @@ def OFUL(X=None, R=None, theta_hat=None, theta_star=None, invV=None, S=1, T=25,
         # TODO: this R needs to be tuned!
         rewards += [reward(x, theta_star, R=R)]
         arms += [i_x]
-        print("arm pulled = {}".format(i_x))
+        if PRINT:
+            print("arm pulled = {}".format(i_x))
         # print(t, "-- arm #", i_x, "reward =", r[-1])
 
         # if PRINT:
@@ -134,6 +136,8 @@ def test_OFUL(theta_star, T=50, PRINT=False):
 
     theta_hat = np.random.randn(d)
     theta_hat /= np.linalg.norm(theta_hat)
+    i_star = X.shape[1] // 2
+    theta_star = X[:, i_star]
     # theta_hat = np.zeros(d)
 
     invV = np.eye(d) / lambda_
@@ -182,8 +186,8 @@ def test_OFUL(theta_star, T=50, PRINT=False):
 # np.random.seed(42)  # convergence to low reward
 # np.random.seed(43)  # again quick convergence
 np.random.seed(42)
-T = 4000
-d, n = (int(5e0), int(1e4))
+T = 100
+d, n = (int(2), int(40e3))
 
 delta = 0.1  # failure probability
 
@@ -195,7 +199,7 @@ theta_star /= np.linalg.norm(theta_star)
 X = np.random.randn(d, n)
 X = normalize(X, axis=0)
 
-test_OFUL(theta_star, T=T, PRINT=True)
+test_OFUL(theta_star, T=T, PRINT=False)
 
 # plt.figure()
 # # plt.plot([reward_star] * len(rewards), '--', label='Maximum reward')

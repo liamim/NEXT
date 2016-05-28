@@ -13,16 +13,10 @@ def get_matrix_from_url(url):
     d = eval(response.text)
     return np.array(d['features_all'])
 
-results_file = "./2016-05-25/i_hats_[u'OFUL']_500_use_reward_to_choose.pkl"
+results_file = "./2016-05-27/random_['OFUL']_100_0.pkl"
 results = pickle.load(open(results_file, 'rb'))
 
-if not 'features_matrix.npy' in os.listdir('.'):
-    home_dir = '/Users/scott/'
-    X = loadmat(home_dir + 'Dropbox/Public/features_allshoes_8_normalized.mat')
-    X = X['features_all'].T
-    X = np.save('features_matrix.npy', X)
-else:
-    X = np.load('features_matrix.npy')
+X = np.array(results['X'])
 
 i_hats = results['i_hats']
 answers = results['rewards']
