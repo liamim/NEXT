@@ -11,14 +11,21 @@ initExp:
       type: dict
       values:
         features:
-          type: str
-          description: The URL to a matrix of feature vectors. Every column is a feature vector of the image in the corresponding index of feature_filenames. We have taken this to be a .mat file (slower than wanted when loading using scipy.io.loadmat). Make sure that all the columns in this matrix correspond to an element in feature_filenames.
+          type: oneof
+          values:
+            url:
+              type: str
+              description: The URL to a matrix of feature vectors. Every column is a feature vector of the image in the corresponding index of feature_filenames. We have taken this to be a .mat file (slower than wanted when loading using scipy.io.loadmat). Make sure that all the columns in this matrix correspond to an element in feature_filenames.
+            matrix:
+              type: list
+              description: The actual feature matrix.
         failure_probability:
           description: Confidence of result.
           type: num
         feature_filenames:
           description: We collect a bunch of feature vectors. This parameter is a list of filenames corresponding to which column in the matrix of feature vectors correspond.
           type: list
+          optional: true
           values:
             type: str
             description: Names of the features for each column
@@ -100,7 +107,7 @@ initExp:
         R:
           description: sub-Gaussian parameter, e.g. E[exp(t*X)]<=exp(t^2 R^2/2), defaults to R=0.5 (satisfies X \in [0,1])
           type: num
-          default: 0.5
+          default: 2
           optional: true
 
         num_tries:

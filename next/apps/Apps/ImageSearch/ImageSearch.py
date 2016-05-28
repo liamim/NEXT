@@ -79,6 +79,10 @@ class ImageSearch(object):
                                             # for i in new_target_idx])
         else:
             n = exp_data['args']['targets']['n']
+            utils.debug_print("image search, 82")
+            X = np.array(exp_data['args']['features']['matrix'])
+            np.save('features.npy', X)
+
         exp_data['args']['n'] = n
         del exp_data['args']['features']
         del exp_data['args']['targets']
@@ -123,7 +127,7 @@ class ImageSearch(object):
         if participant_doc['num_tries'] == 0:
             N = butler.experiment.get(key='args')['n']
             target_indices = random.sample(range(N), 9) # 10 here means "show 10 random queries at the start"
-            target_indices = [4050] + target_indices
+            target_indices = target_indices
             targets_list = [{'index':i,'target':self.TargetManager.get_target_item(exp_uid, i)} for i in target_indices]
             return_dict = {'initial_query':True,'targets':targets_list,'instructions':butler.experiment.get(key='args')['instructions']}
         else:
