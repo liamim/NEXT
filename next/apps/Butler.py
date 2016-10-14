@@ -10,7 +10,7 @@ class Collection(object):
         self.get_durations = 0.0
         self.set_durations = 0.0
         self.timing = timing
-        
+
     def set(self, uid="", key=None, value=None, exp=None):
         """
         Set an object in the collection, or an entry in an object in the collection.
@@ -29,13 +29,13 @@ class Collection(object):
         """
         uid = (self.uid_prefix+uid).format(exp_uid=(self.exp_uid if exp == None else exp))
         return self.timed(self.db.set_many)(self.collection, uid, key_value_dict)
-        
+
     def get(self, uid="", key=None, pattern=None, exp=None):
         """
         Get an object from the collection (possibly by pattern), or an entry (or entries) from an object in the collection.
         * key == None and pattern == None:                         return collection[uid]
         * key != None and pattern == None and type(key) != list:   return collection[uid][key]
-        * key != None and pattern == None and type(key) == list:   return [collection[uid][k] for k in key]
+        * key != None and pattern == None and type(key) == list:   return {k: collection[uid][k] for k in key}
         * pattern != None:                                         return collection[uid] matching pattern
         """
         uid = (self.uid_prefix+uid).format(exp_uid=(self.exp_uid if exp == None else exp))
@@ -43,11 +43,19 @@ class Collection(object):
             return self.timed(self.db.get_doc, get=True)(self.collection, uid)
         elif key:
             if(type(key) == list):
-                return [self.timed(self.db.get, get=True)(self.collection, uid, k) for k in key]
+                return self.timed(self.db.get_many, get=True)(self.collection, uid, key)
             else:
                 return self.timed(self.db.get, get=True)(self.collection, uid, key)
         else:
             return self.timed(self.db.get_docs_with_filter, get=True)(self.collection, pattern)
+
+    def get_and_delete(self, uid="", key=None, exp=None):
+        """
+        Get a value from the collection corresponding to the key and then delete the (key,value).
+        """
+        uid = (self.uid_prefix+uid).format(exp_uid=(self.exp_uid if exp == None else exp))
+        value = self.timed(self.db.get_and_delete, get=True)(self.collection, uid, key)
+        return value
 
     def exists(self, uid="", key='_id', exp=None):
         """
@@ -83,7 +91,7 @@ class Collection(object):
         """
         uid = (self.uid_prefix+uid).format(exp_uid=(self.exp_uid if exp == None else exp))
         self.timed(self.db.append_list)(self.collection,uid,key,value)
-            
+
     def getDurations(self):
         """
         For book keeping purposes only
@@ -93,7 +101,7 @@ class Collection(object):
     def timed(self, f, get=False):
         if not self.timing:
             return f
-        
+
         def timed_f(*args, **kw):
             result,dt = utils.timeit(f)(*args, **kw)
             res = None
@@ -105,7 +113,7 @@ class Collection(object):
                 didSucceed, message = result
             return res
         return timed_f
-        
+
 class Butler(object):
     def __init__(self, app_id, exp_uid, targets, db, ell, alg_label=None, alg_id=None):
         self.app_id = app_id
@@ -118,25 +126,26 @@ class Butler(object):
         if self.targets.db==None:
             self.targets.db = self.db
         self.queries = Collection(self.app_id+":queries", "", self.exp_uid, db)
+        self.admin = Collection("experiments_admin", "", self.exp_uid, db)
         self.experiment = Collection(self.app_id+":experiments", "{exp_uid}", self.exp_uid, db)
         if alg_label is None:
             self.algorithms = Collection(self.app_id+":algorithms", "{exp_uid}_", self.exp_uid, db)
         else:
             self.algorithms = Collection(self.app_id+":algorithms", "{exp_uid}_"+alg_label, self.exp_uid, db)
         self.participants = Collection(self.app_id+":participants", "", self.exp_uid, db)
+        self.dashboard = Collection(self.app_id+":dashboard", "", self.exp_uid, db)
         self.other = Collection(self.app_id+":other", "{exp_uid}_", self.exp_uid, db)
 
     def log(self, log_name, log_value):
         self.ell.log(self.app_id+":"+log_name, log_value)
-    
-    def job(self,task,task_args_json,ignore_result=True,time_limit=0):
+
+    def job(self, task, task_args_json, ignore_result=True, time_limit=0):
         if self.alg_label:
-            print "butler job", self.app_id, self.exp_uid, self.alg_label, self.alg_id, task
-            self.db.submit_job(self.app_id,self.exp_uid,
-                               task,task_args_json,
-                               self.exp_uid+'_'+self.alg_label,
-                               ignore_result,time_limit,
-                               alg_id = self.alg_id, alg_label=self.alg_label)  
+            self.db.submit_job(self.app_id, self.exp_uid,
+                               task, task_args_json,
+                               self.exp_uid + '_' + self.alg_label,
+                               ignore_result, time_limit,
+                               alg_id=self.alg_id, alg_label=self.alg_label)  
         else:
             self.db.submit_job(self.app_id, self.exp_uid, task, task_args_json, None, ignore_result, time_limit)  
 

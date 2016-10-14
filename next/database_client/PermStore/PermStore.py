@@ -312,7 +312,7 @@ class PermStore(object):
                 return None,False,message
 
         try:
-            doc = self.client[database_id][bucket_id].find_one({"_id":doc_uid,key: { '$exists': True }})
+            doc = self.client[database_id][bucket_id].find_one({"_id":doc_uid,key: { '$exists': True }},{})
 
             key_exists = (doc!=None)
 
@@ -340,7 +340,7 @@ class PermStore(object):
                 return None,False,message
 
         try:
-            doc = self.client[database_id][bucket_id].find_one({"_id":doc_uid,key: { '$exists': True }})
+            doc = self.client[database_id][bucket_id].find_one({"_id":doc_uid},{key:1})
             if doc == None:
                 message = 'MongoDB.get Key '+bucket_id+'.'+doc_uid+'.'+key+' does not exist'
                 return None,True,message
@@ -352,6 +352,69 @@ class PermStore(object):
 
         except:
             return None,False,'MongoDB.get Failed with unknown exception'
+
+    def get_many(self,database_id,bucket_id,doc_uid,key_list):
+        """
+        Get values corresponding to keys in key_list, returns None if key does not exists
+        
+        Inputs: 
+            (string) database_id, (string) bucket_id, (string) doc_uid, (list of string) key_list
+        
+        Outputs: 
+            (string) value_list, (bool) didSucceed, (string) message 
+        
+        Usage: ::\n
+            key_value_dict,didSucceed,message = db.get_many(database_id,bucket_id,doc_uid,key)
+        """
+        if self.client == None:
+            didSucceed,message = self.connectToMongoServer()
+            if not didSucceed:
+                return None,False,message
+
+        key_value_dict={key:1 for key in key_list}
+        doc = self.client[database_id][bucket_id].find_one({"_id":doc_uid},key_value_dict)
+        if doc == None:
+            message = 'MongoDB.get '+bucket_id+'.'+doc_uid+' does not exist'
+            return None,True,message
+        for key in key_value_dict.keys():
+            key_value_dict[key] = doc.get(key,None)
+
+        return_value = self.undoDatabaseFormat(key_value_dict)
+
+        return return_value,True,'From MongoDB'
+
+    def get_and_delete(self,database_id,bucket_id,doc_uid,key):
+        """
+        returns value associated with key and then deltes {key:value}. 
+        If key does not exist, returns None
+        
+        Inputs: 
+            (string) database_id, (string) bucket_id, (string) doc_uid, (string) key
+        
+        Outputs:
+            (bool) didSucceed, (string) message 
+        
+        Usage: ::\n
+            didSucceed,message = db.get_and_delete(database_id,bucket_id,doc_uid,key)
+        """
+        if self.client == None:
+            didSucceed,message = self.connectToMongoServer()
+            if not didSucceed:
+                return False,message
+
+        try:
+            doc = self.client[database_id][bucket_id].find_one_and_update(filter={"_id":doc_uid},update={'$unset': {key:''}},projection={key:1})
+            if doc==None or key not in doc:
+                return_value = None
+            else:
+                value = doc[key]
+                return_value = self.undoDatabaseFormat(value)
+
+            return return_value,True,'From MongoDB'
+        except:
+            raise
+            error = "MongoDB.get_and_delete Failed with unknown exception"
+            return None,False,error
 
     def getDoc(self,database_id,bucket_id,doc_uid):
         """
@@ -443,7 +506,7 @@ class PermStore(object):
                 return False,message
 
         try:
-            new_doc = self.client[database_id][bucket_id].find_and_modify(query={"_id":doc_uid} , update={ '$inc': {key:value} },upsert = True,new=True )
+            new_doc = self.client[database_id][bucket_id].find_one_and_update(filter={"_id":doc_uid},update={'$inc': {key:value}},projection={key:1},new=True,upsert=True)
             new_value = new_doc[key]
             return new_value,True,'From Mongo'
         except:
@@ -470,11 +533,13 @@ class PermStore(object):
                 return False,message
 
         try:
-            new_doc = self.client[database_id][bucket_id].find_and_modify(query={"_id":doc_uid} , update={ '$inc': key_value_dict },upsert = True,new=True )
-            new_key_value_dict = {}
-            for key in key_value_dict:
-                new_key_value_dict[key] = new_doc[key]
-            return new_key_value_dict,True,'From Mongo'
+            key_value_dict_to_return = {key:1 for key in key_value_dict.keys()}
+            key_value_dict_to_increment = {key:key_value_dict[key] for key in key_value_dict.keys() if key_value_dict[key]!=0}
+            new_doc = self.client[database_id][bucket_id].find_one_and_update(filter={"_id":doc_uid},update={'$inc': key_value_dict_to_increment},projection=key_value_dict_to_return,new=True,upsert=True)
+
+            for key in key_value_dict_to_return.keys():
+                key_value_dict_to_return[key] = new_doc[key]
+            return key_value_dict_to_return,True,'From Mongo'
         except:
             raise
             error = "MongoDB.set Failed with unknown exception"

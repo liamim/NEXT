@@ -5,34 +5,48 @@ last updated: 9/16/15
 
 Flask controller for dashboards.
 """
-from flask import Blueprint, render_template, url_for, request
+import os
+import json
+import yaml
+from flask import Blueprint, render_template, url_for, request, jsonify
 from jinja2 import Environment, PackageLoader, ChoiceLoader
+import requests
 
+import next.broker.broker 
 import next.constants as constants
 import next.database_client.PermStore as PermStore
 from next.api.resource_manager import ResourceManager
-
+import next.api.api_util as api_util
 
 # Declare this as the dashboard blueprint
 dashboard = Blueprint('dashboard',
                       __name__,
                       template_folder='templates',
                       static_folder='static')
+
 rm = ResourceManager()
 db = PermStore.PermStore()
+broker = next.broker.broker.JobBroker()
+
+import next.apps.Butler as Butler
+Butler = Butler.Butler
+
+# add database commands
+dashboard_interface = api_util.NextBackendApi(dashboard)
+from next.dashboard.database import DatabaseBackup, DatabaseRestore
+dashboard_interface.add_resource(DatabaseBackup,'/database/databasebackup', endpoint='databasebackup')
+dashboard_interface.add_resource(DatabaseRestore,'/database/databaserestore', endpoint='databaserestore')
+
 
 @dashboard.route('/experiment_list')
 def experiment_list():
     """
     Endpoint that renders a page with a simple list of all experiments.
     """
-
     # Experiments set
     experiments = []
     for app_id in rm.get_app_ids():
-        print "app_id", app_id
         for exp_uid in rm.get_app_exp_uids(app_id):
-            print "exp_uid", exp_uid
             start_date = rm.get_app_exp_uid_start_date(exp_uid)
             try:
                 experiments.append({'exp_uid': exp_uid,
@@ -44,14 +58,41 @@ def experiment_list():
                 print e
                 pass
 
+    host_url = 'http://{}:{}'.format(constants.NEXT_BACKEND_GLOBAL_HOST,
+                                     constants.NEXT_BACKEND_GLOBAL_PORT)
+    if constants.SITE_KEY:
+        dashboard_url='{}/dashboard/{}'.format(host_url, constants.SITE_KEY)
+    else:
+        dashboard_url='{}/dashboard'.format(host_url)
+        
     return render_template('experiment_list.html',
+                           dashboard_url=dashboard_url,
                            experiments = reversed(experiments))
+
+@dashboard.route('/get_stats', methods=['POST'])
+def get_stats():
+    args_dict = request.json
+    exp_uid = args_dict['exp_uid']
+    app_id = rm.get_app_id(exp_uid)
+    
+    response_json,didSucceed,message = broker.dashboardAsync(app_id,exp_uid,args_dict)
+    response_dict = json.loads(response_json,parse_float=lambda o:round(float(o),4))
+    response_json = json.dumps(response_dict)
+    return response_json
+
 
 @dashboard.route('/system_monitor')
 def system_monitor():
     """
     Endpoint that renders a page with a simple list of all monitoring.
     """
+    host_url = 'http://{}:{}'.format(constants.NEXT_BACKEND_GLOBAL_HOST,
+                                     constants.NEXT_BACKEND_GLOBAL_PORT)
+    if constants.SITE_KEY:
+        dashboard_url='{}/dashboard/{}'.format(host_url, constants.SITE_KEY)
+    else:
+        dashboard_url='{}/dashboard'.format(host_url)
+
     rabbit_url = 'http://{}:{}'.format(constants.NEXT_BACKEND_GLOBAL_HOST,
                                        15672)
     cadvisor_url = 'http://{}:{}'.format(constants.NEXT_BACKEND_GLOBAL_HOST,
@@ -59,9 +100,11 @@ def system_monitor():
     mongodb_url = 'http://{}:{}'.format(constants.NEXT_BACKEND_GLOBAL_HOST,
                                         28017)
     return render_template('system_monitor.html',
+                           dashboard_url=dashboard_url,
                            rabbit_url=rabbit_url,
                            cadvisor_url=cadvisor_url,
                            mongodb_url=mongodb_url)
+
 
 @dashboard.route('/experiment_dashboard/<exp_uid>/<app_id>')
 def experiment_dashboard(exp_uid, app_id):
@@ -72,21 +115,7 @@ def experiment_dashboard(exp_uid, app_id):
     	(string) exp_uid, exp_uid for a current experiment.
     """
     simple_flag = int(request.args.get('simple',0))
-
-    if simple_flag<2:
-      git_hash = rm.get_git_hash_for_exp_uid(exp_uid)
-      exp_start_data = rm.get_app_exp_uid_start_date(exp_uid)+' UTC'
-      participant_uids = rm.get_participant_uids(exp_uid)
-      num_participants = len(participant_uids)
-      num_queries = 0
-      for participant_uid in participant_uids:
-        queries = rm.get_participant_data(participant_uid, exp_uid)
-        num_queries += len(queries)
-    else:
-      git_hash = ''
-      exp_start_data = ''
-      num_participants = -1
-      num_queries = -1
+    force_recompute = int(request.args.get('force_recompute',1))
 
     # Not a particularly good way to do this.
     alg_label_list = rm.get_algs_for_exp_uid(exp_uid)
@@ -94,31 +123,32 @@ def experiment_dashboard(exp_uid, app_id):
                  'alg_label_clean':'_'.join(alg['alg_label'].split())}
                 for alg in alg_label_list]
 
-    if (constants.NEXT_BACKEND_GLOBAL_HOST and
-        constants.NEXT_BACKEND_GLOBAL_PORT):
-        host_url = 'http://{}:{}'.format(constants.NEXT_BACKEND_GLOBAL_HOST,
-                                         constants.NEXT_BACKEND_GLOBAL_PORT)
+    host_url = 'http://{}:{}'.format(constants.NEXT_BACKEND_GLOBAL_HOST,
+                                     constants.NEXT_BACKEND_GLOBAL_PORT)
+    if constants.SITE_KEY:
+        dashboard_url='{}/dashboard/{}'.format(host_url, constants.SITE_KEY)
     else:
-        host_url = ''
-    env = Environment(loader=ChoiceLoader([PackageLoader('next.apps.Apps.{}'.format(app_id),
+        dashboard_url='{}/dashboard'.format(host_url)
+        
+    env = Environment(loader=ChoiceLoader([PackageLoader('apps.{}'.format(app_id),
                                                          'dashboard'),
                                            PackageLoader('next.dashboard',
                                                          'templates')]))
     template = env.get_template('{}.html'.format(app_id)) # looks for /next/apps/{{ app_id }}/dashboard/{{ app_id }}.html
-
     return template.render(app_id=app_id,
                            exp_uid=exp_uid,
-                           git_hash=git_hash,
                            alg_list=alg_list,
                            host_url=host_url,
+                           dashboard_url=dashboard_url,
+                           exceptions_present=exceptions_present(exp_uid, host_url),
                            url_for=url_for,
-                           exp_start_data=exp_start_data,
-                           num_participants=num_participants,
-                           num_queries=num_queries,
-                           simple_flag=int(simple_flag))
+                           simple_flag=int(simple_flag),
+                           force_recompute=int(force_recompute))
 
 
-
-
-
+def exceptions_present(exp_uid, host_url):
+    url = '{}/api/experiment/{}/logs/APP-EXCEPTION'.format(host_url, exp_uid)
+    r = requests.get(url)
+    logs = yaml.load(r.content)['log_data']
+    return True if len(logs) > 0 else False
 

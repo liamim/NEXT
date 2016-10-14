@@ -12,14 +12,14 @@ curl -H "Content-Type: application/json" \
 -X POST http://localhost:8001/experiment/answer
 '''
 from flask import Flask
-from flask.ext import restful
-from flask.ext.restful import Resource, reqparse
+from flask_restful import Resource, reqparse
 
 from next.api.api_util import *
 from next.api.api_util import APIArgument
 
 import json
 import next.utils
+import next.utils as utils
 import next.broker.broker
 
 from next.api.resource_manager import ResourceManager
@@ -55,6 +55,8 @@ class processAnswer(Resource):
         args_data = post_parser.parse_args()
         # Pull app_id and exp_uid from parsed args
         exp_uid = args_data["exp_uid"]
+
+        args_data['args']['response_time'] = float(args_data['args']['response_time'])
 
         # Fetch app_id data from resource manager
         app_id = resource_manager.get_app_id(exp_uid)
