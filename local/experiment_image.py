@@ -5,7 +5,10 @@ sys.path.append("../")
 from launch_experiment import *
 
 experiment_list = []
+#alg_ids = ['Greedy']
 alg_ids = ['OFUL']
+#alg_ids = ['OFUL_Hashing']
+#alg_ids = ['OFUL_lite']
 
 # Create common alg_list
 alg_list = []
@@ -13,7 +16,8 @@ for idx,alg_id in enumerate(alg_ids):
   alg_item = {}
   alg_item['alg_id'] = alg_id
   if idx==0:
-    alg_item['alg_label'] = 'Test'
+    #alg_item['alg_label'] = 'Test'
+    alg_item['alg_label'] = alg_id
   else:
     alg_item['alg_label'] = alg_id    
   #alg_item['test_alg_label'] = 'Test'
@@ -35,9 +39,9 @@ algorithm_management_settings['params'] = params
 initExp = {}
 initExp['args'] = {}
 #initExp['args']['n'] = 10
-initExp['args']['d'] = 1000
-initExp['args']['rating_scale'] = {'labels':[{'label': 'Nope', 'reward': -1},
-                                             {'label': 'Yup', 'reward': 1}]}
+initExp['args']['d'] = 100
+initExp['args']['rating_scale'] = {'labels':[{'label': 'No', 'reward': -1},
+                                             {'label': 'Yes', 'reward': 1}]}
 
 
 #with open(sys.argv[1], 'r') as f:
@@ -51,10 +55,12 @@ initExp['args']['feature_filenames'] = filenames
 initExp['args']['features'] = 'http://localhost:8002/features_10x10.npy'
 initExp['args']['features'] = 'https://www.dropbox.com/s/r9qlkppxvtomk9t/features.npy?dl=1'
 initExp['args']['features'] = 'https://www.dropbox.com/s/2sfxmo6pg3yw5d0/features_10x10.npy?dl=1'
-initExp['args']['failure_probability'] = .01
+initExp['args']['failure_probability'] = .1
 initExp['args']['participant_to_algorithm_management'] = 'one_to_many' 
 initExp['args']['algorithm_management_settings'] = algorithm_management_settings 
-initExp['args']['alg_list'] = alg_list 
+initExp['args']['alg_list'] = alg_list
+initExp['R'] = 0.001 #For OFUL 0.001
+initExp['ridge'] = 0.1
 initExp['args']['instructions'] = 'Test instructions'
 initExp['args']['debrief'] = 'Test debrief'
 initExp['app_id'] = 'ImageSearch'

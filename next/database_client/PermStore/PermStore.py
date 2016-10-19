@@ -703,7 +703,7 @@ class PermStore(object):
                 doc['_id'] = doc_uid
 
             doc = self.makeProperDatabaseFormat(doc)
-            write_id = self.client[database_id][bucket_id].insert(doc)
+            write_id = self.client[database_id][bucket_id].insert_one(doc)
                 
             return True,''
         except:

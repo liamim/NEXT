@@ -2,6 +2,7 @@ Flask
 Flask-Restful
 Flask-Login
 gunicorn
+ipdb
 pymongo
 redis
 celery

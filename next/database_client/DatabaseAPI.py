@@ -201,6 +201,8 @@ class DatabaseAPI(object):
         self.cacheStore = CacheStore()
         self.permStore = PermStore()
 
+        self.lsh = None
+
         self.broker = None
 
     def submit_job(self,app_id,exp_uid,task,task_args_json,namespace=None,ignore_result=True,time_limit=0, alg_id=None, alg_label=None):

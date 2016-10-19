@@ -1,5 +1,6 @@
 from next.utils import utils
 import numpy as np
+import cPickle as pickle
 
 class Collection(object):
     def __init__(self, collection, uid_prefix, exp_uid, db, timing=True):
@@ -123,6 +124,10 @@ class Butler(object):
         self.db = db
         self.ell = ell
         self.targets = targets
+
+        if self.db.lsh==None:
+            self.db.lsh = self.get_hashing_function()
+
         if self.targets.db==None:
             self.targets.db = self.db
         self.queries = Collection(self.app_id+":queries", "", self.exp_uid, db)
@@ -135,6 +140,19 @@ class Butler(object):
         self.participants = Collection(self.app_id+":participants", "", self.exp_uid, db)
         self.dashboard = Collection(self.app_id+":dashboard", "", self.exp_uid, db)
         self.other = Collection(self.app_id+":other", "{exp_uid}_", self.exp_uid, db)
+
+    def get_hashing_function(self):
+        # try:
+        #    with open('hashing_functions.pkl') as f:
+        #        data = pickle.load(f)
+        # except:
+        #    raise ValueError('Current path:', os.getcwd())
+        # from next.lib.hash import kjunutils, lsh_kjun_v3
+        with open('hashing_functions.pkl') as f:
+            index = pickle.load(f)
+
+        #index = hash.to_serializable(index)
+        return index
 
     def log(self, log_name, log_value):
         self.ell.log(self.app_id+":"+log_name, log_value)
