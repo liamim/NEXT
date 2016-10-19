@@ -63,7 +63,7 @@ class ImageSearch(object):
 
         if 'labels' in args['rating_scale'].keys():
             labels = args['rating_scale']['labels']
-        
+
         algorithm_keys = ['n', 'failure_probability', 'R']
         alg_data = {}
         for key in algorithm_keys:
@@ -81,7 +81,6 @@ class ImageSearch(object):
         return args
 
     @timeit(fn_name='myApp.py:getQuery')
-    #def getQuery(self, exp_uid, experiment_dict, query_request, alg_response, butler):
     def getQuery(self, butler, alg, args):
         """
         The function that gets the next query, given a query reguest and
@@ -104,87 +103,90 @@ class ImageSearch(object):
         """
         t0 = time.time()
         exp_uid = butler.exp_uid
-        participant_uid = args.get(u'participant_uid')#, exp_uid + '_{}'.format(np.random.randint(1e6)))
-        #utils.debug_print(participant_uid)
-        # participant_doc = butler.participants.get(uid=query_request['args']['participant_uid'])
+        t1 = time.time()
+        participant_uid = args.get(u'participant_uid') #, exp_uid + '_{}'.format(np.random.randint(1e6)))
+        t2 = time.time()
         participant_doc = butler.participants.get(uid=participant_uid)
-        # utils.debug_print("participant_doc in get query=", participant_doc)
-        #print("participant_doc in get query=", participant_doc)
-        if type(participant_doc) != dict:
-            participant_doc = {}
+        t3 = time.time()
+
+        utils.debug_print('time to get exp_uid: ', t1 - t0)
+        utils.debug_print('time to get p_uid: ', t2 - t1)
+        utils.debug_print('time to get p_doc: ', t3 - t2)
 
         if 'num_tries' not in participant_doc.keys() or participant_doc['num_tries'] == 0:
-            N = butler.experiment.get(key='args')['n']
-            target_indices = random.sample(range(N), 9)  # 9 here means "show 9 + 1 random queries at the start"
+            utils.debug_print('came here 2')
+            utils.debug_print('num_tries was empty or it was 0, choosing start options')
+            t5 = time.time()
+            target_indices = random.sample(range(butler.experiment.get(key='args')['n']), 9)  # 9 here means "show 9 + 1 random queries at the start"
             #target_indices = [40767]
             #target_indices = [4050, 2959, 2226]
             targets_list = [{'index': i, 'target': self.TargetManager.get_target_item(exp_uid, i)} for i in
                             target_indices]
+            t6 = time.time()
             return_dict = {'initial_query': True, 'targets': targets_list,
                            'instructions': butler.experiment.get(key='args')['instructions']}
+            t7 = time.time()
+
+            utils.debug_print('time to get N: ', t5 - t3)
+            utils.debug_print('time to init target_list: ', t6 - t5)
+            utils.debug_print('time to set return dict: ', t7 - t6)
         else:
-            #args = {'participant_uid': participant_uid}
-            #args.update(butler.participants.get(uid=participant_uid))
-            t1 = time.time()
-
-            print('time to 1: ', t1 - t0)
-
-            i_x, participant_args = alg({'participant_uid': participant_uid})
-
-            t2 = time.time()
-            utils.debug_print('time to 2: ', t2 - t1)
-
-            t21 = time.time()
-            utils.debug_print('pargs size: ', len(participant_args))
-            utils.debug_print('pargs: ', participant_args)
-            butler.participants.set(key=participant_uid, value=participant_args)
-            t3 = time.time()
-            #target = self.TargetManager.get_target_item(exp_uid, alg_response)
+            utils.debug_print('came here 3')
+            t8 = time.time()
+            #i_x, participant_args = alg({'participant_uid': participant_uid})
+            i_x = alg({'participant_uid': participant_uid})
+            #utils.debug_print('keys() after initial query: ', participant_args.keys())
+            #i_x = alg({'participant_uid': participant_uid})
+            t9 = time.time()
+            t10 = time.time()
+            #butler.participants.set(key=participant_uid, value=participant_args)
+            t11 = time.time()
             target = self.TargetManager.get_target_item(exp_uid, i_x)
-
-            t3_1 = time.time()
-
+            t12 = time.time()
             targets_list = [{'index': i_x, 'target': target}]
-            t4 = time.time()
-            #init_index = butler.participants.get(uid=query_request['args']['participant_uid'], key="i_hat")
+            t13 = time.time()
             init_index = butler.participants.get(uid=participant_uid, key="i_hat")
-
-            #init_target = self.TargetManager.get_target_item(exp_uid, init_index)
+            t14 = time.time()
             init_target = self.TargetManager.get_target_item(exp_uid, init_index)
-            utils.debug_print('json size: ',len(json.dumps(init_target)))
-            t5 = time.time()
-
+            t15 = time.time()
             experiment_dict = butler.experiment.get(key='args')
-            #utils.debug_print(experiment_dict)
-            t6 = time.time()
+            t16 = time.time()
 
-            utils.debug_print('time to 3-----: ', t3 - t21)
-            utils.debug_print('time to 3.5: ', t3_1 - t3)
-            utils.debug_print('time to 4: ', t4 - t3_1)
-            utils.debug_print('time to 5: ', t5 - t4)
-            utils.debug_print('time to 6: ', t6 - t5)
             return_dict = {'initial_query': False, 'targets': targets_list, 'main_target': init_target,
                            'instructions': butler.experiment.get(key='args')['instructions']} # changed query_instructions to instructions
+
+            t17 = time.time()
 
             if 'labels' in experiment_dict['rating_scale']:
                 labels = experiment_dict['rating_scale']['labels']
                 return_dict.update({'labels': labels})
+                t18 = time.time()
+                utils.debug_print('time to update return dict with labels: ', t18 - t17)
 
                 if 'context' in experiment_dict and 'context_type' in experiment_dict:
                     return_dict.update({'context': experiment_dict['context'],
                                         'context_type': experiment_dict['context_type']})
+                    t19 = time.time()
+                    utils.debug_print('time to update return dict with context and context type: ', t19 - t18)
+
+            utils.debug_print('time to run alg(): ', t9 - t8)
+            utils.debug_print('time to set p_args: ', t11 - t10)
+            utils.debug_print('time to get target: ', t12 - t11)
+            utils.debug_print('time to get target_list: ', t13 - t12)
+            utils.debug_print('time to get init_index: ', t14 - t13)
+            utils.debug_print('time to get init_target: ', t15 - t14)
+            utils.debug_print('time to get experiment_dict: ', t16 - t15)
+
         return return_dict
 
     @timeit(fn_name='myApp:processAnswer')
-    #def processAnswer(self, exp_uid, query, answer, butler):
     def processAnswer(self, butler, alg, args):
         """
         Parameters
         ----------
-        exp_uid : The experiments unique ID.
-        query :
-        answer:
         butler :
+        alg:
+        args:
 
         Returns
         -------
@@ -196,36 +198,19 @@ class ImageSearch(object):
         algorithm would then be called with
         ``alg.processAnswer(butler, a=1, b=2)``
         """
-        #participant_uid = query['participant_uid']
-        #participant_uid = args.get('participant_uid', butler.exp_uid)
         participant_uid = butler.queries.get(uid=args['query_uid'],key='participant_uid')
-        participant_doc = butler.participants.get(uid=participant_uid)
-        #utils.debug_print("participant_doc before increment=", participant_doc)
         butler.participants.increment(uid=participant_uid, key='num_tries')
-        #utils.debug_print("participant_doc after increment=", butler.participants.get(uid=participant_uid))
-        #if answer['args']['initial_query']:
         if args['initial_query']:
-            #initial_arm = answer['args']['answer']['initial_arm']
+            #utils.debug_print('I should be starting here')
             initial_arm = args['answer']['initial_arm']
             butler.participants.set(uid=participant_uid, key="i_hat", value=initial_arm)
-            alg({'participant_doc': participant_doc})
+            alg({'participant_uid': participant_uid})
             return {}
-        else:
-            #target_id = query['targets'][0]['target']['target_id']
-            query_uid = args['query_uid']
-            target_id = butler.queries.get(uid=query_uid)['targets'][0]['index']
-            #target_reward = answer['args']['answer']['target_reward']
-            # utils.debug_print("args: ", args)
-            target_reward = args['answer']['target_reward']
+        query_uid = args['query_uid']
+        target_id = butler.queries.get(uid=query_uid)['targets'][0]['index']
+        target_reward = args['answer']['target_reward']
 
-            butler.participants.append(uid=participant_uid, key='do_not_ask_list', value=target_id)
-
-            #query_update = {'target_id': target_id, 'target_reward': target_reward}
-
-            #alg_args_dict = {'target_id': target_id,
-            #                 'target_reward': target_reward,
-            #                 'participant_doc': participant_doc}
-        alg({'target_id': target_id, 'target_reward': target_reward, 'participant_doc': participant_doc})
+        alg({'target_id': target_id, 'target_reward': target_reward, 'participant_uid': participant_uid})
         # return query_update, alg_args_dict
         return {'target_id': target_id, 'target_reward': target_reward}
 

@@ -21,13 +21,8 @@ getQuery:
     participant_uid:
       type: str
   rets:
-    type: tuple
-    values:
-      0:
-        description: The index of the target to ask about
-        type: num
-      1:
-        type: any
+    description: The index of the target to ask about
+    type: num
     
 processAnswer:
     args:
@@ -39,9 +34,8 @@ processAnswer:
         description: The reward value to assign to the target
         type: num
         optional: true
-      participant_doc:
-        type: any
-        optional: true
+      participant_uid:
+        type: str
     rets:
       type: bool
       description: A boolean indicating success
