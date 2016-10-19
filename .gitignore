@@ -14,6 +14,9 @@ target/
 # nohup
 nohup.out
 
+# pickle files
+*.pkl
+
 # Log files
 *.log
 
