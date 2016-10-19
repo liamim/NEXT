@@ -32,7 +32,6 @@ class ImageSearch(object):
         self.app_id = 'ImageSearch'
         self.TargetManager = next.apps.SimpleTargetManager.SimpleTargetManager(db)
 
-    #def initExp(self, exp_uid, exp_data, butler):
     def initExp(self, butler, init_algs, args):
         """
         This function is meant to store any additional components in the
@@ -50,48 +49,18 @@ class ImageSearch(object):
         -------
         exp_data: The experiment data, potentially modified.
         """
-        #utils.debug_print('ImageSearch.py#L54')
         if 'targetset' in args['targets'].keys():
             n = len(args['targets']['targetset'])
+            #targetset = args['targets']['targetset']
+            #feature_filenames = args['feature_filenames']
 
-            #targetset = exp_data['args']['targets']['targetset']
-            targetset = args['targets']['targetset']
-            #feature_filenames = exp_data['args']['feature_filenames']
-            feature_filenames = args['feature_filenames']
+            #target_filenames = [target['primary_description'] for target in targetset]
 
-            target_filenames = [target['primary_description'] for target in targetset]
-            #utils.debug_print("feature filenames = ", feature_filenames)
-            #utils.debug_print("target filenames = ", target_filenames)
-           
-            #new_target_idx = [feature_filenames.index(target) for target in target_filenames]
-            #new_targetset = []
+            #home_dir = '/Users/aniruddha'
+            #string = 'wget -O features_d100.npy {1}'.format(home_dir, args['features'])
+            #r = os.system(string)
+            #ls = os.listdir('.')
 
-            if False:
-                #response = requests.get(exp_data['args']['features'])
-                #utils.debug_print(args['features'])
-                response = requests.get(args['features'])
-                #utils.debug_print(response.text)
-                variables = np.load(StringIO(response.text))
-                utils.debug_print("done downloading features")
-                #X = variables['features_all'].T
-                #np.save('features_NEXT.npy', X)
-            else:
-                home_dir = '/Users/aniruddha'
-                string = 'wget -O features_d100.npy {1}'.format(home_dir, args['features'])
-                r = os.system(string)
-                ls = os.listdir('.')
-                #utils.debug_print(ls)
-                #utils.debug_print('preparing URL to print')
-                #utils.debug_print(r, string)
-            #utils.debug_print("X.shape = {}, meaning {} shoes with {} features".format(X.shape, X.shape[1], X.shape[0]))
-
-            
-            #for col, target in zip(new_target_idx,
-            #                       args['targets']['targetset']):
-            #    # target['feature_vector'] = X[:, col].tolist()
-            #    new_targetset += [target]
-
-            #self.TargetManager.set_targetset(exp_uid, new_targetset)
             new_targetset = args['targets']['targetset']
             self.TargetManager.set_targetset(butler.exp_uid, new_targetset)
 
@@ -101,10 +70,7 @@ class ImageSearch(object):
             # for i in new_target_idx])
         # Hasn't been tested yet
         else:
-            #n = exp_data['args']['targets']['n']
             n = args['targets']['n']
-            #utils.debug_print("image search, 82")
-            #X = np.array(exp_data['args']['features']['matrix'])
             X = np.array(args['features']['matrix'])
             np.save('features.npy', X)
 
