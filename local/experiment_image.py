@@ -15,13 +15,7 @@ alg_list = []
 for idx,alg_id in enumerate(alg_ids):
   alg_item = {}
   alg_item['alg_id'] = alg_id
-  if idx==0:
-    #alg_item['alg_label'] = 'Test'
-    alg_item['alg_label'] = alg_id
-  else:
-    alg_item['alg_label'] = alg_id    
-  #alg_item['test_alg_label'] = 'Test'
-  #alg_item['params'] = {}
+  alg_item['alg_label'] = alg_id
   alg_list.append(alg_item)
 
 # Create common algorithm management settings  
@@ -38,7 +32,6 @@ algorithm_management_settings['params'] = params
 # Create experiment dictionary
 initExp = {}
 initExp['args'] = {}
-#initExp['args']['n'] = 10
 initExp['args']['d'] = 100
 initExp['args']['rating_scale'] = {'labels':[{'label': 'No', 'reward': -1},
                                              {'label': 'Yes', 'reward': 1}]}

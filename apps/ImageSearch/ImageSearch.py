@@ -49,60 +49,34 @@ class ImageSearch(object):
         -------
         exp_data: The experiment data, potentially modified.
         """
+        t0 = time.time()
         if 'targetset' in args['targets'].keys():
             n = len(args['targets']['targetset'])
-            #targetset = args['targets']['targetset']
-            #feature_filenames = args['feature_filenames']
-
-            #target_filenames = [target['primary_description'] for target in targetset]
-
-            #home_dir = '/Users/aniruddha'
-            #string = 'wget -O features_d100.npy {1}'.format(home_dir, args['features'])
-            #r = os.system(string)
-            #ls = os.listdir('.')
-
             new_targetset = args['targets']['targetset']
             self.TargetManager.set_targetset(butler.exp_uid, new_targetset)
-
-            # old code, expanded by the for-loop above
-            # self.TargetManager.set_targetset(exp_uid,
-            # [exp_data['args']['targets']['targetset'][i]
-            # for i in new_target_idx])
-        # Hasn't been tested yet
         else:
             n = args['targets']['n']
             X = np.array(args['features']['matrix'])
             np.save('features.npy', X)
-
-        #exp_data['args']['n'] = n
+        t1 = time.time()
         args['n'] = n
-        #del exp_data['args']['features']
-        #del exp_data['args']['targets']
 
-        #if 'labels' in exp_data['args']['rating_scale'].keys():
         if 'labels' in args['rating_scale'].keys():
-            #labels = exp_data['args']['rating_scale']['labels']
             labels = args['rating_scale']['labels']
-            max_label = max(label['reward'] for label in labels)
-            min_label = min(label['reward'] for label in labels)
-
-        #R = exp_data['args']['rating_scale']['R']
-
-        #R = args['R']
-        #ridge = args['ridge']
-        R = 0.0
-        ridge = 1.778
-        alg_data = {'R': R, 'ridge': ridge}
-        algorithm_keys = ['n', 'failure_probability']
+        
+        algorithm_keys = ['n', 'failure_probability', 'R']
+        alg_data = {}
         for key in algorithm_keys:
             alg_data[key] = args[key]
-
-        t1 = time.time()
-        init_algs(alg_data)
+        alg_data['ridge'] = args['ridge']
         t2 = time.time()
-        utils.debug_print('time to run getQuery: ', t2 - t1)
-        #return exp_data, alg_data
-        #utils.debug_print('arg.key():   ',args.keys())
+        init_algs(alg_data)
+        t3 = time.time()
+        if False:
+            utils.debug_print('Timing in initExp: ')
+            utils.debug_print('time to get through if else: ', t1 - t0)
+            utils.debug_print('time to setup variables: ', t2 - t1)
+            utils.debug_print('time to initialize algorithm: ', t3 - t2)
         del args['targets']
         return args
 
