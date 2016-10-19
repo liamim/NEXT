@@ -86,7 +86,17 @@ from __future__ import division
 import numpy as np
 import next.utils as utils
 import time
+import cPickle as pickle
 import os
+import json
+#import kjunutils
+#prefix = '/Users/aniruddha/Dropbox/2016/NEXT_v1/apps/ImageSearch/algs/OFUL_Hashing/'
+#import sys
+#sys.path.insert(0, prefix)
+from next.lib.hash import lsh_kjun_v3 as hash
+#import lsh_kjun
+#import pdb
+
 
 # TODO: change this to 1
 reward_coeff = 1.00
@@ -133,9 +143,6 @@ def argmax_reward(X, theta, invV, x_invVt_norm, do_not_ask=[], k=0):
     rewards[do_not_ask] = -np.inf
     return X[np.argmax(rewards),:], np.argmax(rewards)
 
-def calc_reward(x, theta, R=2):
-    return np.inner(x, theta) + R*np.random.randn()
-
 @timeit(fn_name="get_feature_vectors")
 def get_feature_vectors(butler):
     home_dir = '/Users/aniruddha'
@@ -143,7 +150,21 @@ def get_feature_vectors(butler):
     utils.debug_print("OFUL.py 120, features.shape = {}".format(features.shape))
     return features
 
-class OFUL:
+@timeit(fn_name="get_hashing_functions")
+def get_hashing_function():
+    #try:
+    #    with open('hashing_functions.pkl') as f:
+    #        data = pickle.load(f)
+    #except:
+    #    raise ValueError('Current path:', os.getcwd())
+    #from next.lib.hash import kjunutils, lsh_kjun_v3
+    with open('hashing_functions.pkl') as f:
+      index = pickle.load(f)
+
+    index = hash.to_serializable(index)
+    return index
+
+class OFUL_Hashing:
     def initExp(self, butler, params=None, n=None, R=None, ridge=None,
                 failure_probability=None):
         """
@@ -161,27 +182,32 @@ class OFUL:
           (boolean) didSucceed : did everything execute correctly
         """
         # setting the target matrix, a description of each target
-        # X = np.asarray(params['X'])
         X = get_feature_vectors(butler)
-        # theta_star = np.asarray(params['theta_star'])
+
         d = X.shape[1]  # number of dimensions in feature
         n = X.shape[0]
+
+        #lsh = get_hashing_function()
+        #butler.db.lsh = lsh
+        #lsh['projections_all'] = []
+        #lsh['projections'] = []
+        #lsh = 'whatever'
+        #lsh.projections_all = []
+        #utils.debug_print('lsh: ', lsh)
+        #utils.debug_print('lsh.keys(): ', lsh.keys())
 
         #lambda_ = ridge
         lambda_ = 1.0
         R = 1.0
 
-        # initial sampling arm
-        # theta_hat = X[:, np.random.randint(X.shape[1])]
-        # theta_hat = np.random.randn(d)
-        # theta_hat /= np.linalg.norm(theta_hat)
-
-        to_save = {'R': R, 'd': d, 'n': n,
+        to_save = {#'X': X.tolist(),
+                   'R': R, 'd': d, 'n': n, 'c1': 4.0, 'max_dist_comp': 500,
                    'lambda_': lambda_,
                    'total_pulls': 0.0,
                    'rewards': [],
                    'ask_indices': range(n),
                    'arms_pulled': [],
+                   #'lsh': json.dumps(lsh),
                    'failure_probability': failure_probability}
 
         for name in to_save:
@@ -213,13 +239,8 @@ class OFUL:
         pulled using the butler
         """
 
-        t0 = time.time()
-
         initExp = butler.algorithms.get()
         X = get_feature_vectors(butler) # np.asarray(initExp['X'], dtype=float)
-
-        tfeat = time.time()
-        utils.debug_print('get features took: ', tfeat-t0)
 
         # Scott: possible modification: if num_t
         participant_args = butler.participants.get(uid=participant_uid)
@@ -259,15 +280,15 @@ class OFUL:
         #     butler.participants.set_many(uid=participant_args['participant_uid'],
         #                             key_value_dict=participant_args)'''
         if 'invV' not in participant_args.keys():
-            #ask_indices = range(X.shape[0])
+            ask_indices = range(X.shape[0])
             # ask_indices = [x for x in ask_indices if x !=participant_args['participant_args']['i_hat'] ]
-            #ask_indices = [x for x in ask_indices if x != participant_args['i_hat']]
+            ask_indices = [x for x in ask_indices if x != participant_args['i_hat']]
             invV = np.eye(initExp['d']) / initExp['lambda_']
             d = {'invV': invV,
                  # np.eye(initExp['d']) / initExp['lambda_'],
                  'x_invVt_norm': np.ones(X.shape[0]) / initExp['lambda_'],
                  't': 1,
-                 #'ask_indices': ask_indices,
+                 'ask_indices': ask_indices,
                  'b': np.zeros(initExp['d']),
                  'participant_uid': participant_uid}
             participant_args.update(d)
@@ -288,41 +309,63 @@ class OFUL:
                                          key='do_not_ask', value=participant_args['i_hat'])
 
         # Figure out what query to ask
-        scale = 1e-2
-        t1 = time.time()
         t = participant_args['t']
+        # scale = 1.0
+        # scale = 1e-5
+        scale = 0.0
+        #c1 = participant_args['c1']
+        utils.debug_print('initExp.keys(): ', initExp.keys())
+        c1 = initExp['c1']
+        #lsh = hash.from_serializable(initExp['lsh'])
+        #lsh = hash.from_serializable(butler.db.lsh)
+        lsh = butler.db.lsh
+        max_dist_comp = initExp['max_dist_comp']
+        index_array = range(X.shape[0])
+        d = initExp['d']
         #log_div = (1 + t * 1.0/initExp['lambda_']) * 1.0 / initExp['failure_probability']
         #k = initExp['R'] * np.sqrt(initExp['d'] * np.log(log_div)) + np.sqrt(initExp['lambda_'])
-        k = CalcSqrtBeta(initExp['d'], t, scale, initExp['R'], initExp['lambda_'], initExp['failure_probability'])
-
-        t2 = time.time()
+        sqrt_beta = CalcSqrtBeta(d, t, scale, initExp['R'], initExp['lambda_'], initExp['failure_probability'])
 
         invV = np.array(participant_args['invV'])
-
-        t3 = time.time()
         #invV = np.load(participant_args['invV_filename'])
         x_invVt_norm = np.array(participant_args['x_invVt_norm'])
-
-        t4 = time.time()
 
         do_not_ask = butler.participants.get(uid=participant_args['participant_uid'],
                                              key='do_not_ask')
 
-        t5 = time.time()
+        validinds = np.setdiff1d(index_array, do_not_ask).astype('int')
 
         theta_hat = np.array(participant_args['theta_hat'])
+        #arm_x, i_x = argmax_reward(X, theta_hat, invV, x_invVt_norm,
+        #                           do_not_ask=do_not_ask, k=sqrt_beta)
 
-        t6 = time.time()
 
-        arm_x, i_x = argmax_reward(X, theta_hat, invV, x_invVt_norm,
-                                    do_not_ask=do_not_ask, k=k)
+        min_sqrt_eig = 1/np.sqrt(initExp['lambda_'])
+        query = np.zeros((d + d ** 2, 1), 'float32')
+        query[:d, 0] = theta_hat
+        query[d:] = invV.reshape(d ** 2, 1) * (np.sqrt(sqrt_beta) / 4 / c1 / min_sqrt_eig)
 
-        t7 = time.time()
+        foundSet, foundListTuple = lsh.FindUpto(query, max_dist_comp, randomize=True,
+                                                     invalidSet=do_not_ask)
+
+        #utils.debug_print('foundListTuple: ', foundListTuple)
+        #utils.debug_print('len(idx_ary): ', len(index_array))
+
+        utils.debug_print(np.max([x[0] for x in foundListTuple]))
+
+        foundList = [index_array[x[0]] for x in foundListTuple]
+        foundList = np.intersect1d(foundList, validinds)
+
+        sub_X = X[foundList, :]
+
+        term1 = np.sum(sub_X * np.dot(sub_X, invV), axis=1)
+        term2 = np.dot(sub_X, theta_hat)
+
+        total = term2 + (np.sqrt(sqrt_beta) / 4 / c1 / min_sqrt_eig) * term1
+        i_x = foundList[np.argmax(total)]
 
         butler.participants.append(uid=participant_args['participant_uid'],
                                    key='do_not_ask', value=i_x)
-
-        t8 = time.time()
 
         # reward = calc_reward(arm_x, np.array(participant_args['theta_star']),
         #                      R=reward_coeff * initExp['R'])
@@ -333,17 +376,6 @@ class OFUL:
         # for key in participant_args:
         #     butler.participants.set(uid=participant_args['participant_uid'],
         #                             key=key, value=participant_args[key])
-
-
-        utils.debug_print('time to reach computations: ', t1 - t0)
-        utils.debug_print('time to compute beta_sqrt: ', t2 - t1)
-        utils.debug_print('time to load invV: ', t3 - t2)
-        utils.debug_print('time to load x_invV_norm: ', t4 - t3)
-        utils.debug_print('time to get do not ask ', t5 - t4)
-        utils.debug_print('time to load theta_hat: ', t6 - t5)
-        utils.debug_print('time to argmax:', t7 - t6)
-        utils.debug_print('time to append: ', t8 - t7)
-
         return i_x, participant_args
 
     @timeit(fn_name='alg:processAnswer')
@@ -372,9 +404,7 @@ class OFUL:
         # theta_star = np.array(participant_args['theta_star'])
         X = get_feature_vectors(butler) # np.asarray(args['X'], dtype=float)
         b = np.array(participant_doc['b'], dtype=float)
-        do_not_ask = participant_doc['do_not_ask']
-        #ask_indices = participant_doc['ask_indices']
-        ask_indices =np.setdiff1d(range(X.shape[0]), do_not_ask)
+        ask_indices = participant_doc['ask_indices']
         invV = np.array(participant_doc['invV'], dtype=float)
         #invV = np.load(participant_doc['invV_filename'])
         x_invVt_norm = np.array(participant_doc['x_invVt_norm'], dtype=float)

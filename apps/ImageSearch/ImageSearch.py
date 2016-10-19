@@ -10,7 +10,6 @@ import time
 
 import next.apps.SimpleTargetManager
 import next.utils as utils
-from scipy.io import loadmat
 
 
 def timeit(fn_name=''):
@@ -51,7 +50,7 @@ class ImageSearch(object):
         -------
         exp_data: The experiment data, potentially modified.
         """
-        utils.debug_print('ImageSearch.py#L54')
+        #utils.debug_print('ImageSearch.py#L54')
         if 'targetset' in args['targets'].keys():
             n = len(args['targets']['targetset'])
 
@@ -67,7 +66,6 @@ class ImageSearch(object):
             #new_target_idx = [feature_filenames.index(target) for target in target_filenames]
             #new_targetset = []
 
-            utils.debug_print("image search:48, beginning to download features")
             if False:
                 #response = requests.get(exp_data['args']['features'])
                 #utils.debug_print(args['features'])
@@ -83,7 +81,7 @@ class ImageSearch(object):
                 r = os.system(string)
                 ls = os.listdir('.')
                 #utils.debug_print(ls)
-                utils.debug_print('preparing URL to print')
+                #utils.debug_print('preparing URL to print')
                 #utils.debug_print(r, string)
             #utils.debug_print("X.shape = {}, meaning {} shoes with {} features".format(X.shape, X.shape[1], X.shape[0]))
 
@@ -105,7 +103,7 @@ class ImageSearch(object):
         else:
             #n = exp_data['args']['targets']['n']
             n = args['targets']['n']
-            utils.debug_print("image search, 82")
+            #utils.debug_print("image search, 82")
             #X = np.array(exp_data['args']['features']['matrix'])
             X = np.array(args['features']['matrix'])
             np.save('features.npy', X)
@@ -124,8 +122,10 @@ class ImageSearch(object):
 
         #R = exp_data['args']['rating_scale']['R']
 
-        R = args['R']
-        ridge = args['ridge']
+        #R = args['R']
+        #ridge = args['ridge']
+        R = 0.0
+        ridge = 1.778
         alg_data = {'R': R, 'ridge': ridge}
         algorithm_keys = ['n', 'failure_probability']
         for key in algorithm_keys:
@@ -136,6 +136,8 @@ class ImageSearch(object):
         t2 = time.time()
         utils.debug_print('time to run getQuery: ', t2 - t1)
         #return exp_data, alg_data
+        #utils.debug_print('arg.key():   ',args.keys())
+        del args['targets']
         return args
 
     @timeit(fn_name='myApp.py:getQuery')
@@ -160,7 +162,7 @@ class ImageSearch(object):
 
         TODO: Document this further
         """
-
+        t0 = time.time()
         exp_uid = butler.exp_uid
         participant_uid = args.get(u'participant_uid')#, exp_uid + '_{}'.format(np.random.randint(1e6)))
         #utils.debug_print(participant_uid)
@@ -173,41 +175,64 @@ class ImageSearch(object):
 
         if 'num_tries' not in participant_doc.keys() or participant_doc['num_tries'] == 0:
             N = butler.experiment.get(key='args')['n']
-            #target_indices = random.sample(range(N), 9)  # 9 here means "show 9 + 1 random queries at the start"
-            target_indices = [4050, 2959, 2226]
+            target_indices = random.sample(range(N), 9)  # 9 here means "show 9 + 1 random queries at the start"
+            #target_indices = [40767]
+            #target_indices = [4050, 2959, 2226]
             targets_list = [{'index': i, 'target': self.TargetManager.get_target_item(exp_uid, i)} for i in
                             target_indices]
             return_dict = {'initial_query': True, 'targets': targets_list,
                            'instructions': butler.experiment.get(key='args')['instructions']}
         else:
-            args = {'participant_uid': participant_uid}
+            #args = {'participant_uid': participant_uid}
             #args.update(butler.participants.get(uid=participant_uid))
             t1 = time.time()
+
+            print('time to 1: ', t1 - t0)
+
             i_x, participant_args = alg({'participant_uid': participant_uid})
+
             t2 = time.time()
-            utils.debug_print('time to set keys: ', t2 - t1)
+            utils.debug_print('time to 2: ', t2 - t1)
+
+            t21 = time.time()
+            utils.debug_print('pargs size: ', len(participant_args))
+            utils.debug_print('pargs: ', participant_args)
             butler.participants.set(key=participant_uid, value=participant_args)
+            t3 = time.time()
             #target = self.TargetManager.get_target_item(exp_uid, alg_response)
             target = self.TargetManager.get_target_item(exp_uid, i_x)
-            targets_list = [{'index': i_x, 'target': target}]
 
+            t3_1 = time.time()
+
+            targets_list = [{'index': i_x, 'target': target}]
+            t4 = time.time()
             #init_index = butler.participants.get(uid=query_request['args']['participant_uid'], key="i_hat")
             init_index = butler.participants.get(uid=participant_uid, key="i_hat")
+
             #init_target = self.TargetManager.get_target_item(exp_uid, init_index)
             init_target = self.TargetManager.get_target_item(exp_uid, init_index)
+            utils.debug_print('json size: ',len(json.dumps(init_target)))
+            t5 = time.time()
 
-            experiment_dict = butler.experiment.get()
+            experiment_dict = butler.experiment.get(key='args')
+            #utils.debug_print(experiment_dict)
+            t6 = time.time()
 
+            utils.debug_print('time to 3-----: ', t3 - t21)
+            utils.debug_print('time to 3.5: ', t3_1 - t3)
+            utils.debug_print('time to 4: ', t4 - t3_1)
+            utils.debug_print('time to 5: ', t5 - t4)
+            utils.debug_print('time to 6: ', t6 - t5)
             return_dict = {'initial_query': False, 'targets': targets_list, 'main_target': init_target,
                            'instructions': butler.experiment.get(key='args')['instructions']} # changed query_instructions to instructions
 
-            if 'labels' in experiment_dict['args']['rating_scale']:
-                labels = experiment_dict['args']['rating_scale']['labels']
+            if 'labels' in experiment_dict['rating_scale']:
+                labels = experiment_dict['rating_scale']['labels']
                 return_dict.update({'labels': labels})
 
-                if 'context' in experiment_dict['args'] and 'context_type' in experiment_dict['args']:
-                    return_dict.update({'context': experiment_dict['args']['context'],
-                                        'context_type': experiment_dict['args']['context_type']})
+                if 'context' in experiment_dict and 'context_type' in experiment_dict:
+                    return_dict.update({'context': experiment_dict['context'],
+                                        'context_type': experiment_dict['context_type']})
         return return_dict
 
     @timeit(fn_name='myApp:processAnswer')

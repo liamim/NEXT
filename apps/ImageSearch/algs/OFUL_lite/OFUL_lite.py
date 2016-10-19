@@ -103,11 +103,6 @@ def timeit(fn_name=''):
         return timing
     return timeit_
 
-
-def CalcSqrtBeta(d, t, scale, R, ridge, delta, S_hat=1.0):
-    return scale * (R * np.sqrt(d * np.log((1 + t / (ridge * d)) / delta)) + np.sqrt(ridge) * S_hat)
-
-
 def argmax_reward(X, theta, invV, x_invVt_norm, do_not_ask=[], k=0):
     r"""
     Loop over all columns of X to solve this equation:
@@ -129,7 +124,12 @@ def argmax_reward(X, theta, invV, x_invVt_norm, do_not_ask=[], k=0):
     #rewards = X.dot(theta) + sqrt(k) * sqrt(beta)
     #utils.debug_print(X.shape)
     #utils.debug_print(theta.shape)
-    rewards = np.dot(X, theta) + sqrt(k) * sqrt(x_invVt_norm)
+    utils.debug_print("size of X:", X.shape)
+    validinds = np.setdiff1d(range(X.shape[0]), do_not_ask).astype('int')
+    sub_inds = np.random.choice(validinds, 1000)
+    X_sub = X[sub_inds, :]
+    rewards = np.ones(X.shape[0])*(-np.inf)
+    rewards[sub_inds] = np.dot(X_sub, theta) + sqrt(k) * sqrt(x_invVt_norm[sub_inds])
     rewards[do_not_ask] = -np.inf
     return X[np.argmax(rewards),:], np.argmax(rewards)
 
@@ -143,7 +143,7 @@ def get_feature_vectors(butler):
     utils.debug_print("OFUL.py 120, features.shape = {}".format(features.shape))
     return features
 
-class OFUL:
+class OFUL_lite:
     def initExp(self, butler, params=None, n=None, R=None, ridge=None,
                 failure_probability=None):
         """
@@ -167,16 +167,16 @@ class OFUL:
         d = X.shape[1]  # number of dimensions in feature
         n = X.shape[0]
 
-        #lambda_ = ridge
-        lambda_ = 1.0
-        R = 1.0
+        lambda_ = ridge
+        # V = lambda_ * np.eye(d)
 
         # initial sampling arm
         # theta_hat = X[:, np.random.randint(X.shape[1])]
         # theta_hat = np.random.randn(d)
         # theta_hat /= np.linalg.norm(theta_hat)
 
-        to_save = {'R': R, 'd': d, 'n': n,
+        to_save = {#'X': X.tolist(),
+                   'R': R, 'd': d, 'n': n,
                    'lambda_': lambda_,
                    'total_pulls': 0.0,
                    'rewards': [],
@@ -212,14 +212,9 @@ class OFUL:
         if we want, we can find some way to have different arms
         pulled using the butler
         """
-
         t0 = time.time()
-
         initExp = butler.algorithms.get()
         X = get_feature_vectors(butler) # np.asarray(initExp['X'], dtype=float)
-
-        tfeat = time.time()
-        utils.debug_print('get features took: ', tfeat-t0)
 
         # Scott: possible modification: if num_t
         participant_args = butler.participants.get(uid=participant_uid)
@@ -288,14 +283,12 @@ class OFUL:
                                          key='do_not_ask', value=participant_args['i_hat'])
 
         # Figure out what query to ask
-        scale = 1e-2
         t1 = time.time()
         t = participant_args['t']
-        #log_div = (1 + t * 1.0/initExp['lambda_']) * 1.0 / initExp['failure_probability']
-        #k = initExp['R'] * np.sqrt(initExp['d'] * np.log(log_div)) + np.sqrt(initExp['lambda_'])
-        k = CalcSqrtBeta(initExp['d'], t, scale, initExp['R'], initExp['lambda_'], initExp['failure_probability'])
-
+        log_div = (1 + t * 1.0/initExp['lambda_']) * 1.0 / initExp['failure_probability']
+        k = initExp['R'] * np.sqrt(initExp['d'] * np.log(log_div)) + np.sqrt(initExp['lambda_'])
         t2 = time.time()
+
 
         invV = np.array(participant_args['invV'])
 
@@ -313,7 +306,6 @@ class OFUL:
         theta_hat = np.array(participant_args['theta_hat'])
 
         t6 = time.time()
-
         arm_x, i_x = argmax_reward(X, theta_hat, invV, x_invVt_norm,
                                     do_not_ask=do_not_ask, k=k)
 
@@ -324,17 +316,6 @@ class OFUL:
 
         t8 = time.time()
 
-        # reward = calc_reward(arm_x, np.array(participant_args['theta_star']),
-        #                      R=reward_coeff * initExp['R'])
-        # # allow reward to propograte forward to other functions; it's
-        # # used later
-        # participant_args['reward'] = reward
-
-        # for key in participant_args:
-        #     butler.participants.set(uid=participant_args['participant_uid'],
-        #                             key=key, value=participant_args[key])
-
-
         utils.debug_print('time to reach computations: ', t1 - t0)
         utils.debug_print('time to compute beta_sqrt: ', t2 - t1)
         utils.debug_print('time to load invV: ', t3 - t2)
@@ -344,6 +325,15 @@ class OFUL:
         utils.debug_print('time to argmax:', t7 - t6)
         utils.debug_print('time to append: ', t8 - t7)
 
+        # reward = calc_reward(arm_x, np.array(participant_args['theta_star']),
+        #                      R=reward_coeff * initExp['R'])
+        # # allow reward to propograte forward to other functions; it's
+        # # used later
+        # participant_args['reward'] = reward
+
+        # for key in participant_args:
+        #     butler.participants.set(uid=participant_args['participant_uid'],
+        #                             key=key, value=participant_args[key])
         return i_x, participant_args
 
     @timeit(fn_name='alg:processAnswer')
