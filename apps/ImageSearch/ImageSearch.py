@@ -106,14 +106,15 @@ class ImageSearch(object):
         t1 = time.time()
         participant_uid = args.get(u'participant_uid') #, exp_uid + '_{}'.format(np.random.randint(1e6)))
         t2 = time.time()
-        participant_doc = butler.participants.get(uid=participant_uid)
+        #participant_doc = butler.participants.get(uid=participant_uid)
+        num_tries = butler.participants.get(uid=participant_uid, key='num_tries')
         t3 = time.time()
 
         utils.debug_print('time to get exp_uid: ', t1 - t0)
         utils.debug_print('time to get p_uid: ', t2 - t1)
         utils.debug_print('time to get p_doc: ', t3 - t2)
 
-        if 'num_tries' not in participant_doc.keys() or participant_doc['num_tries'] == 0:
+        if not num_tries or num_tries == 0:
             utils.debug_print('came here 2')
             utils.debug_print('num_tries was empty or it was 0, choosing start options')
             t5 = time.time()

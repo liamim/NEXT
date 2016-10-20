@@ -1,6 +1,7 @@
 from next.utils import utils
 import numpy as np
 import cPickle as pickle
+import os
 
 class Collection(object):
     def __init__(self, collection, uid_prefix, exp_uid, db, timing=True):
@@ -126,7 +127,16 @@ class Butler(object):
         self.targets = targets
 
         if self.db.lsh==None:
+            utils.debug_print('Loading LSH in Butler for Worker: ', os.getpid())
             self.db.lsh = self.get_hashing_function()
+        else:
+            utils.debug_print('LSH already loaded!')
+
+        if self.db.X == None:
+            utils.debug_print('Loading X in Butler for Worker: ', os.getpid())
+            self.db.X = self.get_feature_vectors()
+        else:
+            utils.debug_print('X already loaded!')
 
         if self.targets.db==None:
             self.targets.db = self.db
@@ -153,6 +163,11 @@ class Butler(object):
 
         #index = hash.to_serializable(index)
         return index
+
+    def get_feature_vectors(self):
+        # features = np.load('features_10x10.npy')
+        features = np.load('features_d1000.npy')
+        return features
 
     def log(self, log_name, log_value):
         self.ell.log(self.app_id+":"+log_name, log_value)

@@ -108,13 +108,6 @@ def CalcSqrtBeta(d, t, scale, R, ridge, delta, S_hat=1.0):
     return scale * (R * np.sqrt(d * np.log((1 + t / (ridge * d)) / delta)) + np.sqrt(ridge) * S_hat)
 
 
-@timeit(fn_name="get_feature_vectors")
-def get_feature_vectors():
-    #features = np.load('features_10x10.npy')
-    features = np.load('features_d100.npy')
-    utils.debug_print("OFUL.py 120, features.shape = {}".format(features.shape))
-    return features
-
 class OFUL:
     def initExp(self, butler, params=None, n=None, R=None, ridge=None,
                 failure_probability=None):
@@ -134,7 +127,8 @@ class OFUL:
         """
         # setting the target matrix, a description of each target
         # X = np.asarray(params['X'])
-        X = get_feature_vectors()
+        #X = get_feature_vectors()
+        X = butler.db.X
         # theta_star = np.asarray(params['theta_star'])
         d = X.shape[1]  # number of dimensions in feature
         n = X.shape[0]
@@ -207,7 +201,8 @@ class OFUL:
         """
         participant_doc = butler.participants.get(uid=participant_uid)
         #utils.debug_print('pargs in processAnswer:', participant_doc)
-        X = get_feature_vectors()
+        #X = get_feature_vectors()
+        X = butler.db.X
         reward = target_reward
         participant_uid = participant_doc['participant_uid']
         i_hat = butler.participants.get(uid=participant_uid, key='i_hat')
@@ -282,6 +277,9 @@ class OFUL:
             butler.participants.set_many(uid=participant_doc['participant_uid'],
                                          key_value_dict=participant_doc)
             return True
+
+    def modelUpdate(self, butler):
+        return True
 
     def getModel(self, butler):
         """
