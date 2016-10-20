@@ -86,7 +86,7 @@ from __future__ import division
 import numpy as np
 import next.utils as utils
 import time
-import os
+import json
 
 # TODO: change this to 1
 reward_coeff = 1.00
@@ -178,9 +178,10 @@ class OFUL:
         if we want, we can find some way to have different arms
         pulled using the butler
         """
-        expected_rewards = butler.participants.get(uid=participant_uid, key='expected_rewards')
-        utils.debug_print('first few values of expected rewards: ', expected_rewards[0:10])
-
+        expected_rewards = np.asarray(butler.participants.get(uid=participant_uid, key='expected_rewards'))
+        do_not_ask = butler.participants.get(uid=participant_uid, key='do_not_ask')
+        utils.debug_print('dna: ', do_not_ask)
+        expected_rewards[np.asarray(do_not_ask)] = -np.inf
         i_x = np.argmax(expected_rewards)
         butler.participants.append(uid=participant_uid,
                                    key='do_not_ask', value=i_x)
@@ -199,21 +200,19 @@ class OFUL:
         Expected output (comma separated):
           (boolean) didSucceed : did everything execute correctly
         """
-        participant_doc = butler.participants.get(uid=participant_uid)
-        #utils.debug_print('pargs in processAnswer:', participant_doc)
-        #X = get_feature_vectors()
-        X = butler.db.X
-        reward = target_reward
-        participant_uid = participant_doc['participant_uid']
-        i_hat = butler.participants.get(uid=participant_uid, key='i_hat')
-
-        n = X.shape[0]
-        d = X.shape[1]
-        lambda_ = butler.algorithms.get(key='lambda_')
-        R = butler.algorithms.get(key='R')
 
 
         if not target_id:
+            participant_doc = butler.participants.get(uid=participant_uid)
+            # utils.debug_print('pargs in processAnswer:', participant_doc)
+            # X = get_feature_vectors()
+            X = butler.db.X
+            participant_uid = participant_doc['participant_uid']
+
+            n = X.shape[0]
+            d = X.shape[1]
+            lambda_ = butler.algorithms.get(key='lambda_')
+
             utils.debug_print('setting t for first time')
             target_id = butler.participants.get(uid=participant_uid, key='i_hat')
             expected_rewards = X.dot(X[target_id,:])
@@ -233,52 +232,76 @@ class OFUL:
                                          key_value_dict=participant_doc)
 
             return True
-        else:
 
-            utils.debug_print('pdoc keys: ', participant_doc.keys())
-            butler.participants.increment(uid=participant_uid, key='t')
-            utils.debug_print('pdoc time:', participant_doc['t'])
+        # task_args = json.dumps({
+        #     'butler': butler,
+        #     'target_id': target_id,
+        #     'target_reward': target_reward,
+        #     'participant_uid': participant_uid
+        # })
+
+        task_args = {
+            'butler': butler,
+            'target_id': target_id,
+            'target_reward': target_reward,
+            'participant_uid': participant_uid
+        }
 
 
-            scale = 0.0
+        butler.job('modelUpdate', task_args, ignore_result=True)
 
-            # this makes sure the reward propogates from getQuery to processAnswer
-            b = np.array(participant_doc['b'], dtype=float)
-            do_not_ask = participant_doc['do_not_ask']
-            invV = np.array(participant_doc['invV'], dtype=float)
-            x_invVt_norm = np.array(participant_doc['x_invVt_norm'], dtype=float)
+        return True
 
-            arm_pulled = X[target_id, :]
-            utils.debug_print('size of X:', X.shape)
-            utils.debug_print('size of arm_pulled: ', arm_pulled.shape)
+    def modelUpdate(self, butler, target_id, target_reward, participant_uid):
+        participant_doc = butler.participants.get(uid=participant_uid)
+        X = butler.db.X
+        reward = target_reward
+        participant_uid = participant_doc['participant_uid']
+        i_hat = butler.participants.get(uid=participant_uid, key='i_hat')
 
-            u = invV.dot(arm_pulled)
-            utils.debug_print('size of np.dot(X, u):', np.dot(X, u).shape)
-            invV -= np.outer(u, u) / (1 + np.inner(arm_pulled, u))
+        d = X.shape[1]
+        lambda_ = butler.algorithms.get(key='lambda_')
+        R = butler.algorithms.get(key='R')
 
-            x_invVt_norm -= np.dot(X, u)**2/ (1 + np.inner(arm_pulled, u))
+        butler.participants.increment(uid=participant_uid, key='t')
 
-            b += reward * arm_pulled
-            theta_hat = X[i_hat, :] + invV.dot(b)
+        scale = 0.0
 
-            sqrt_beta = CalcSqrtBeta(d, participant_doc['t'], scale, R, lambda_, butler.algorithms.get(key='failure_probability'))
-            expected_rewards = np.dot(X, theta_hat) + sqrt_beta * np.sqrt(x_invVt_norm)
-            expected_rewards[do_not_ask] = -np.inf
+        # this makes sure the reward propogates from getQuery to processAnswer
+        b = np.array(participant_doc['b'], dtype=float)
+        do_not_ask = participant_doc['do_not_ask']
+        invV = np.array(participant_doc['invV'], dtype=float)
+        x_invVt_norm = np.array(participant_doc['x_invVt_norm'], dtype=float)
 
-            # save the results
-            data = {'x_invVt_norm': x_invVt_norm,
-                 'b': b,
-                 'invV': invV,
-                 'theta_hat': theta_hat,
-                 'expected_rewards': expected_rewards
-                 }
-            participant_doc.update(data)
+        arm_pulled = X[target_id, :]
+        utils.debug_print('size of X:', X.shape)
+        utils.debug_print('size of arm_pulled: ', arm_pulled.shape)
 
-            butler.participants.set_many(uid=participant_doc['participant_uid'],
-                                         key_value_dict=participant_doc)
-            return True
+        u = invV.dot(arm_pulled)
+        utils.debug_print('size of np.dot(X, u):', np.dot(X, u).shape)
+        invV -= np.outer(u, u) / (1 + np.inner(arm_pulled, u))
 
-    def modelUpdate(self, butler):
+        x_invVt_norm -= np.dot(X, u) ** 2 / (1 + np.inner(arm_pulled, u))
+
+        b += reward * arm_pulled
+        theta_hat = X[i_hat, :] + invV.dot(b)
+
+        sqrt_beta = CalcSqrtBeta(d, participant_doc['t'], scale, R, lambda_,
+                                 butler.algorithms.get(key='failure_probability'))
+        expected_rewards = np.dot(X, theta_hat) + sqrt_beta * np.sqrt(x_invVt_norm)
+        expected_rewards[do_not_ask] = -np.inf
+
+        # save the results
+        data = {'x_invVt_norm': x_invVt_norm,
+                'b': b,
+                'invV': invV,
+                'theta_hat': theta_hat,
+                'expected_rewards': expected_rewards
+                }
+        participant_doc.update(data)
+
+        butler.participants.set_many(uid=participant_doc['participant_uid'],
+                                     key_value_dict=participant_doc)
         return True
 
     def getModel(self, butler):
