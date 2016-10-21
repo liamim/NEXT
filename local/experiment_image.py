@@ -6,9 +6,9 @@ from launch_experiment import *
 
 experiment_list = []
 #alg_ids = ['Greedy']
-alg_ids = ['OFUL']
+#alg_ids = ['OFUL']
 #alg_ids = ['OFUL_Hashing']
-#alg_ids = ['OFUL_lite']
+alg_ids = ['OFUL_lite']
 
 # Create common alg_list
 alg_list = []

@@ -86,7 +86,6 @@ from __future__ import division
 import numpy as np
 import next.utils as utils
 import time
-import json
 
 # TODO: change this to 1
 reward_coeff = 1.00
@@ -153,8 +152,6 @@ class OFUL:
         for name in to_save:
             butler.algorithms.set(key=name, value=to_save[name])
 
-        # utils.debug_print('OFUL#L185')
-
         return True
 
     @timeit(fn_name='alg:getQuery')
@@ -201,7 +198,6 @@ class OFUL:
           (boolean) didSucceed : did everything execute correctly
         """
 
-
         if not target_id:
             participant_doc = butler.participants.get(uid=participant_uid)
             # utils.debug_print('pargs in processAnswer:', participant_doc)
@@ -233,13 +229,6 @@ class OFUL:
 
             return True
 
-        # task_args = json.dumps({
-        #     'butler': butler,
-        #     'target_id': target_id,
-        #     'target_reward': target_reward,
-        #     'participant_uid': participant_uid
-        # })
-
         task_args = {
             'butler': butler,
             'target_id': target_id,
@@ -265,7 +254,7 @@ class OFUL:
 
         butler.participants.increment(uid=participant_uid, key='t')
 
-        scale = 0.0
+        scale = 1.0
 
         # this makes sure the reward propogates from getQuery to processAnswer
         b = np.array(participant_doc['b'], dtype=float)
