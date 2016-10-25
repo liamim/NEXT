@@ -241,7 +241,11 @@ class OFUL:
 
         return True
 
-    def modelUpdate(self, butler, target_id, target_reward, participant_uid):
+    def modelUpdate(self, butler, task_args):
+        target_id = task_args['target_id']
+        target_reward = task_args['target_reward']
+        participant_uid = task_args['participant_uid']
+
         participant_doc = butler.participants.get(uid=participant_uid)
         X = butler.db.X
         reward = target_reward

@@ -8,7 +8,8 @@ experiment_list = []
 #alg_ids = ['Greedy']
 #alg_ids = ['OFUL']
 #alg_ids = ['OFUL_Hashing']
-alg_ids = ['OFUL_lite']
+#alg_ids = ['OFUL_lite']
+alg_ids = ['OFUL', 'OFUL_lite']
 
 # Create common alg_list
 alg_list = []
@@ -49,7 +50,7 @@ initExp['args']['features'] = 'http://localhost:8002/features_10x10.npy'
 initExp['args']['features'] = 'https://www.dropbox.com/s/r9qlkppxvtomk9t/features.npy?dl=1'
 initExp['args']['features'] = 'https://www.dropbox.com/s/2sfxmo6pg3yw5d0/features_10x10.npy?dl=1'
 initExp['args']['failure_probability'] = .1
-initExp['args']['participant_to_algorithm_management'] = 'one_to_many' 
+initExp['args']['participant_to_algorithm_management'] = 'one_to_one'
 initExp['args']['algorithm_management_settings'] = algorithm_management_settings 
 initExp['args']['alg_list'] = alg_list
 initExp['R'] = 0.001 #For OFUL 0.001
@@ -69,8 +70,9 @@ experiment['primary_target_file'] = sys.argv[1]
 experiment_list.append(experiment)
 
 # Launch the experiment
-#host = "localhost:8000"
-host = 'ec2-35-161-125-140.us-west-2.compute.amazonaws.com:8000'
+host = "localhost:8000"
+#host = 'ec2-35-161-125-140.us-west-2.compute.amazonaws.com:8000'
+#   host = 'ec2-35-161-54-58.us-west-2.compute.amazonaws.com:8000'
 print "It's happening"
 exp_uid_list = launch_experiment(host, experiment_list)
 print "Made experiments {}".format(exp_uid_list)

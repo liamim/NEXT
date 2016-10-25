@@ -231,7 +231,7 @@ class OFUL_lite:
             return True
 
         task_args = {
-            'butler': butler,
+          #  'butler': butler,
             'target_id': target_id,
             'target_reward': target_reward,
             'participant_uid': participant_uid
@@ -242,10 +242,14 @@ class OFUL_lite:
 
         return True
 
-    def modelUpdate(self, butler, target_id, target_reward, participant_uid):
+    def modelUpdate(self, butler, task_args):
+        target_id = task_args['target_id']
+        target_reward = task_args['target_reward']
+        participant_uid = task_args['participant_uid']
+
         participant_doc = butler.participants.get(uid=participant_uid)
         X = butler.db.X
-        n = X.size[0]
+        n = X.shape[0]
         do_not_ask = participant_doc['do_not_ask']
         max_dist_comp = butler.algorithms.get(key='max_dist_comp')
         sub_inds = np.random.choice(np.setdiff1d(range(n), do_not_ask), max_dist_comp)
@@ -260,7 +264,7 @@ class OFUL_lite:
 
         butler.participants.increment(uid=participant_uid, key='t')
 
-        scale = 1.0
+        scale = 0.0001
 
         b = np.array(participant_doc['b'], dtype=float)
         invV = np.array(participant_doc['invV'], dtype=float)
