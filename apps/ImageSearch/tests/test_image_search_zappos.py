@@ -36,7 +36,7 @@ def reward(x, theta, R=2):
     r = np.inner(x, theta) + R*np.random.randn()
     return r
 
-def run_all(assert_200, home_dir='/Users/scott/', total_pulls_per_client=500,
+def run_all(assert_200, home_dir='/Users/scott/', total_pulls_per_client=50,
         num_experiments=1, num_clients=1):
     """
     total_pulls_per_client: number of answers each participant gives
@@ -46,17 +46,17 @@ def run_all(assert_200, home_dir='/Users/scott/', total_pulls_per_client=500,
     """
     ### BEGIN params to change
     # The experiment we have launched via the `NEXT/examples/zappos/` dir
-    exp_uid = '4158d26749ae14ab4191cb1c29b6b7'
+    exp_uid = 'a1c1df3c440276fe882ba5d554ae16'
 
     # We need X and i_star to decide what answer to give
     # the feature matrix
-    X = np.load('results/features_matrix.npy')
+    X = np.load('../../../features_d1000.npy')
 
     # the index of the "ground truth" arm
-    i_star = X.shape[1] // 2
+    i_star = X.shape[0] // 2
     # END parameter to tune
 
-    num_arms = n = X.shape[1]
+    num_arms = n = X.shape[0]
 
     # Because the filenames are in a .mat file, play with formatting them
     # names = names['Names']
@@ -102,9 +102,8 @@ def run_all(assert_200, home_dir='/Users/scott/', total_pulls_per_client=500,
 
 def simulate_one_client(input_args, avg_response_time=0.1):
     exp_uid, participant_uid, total_pulls, i_star, X, assert_200 = input_args
-
-    theta_star = X[:, i_star]
-
+    with open('red_boots_label.pkl') as f:
+        labels = pickle.load(f)
     getQuery_times = []
     processAnswer_times = []
     i_hats = []
@@ -136,10 +135,11 @@ def simulate_one_client(input_args, avg_response_time=0.1):
             initial_indices = [query_dict['targets'][i]['index'] 
                                     for i in range(len(query_dict['targets']))]
             i_hat = random.choice(initial_indices)
-            i_hat = i_star - 10
+            #i_hat = i_star - 10
             i_hats += [i_hat]
             answer = i_hat
             answer_key = 'initial_arm'
+            i_star = i_hat
             rewards = [1]
         else:
             # print(query_dict['targets'][0]['index'])
@@ -148,9 +148,10 @@ def simulate_one_client(input_args, avg_response_time=0.1):
             i_hats += [i_hat]
             sqrt = np.sqrt
             # decision = np.inner(X[:, i_hat], theta) + R*np.random.randn()
-            answer = 1 if norm(X[:, i_star] - X[:, i_hat]) < 0.5 / sqrt(1)\
-                       else -1
+            # answer = 1 if norm(X[i_star,:] - X[i_hat, :]) < 0.5 / sqrt(1)\
+            #           else -1
             # answer = np.sign(reward(X[:, i_hat], theta_star))
+            answer = 2*labels[i_hat]-1
             rewards += [answer]
             answer_key = 'target_reward'
 
@@ -191,7 +192,9 @@ def simulate_one_client(input_args, avg_response_time=0.1):
 
     exp_params_to_save = {'i_hats': i_hats,
                           'rewards': rewards,
-                          'i_star': i_star}
+                          'i_star': i_star,
+                          'processAnswer_times': processAnswer_times
+                          }
 
     processAnswer_times.sort()
     getQuery_times.sort()

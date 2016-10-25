@@ -160,6 +160,8 @@ class Butler(object):
         # from next.lib.hash import kjunutils, lsh_kjun_v3
         with open('hashing_functions.pkl') as f:
             index = pickle.load(f)
+        # with open('hashing_functions_d1000.pkl') as f:
+        #     index = pickle.load(f)
 
         #index = hash.to_serializable(index)
         return index

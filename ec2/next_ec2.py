@@ -618,7 +618,7 @@ def setup_cluster(conn, master_nodes, slave_nodes, opts, deploy_ssh_key):
 
 def rsync_dir(local_src_dir, ec2_dest_dir, opts, host):
     command = [
-        'rsync', '--exclude=.git', '--exclude=archive', '-rve',
+        'rsync', '--exclude=.git', '--exclude=archive', '--exclude=*.pyc', '-Warve',
         stringify_command(ssh_command(opts)),
         "%s" % local_src_dir,
         "%s@%s:%s/" % (opts.user, host, ec2_dest_dir)

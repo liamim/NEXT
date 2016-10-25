@@ -23,6 +23,7 @@ RUN \
   rm -rf /var/lib/apt/lists/*
 
 # Install python dependencies for next_backend
+RUN pip install cython
 ADD requirements.txt /requirements.txt
 RUN pip install -U -r requirements.txt
 

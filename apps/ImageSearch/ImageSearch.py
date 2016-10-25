@@ -118,14 +118,17 @@ class ImageSearch(object):
             utils.debug_print('came here 2')
             utils.debug_print('num_tries was empty or it was 0, choosing start options')
             t5 = time.time()
-            target_indices = random.sample(range(butler.experiment.get(key='args')['n']), 9)  # 9 here means "show 9 + 1 random queries at the start"
+            #target_indices = random.sample(range(butler.experiment.get(key='args')['n']), 9)  # 9 here means "show 9 + 1 random queries at the start"
             #target_indices = [40767]
             #target_indices = [4050, 2959, 2226]
+            # target_indices = [35828] # a super hard starting point
+            target_indices = [35793]
             targets_list = [{'index': i, 'target': self.TargetManager.get_target_item(exp_uid, i)} for i in
                             target_indices]
             t6 = time.time()
             return_dict = {'initial_query': True, 'targets': targets_list,
-                           'instructions': butler.experiment.get(key='args')['instructions']}
+                           #'instructions': butler.experiment.get(key='args')['instructions']}
+                           'instructions': 'Please select an initial image: '}
             t7 = time.time()
 
             utils.debug_print('time to get N: ', t5 - t3)
@@ -154,7 +157,8 @@ class ImageSearch(object):
             t16 = time.time()
 
             return_dict = {'initial_query': False, 'targets': targets_list, 'main_target': init_target,
-                           'instructions': butler.experiment.get(key='args')['instructions']} # changed query_instructions to instructions
+                           #'instructions': butler.experiment.get(key='args')['instructions']} # changed query_instructions to instructions
+                           'instructions': 'Is this the kind of image you are looking for?'}
 
             t17 = time.time()
 

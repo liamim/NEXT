@@ -69,7 +69,8 @@ experiment['primary_target_file'] = sys.argv[1]
 experiment_list.append(experiment)
 
 # Launch the experiment
-host = "localhost:8000"
+#host = "localhost:8000"
+host = 'ec2-35-161-125-140.us-west-2.compute.amazonaws.com:8000'
 print "It's happening"
 exp_uid_list = launch_experiment(host, experiment_list)
 print "Made experiments {}".format(exp_uid_list)
