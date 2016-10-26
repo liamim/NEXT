@@ -92,6 +92,18 @@ class JobBroker:
             else:
                 return result
 
+    def hashSync(self, app_id, exp_uid):
+        domain = self.__get_domain_for_job(app_id + "_" + exp_uid)
+        if next.constants.CELERY_ON:
+            result = tasks.apply_hash.apply_async(args=[],
+                                                       exchange='dashboard@' + domain,
+                                                       routing_key='dashboard@' + domain)
+            return result.get(interval=0.001)
+        else:
+            result = tasks.apply_hash()
+            return result
+
+
             
     def applySyncByNamespace(self, app_id, exp_uid, alg_id, alg_label, task_name, args, namespace=None, ignore_result=False,time_limit=0):
         """
