@@ -290,7 +290,6 @@ class OFUL_Hashing:
         # })
 
         task_args = {
-            'butler': butler,
             'target_id': target_id,
             'target_reward': target_reward,
             'participant_uid': participant_uid

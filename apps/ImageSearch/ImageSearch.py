@@ -122,7 +122,8 @@ class ImageSearch(object):
             #target_indices = [40767]
             #target_indices = [4050, 2959, 2226]
             # target_indices = [35828] # a super hard starting point
-            target_indices = [35793]
+            # target_indices = [35793]
+            target_indices = [4050, 35793, 36255, 1234] # red boot, hard prewalker, asics and
             targets_list = [{'index': i, 'target': self.TargetManager.get_target_item(exp_uid, i)} for i in
                             target_indices]
             t6 = time.time()
