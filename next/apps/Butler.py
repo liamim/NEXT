@@ -126,17 +126,17 @@ class Butler(object):
         self.ell = ell
         self.targets = targets
 
-        if self.db.lsh==None:
-            utils.debug_print('Loading LSH in Butler for Worker: ', os.getpid())
-            self.db.lsh = self.get_hashing_function()
-        else:
-            utils.debug_print('LSH already loaded!')
-
-        if self.db.X == None:
-            utils.debug_print('Loading X in Butler for Worker: ', os.getpid())
-            self.db.X = self.get_feature_vectors()
-        else:
-            utils.debug_print('X already loaded!')
+        # if self.db.lsh==None:
+        #     utils.debug_print('Loading LSH in Butler for Worker: ', os.getpid())
+        #     self.db.lsh = self.get_hashing_function()
+        # else:
+        #     utils.debug_print('LSH already loaded!')
+        #
+        # if self.db.X == None:
+        #     utils.debug_print('Loading X in Butler for Worker: ', os.getpid())
+        #     self.db.X = self.get_feature_vectors()
+        # else:
+        #     utils.debug_print('X already loaded!')
 
         if self.targets.db==None:
             self.targets.db = self.db

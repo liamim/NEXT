@@ -136,6 +136,7 @@ def apply_dashboard(app_id, exp_uid, args_in_json, enqueue_timestamp):
 
 class Hash(object):
     def __init__(self):
+        print('initializing hash in tasks')
         self.lsh = Hash._get_hashing_function()
 
     @staticmethod
@@ -160,6 +161,7 @@ class Hash(object):
 
 class Features(object):
     def __init__(self):
+        print('initializing features in tasks')
         self.features = Features._get_feature_vectors()
 
     @staticmethod

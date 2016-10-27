@@ -182,7 +182,8 @@ class OFUL_Hashing:
           (boolean) didSucceed : did everything execute correctly
         """
         # setting the target matrix, a description of each target
-        X = butler.db.X
+        #X = butler.db.X
+        X = butler.db.get_features(butler.app_id, butler.exp_uid)
 
         d = X.shape[1]  # number of dimensions in feature
         n = X.shape[0]
@@ -255,7 +256,7 @@ class OFUL_Hashing:
             participant_doc = butler.participants.get(uid=participant_uid)
             # utils.debug_print('pargs in processAnswer:', participant_doc)
             # X = get_feature_vectors()
-            X = butler.db.X
+            X = butler.db.get_features(butler.app_id, butler.exp_uid)
             participant_uid = participant_doc['participant_uid']
 
             n = X.shape[0]
@@ -305,8 +306,10 @@ class OFUL_Hashing:
         participant_uid = task_args['participant_uid']
 
         participant_doc = butler.participants.get(uid=participant_uid)
-        X = butler.db.X
-        lsh = butler.db.lsh
+        #X = butler.db.X
+        #lsh = butler.db.lsh
+        X = butler.db.get_features(butler.app_id, butler.exp_uid)
+        lsh = butler.db.get_hash(butler.app_id, butler.exp_uid)
         reward = target_reward
         participant_uid = participant_doc['participant_uid']
         i_hat = butler.participants.get(uid=participant_uid, key='i_hat')
