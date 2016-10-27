@@ -9,6 +9,7 @@ import traceback
 import numpy
 from next.constants import DEBUG_ON
 import hashlib
+import cPickle as pickle
 
 # import next.logging_client.LoggerHTTP as ell
 from next.database_client.DatabaseAPI import DatabaseAPI
@@ -95,16 +96,16 @@ def apply_dashboard(app_id, exp_uid, args_in_json, enqueue_timestamp):
     cached_doc = app.butler.dashboard.get(uid=stat_uid)
     cached_response = None
     if (int(stat_args.get('force_recompute',0))==0) and (cached_doc is not None):
-      delta_datetime = (next.utils.datetimeNow() - next.utils.str2datetime(cached_doc['timestamp']))
-      if delta_datetime.seconds < next.constants.DASHBOARD_STALENESS_IN_SECONDS:
-        cached_response = json.loads(cached_doc['data_dict'])
-        if 'meta' not in cached_response:
-          cached_response['meta']={}
-        cached_response['meta']['cached'] = 1
-        if delta_datetime.seconds/60<1:
-        cached_response['meta']['last_dashboard_update'] = '<1 minute ago'
-        else:
-        cached_response['meta']['last_dashboard_update'] = str(delta_datetime.seconds/60)+' minutes ago'
+        delta_datetime = (next.utils.datetimeNow() - next.utils.str2datetime(cached_doc['timestamp']))
+        if delta_datetime.seconds < next.constants.DASHBOARD_STALENESS_IN_SECONDS:
+            cached_response = json.loads(cached_doc['data_dict'])
+            if 'meta' not in cached_response:
+                cached_response['meta']={}
+            cached_response['meta']['cached'] = 1
+            if delta_datetime.seconds/60<1:
+                cached_response['meta']['last_dashboard_update'] = '<1 minute ago'
+            else:
+                cached_response['meta']['last_dashboard_update'] = str(delta_datetime.seconds/60)+' minutes ago'
 
     if cached_response==None:
         dashboard_string = 'apps.' + app_id + '.dashboard.Dashboard'
@@ -122,9 +123,9 @@ def apply_dashboard(app_id, exp_uid, args_in_json, enqueue_timestamp):
 
         # update the admin timing with the timing of a getModel
         if hasattr(app, 'log_entry_durations'):
-        app.log_entry_durations['app_duration'] = dt
-        app.log_entry_durations['duration_enqueued'] = time_enqueued
-        app.butler.ell.log(app.app_id+':ALG-DURATION', app.log_entry_durations)
+            app.log_entry_durations['app_duration'] = dt
+            app.log_entry_durations['duration_enqueued'] = time_enqueued
+            app.butler.ell.log(app.app_id+':ALG-DURATION', app.log_entry_durations)
     else:
         response = cached_response
 
@@ -132,8 +133,42 @@ def apply_dashboard(app_id, exp_uid, args_in_json, enqueue_timestamp):
         next.utils.debug_print('#### Finished Dashboard %s, time_enqueued=%s,  execution_time=%s ####' % (stat_id, time_enqueued, dt), color='white')
     return json.dumps(response), True, ''
 
-def apply_hash():
-	pass
+
+class Hash(object):
+    def __init__(self):
+        self.lsh = Hash._get_hashing_function()
+
+    @staticmethod
+    def _get_hashing_function():
+        # try:
+        #    with open('hashing_functions.pkl') as f:
+        #        data = pickle.load(f)
+        # except:
+        #    raise ValueError('Current path:', os.getcwd())
+        # from next.lib.hash import kjunutils, lsh_kjun_v3
+        with open('hashing_functions.pkl') as f:
+            index = pickle.load(f)
+        # with open('hashing_functions_d1000.pkl') as f:
+        #     index = pickle.load(f)
+
+        #index = hash.to_serializable(index)
+        return index
+
+    def run(self):
+        return self.lsh
+
+class Features(object):
+    def __init__(self):
+        self.features = Features._get_feature_vectors()
+
+    @staticmethod
+    def _get_feature_vectors():
+        # features = np.load('features_10x10.npy')
+        features = numpy.load('features_d1000.npy')
+        return features
+
+    def run(self):
+        return self.features
 
 def apply_sync_by_namespace(app_id, exp_uid, alg_id, alg_label, task_name, args, namespace, job_uid, enqueue_timestamp, time_limit):
     enqueue_datetime = next.utils.str2datetime(enqueue_timestamp)
@@ -179,5 +214,7 @@ def seed_rng(**_):
 if next.constants.CELERY_ON:
     apply = app.task(apply)
     apply_dashboard = app.task(apply_dashboard)
+    Hash = app.task(Hash)
+    Features = app.task(Features)
     apply_sync_by_namespace = app.task(apply_sync_by_namespace)
 
