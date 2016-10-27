@@ -525,6 +525,11 @@ class DatabaseAPI(object):
             self.broker = next.broker.broker.JobBroker()
         return self.broker.HashSync(app_id, exp_uid)
 
+    def get_features(self, app_id, exp_uid):
+        if self.broker == None:
+            self.broker = next.broker.broker.JobBroker()
+        return self.broker.FeatureSync(app_id, exp_uid)
+
     def append_list(self,bucket_id,doc_uid,key,value):
         """
         Appends a {key,value_list} (if already exists, replaces)

@@ -103,7 +103,6 @@ class JobBroker:
             result = tasks.Hash()
             return result.run()
 
-
     def FeatureSync(self, app_id, exp_uid):
         domain = self.__get_domain_for_job(app_id + "_" + exp_uid)
         if next.constants.CELERY_ON:

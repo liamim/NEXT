@@ -155,6 +155,7 @@ class Hash(object):
         return index
 
     def run(self):
+        print('pid is: ',os.getpid())
         return self.lsh
 
 class Features(object):
@@ -168,6 +169,7 @@ class Features(object):
         return features
 
     def run(self):
+        print('pid is: ', os.getpid())
         return self.features
 
 def apply_sync_by_namespace(app_id, exp_uid, alg_id, alg_label, task_name, args, namespace, job_uid, enqueue_timestamp, time_limit):
