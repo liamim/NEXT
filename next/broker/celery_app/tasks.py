@@ -134,45 +134,100 @@ def apply_dashboard(app_id, exp_uid, args_in_json, enqueue_timestamp):
     return json.dumps(response), True, ''
 
 
-class Hash(object):
-    def __init__(self):
-        print('initializing hash in tasks')
-        self.lsh = Hash._get_hashing_function()
+class HashHelper(celery.Task):
+    # def __init__(self):
+    next.utils.debug_print('UAYSGCUYASGCUYASGCUYASGCUYSAGCUAYSGCUYASCG initializing hash in tasks, pid=%d'%(os.getpid()))
+        #self.lsh = self._get_hashing_function()
+    _lsh = None
+    abstract = True
+
+    @property
+    def lsh(self):
+        if self._lsh == None:
+            next.utils.debug_print('HAGFSCDGFASCD loading hash for the first time with pid = %d'%(os.getpid()))
+            self._lsh = self._get_hashing_function()
+        else:
+            next.utils.debug_print('AAAAAAAA already loaded for pid = %d' % (os.getpid()))
+        return self._lsh
 
     @staticmethod
     def _get_hashing_function():
-        # try:
-        #    with open('hashing_functions.pkl') as f:
-        #        data = pickle.load(f)
-        # except:
-        #    raise ValueError('Current path:', os.getcwd())
-        # from next.lib.hash import kjunutils, lsh_kjun_v3
+        #with open('hashing_functions_d1000.pkl') as f:
         with open('hashing_functions.pkl') as f:
             index = pickle.load(f)
-        # with open('hashing_functions_d1000.pkl') as f:
-        #     index = pickle.load(f)
 
-        #index = hash.to_serializable(index)
         return index
 
-    def run(self):
-        print('pid is: ',os.getpid())
-        return self.lsh
+@app.task(base=HashHelper)
+def Hash():
+    return Hash.lsh
 
-class Features(object):
-    def __init__(self):
-        print('initializing features in tasks')
-        self.features = Features._get_feature_vectors()
+class FeaturesHelper(celery.Task):
+    # def __init__(self):
+    next.utils.debug_print('UAYSGCUYASGCUYASGCUYASGCUYSAGCUAYSGCUYASCG initializing hash in tasks, pid=%d'%(os.getpid()))
+        #self.lsh = self._get_hashing_function()
+    _features = None
+    abstract = True
+
+    @property
+    def features(self):
+        if self._features == None:
+            next.utils.debug_print('asdasdaHAGFSCDGFASCD loading features for the first time with pid = %d'%(os.getpid()))
+            self._features = self._get_feature_vectors()
+        else:
+            next.utils.debug_print('AasdasdaAAAAAAA already loaded for pid = %d' % (os.getpid()))
+        return self._features
 
     @staticmethod
     def _get_feature_vectors():
-        # features = np.load('features_10x10.npy')
-        features = numpy.load('features_d1000.npy')
-        return features
+        return numpy.load('features_d1000.npy')
 
-    def run(self):
-        print('pid is: ', os.getpid())
-        return self.features
+
+@app.task(base=FeaturesHelper)
+def Features():
+    return Features.features
+
+
+# class Features(celery.Task):
+#     def __init__(self):
+#         print('initializing features in tasks, pid=%d'%(os.getpid()))
+        # self.features = self._get_feature_vectors()
+        # self.features = None
+    #
+    # @staticmethod
+    # def _get_feature_vectors():
+    #     features = numpy.load('features_d1000.npy')
+    #     return features
+    #
+    # def run(self):
+    #     if self.features == None:
+    #         print('loading features for the first time with pid = %d'%(os.getpid()))
+    #         self.features = self._get_feature_vectors()
+    #     else:
+    #         print('already loaded for pid = %d' % (os.getpid()))
+    #     return self.features
+
+
+# class Hash(celery.Task):
+#     print('loading hash for %d...'%(os.getpid()))
+#     with open('hashing_functions.pkl') as f:
+#         lsh = pickle.load(f)
+#
+#     print ('done')
+#
+#     def run(self):
+#         print('pid is: ', os.getpid())
+#         return self.lsh
+#
+#
+# class Features(celery.Task):
+#     print('loading features for %d ...'%(os.getpid()))
+#     _features = numpy.load('features_d1000.npy')
+#     print ('done')
+#
+#     def run(self):
+#         print('pid is: ', os.getpid())
+#         return self._features
 
 def apply_sync_by_namespace(app_id, exp_uid, alg_id, alg_label, task_name, args, namespace, job_uid, enqueue_timestamp, time_limit):
     enqueue_datetime = next.utils.str2datetime(enqueue_timestamp)
@@ -218,7 +273,7 @@ def seed_rng(**_):
 if next.constants.CELERY_ON:
     apply = app.task(apply)
     apply_dashboard = app.task(apply_dashboard)
-    Hash = app.task(Hash)
-    Features = app.task(Features)
+    #Hash = app.task(Hash, base=HashHelper)
+    #Features = app.task(Features)
     apply_sync_by_namespace = app.task(apply_sync_by_namespace)
 
