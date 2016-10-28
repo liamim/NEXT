@@ -147,7 +147,7 @@ def argmax_reward(X, theta, invV, x_invVt_norm, do_not_ask=[], k=0):
 def get_feature_vectors(butler):
     home_dir = '/Users/aniruddha'
     features = np.load('features_d100.npy'.format(home_dir))
-    utils.debug_print("OFUL.py 120, features.shape = {}".format(features.shape))
+    # utils.debug_print("OFUL.py 120, features.shape = {}".format(features.shape))
     return features
 
 @timeit(fn_name="get_hashing_functions")
@@ -231,7 +231,7 @@ class OFUL_Hashing:
         """
         expected_rewards = np.asarray(butler.participants.get(uid=participant_uid, key='expected_rewards'))
         do_not_ask = butler.participants.get(uid=participant_uid, key='do_not_ask')
-        utils.debug_print('dna: ', do_not_ask)
+        # utils.debug_print('dna: ', do_not_ask)
         expected_rewards[np.asarray(do_not_ask)] = -np.inf
         i_x = np.argmax(expected_rewards)
         butler.participants.append(uid=participant_uid,
@@ -263,7 +263,7 @@ class OFUL_Hashing:
             d = X.shape[1]
             lambda_ = butler.algorithms.get(key='lambda_')
 
-            utils.debug_print('setting t for first time')
+            # utils.debug_print('setting t for first time')
             target_id = butler.participants.get(uid=participant_uid, key='i_hat')
             expected_rewards = X.dot(X[target_id,:])
             expected_rewards[target_id] = -np.inf
@@ -334,11 +334,11 @@ class OFUL_Hashing:
         #x_invVt_norm = np.array(participant_doc['x_invVt_norm'], dtype=float)
 
         arm_pulled = X[target_id, :]
-        utils.debug_print('size of X:', X.shape)
-        utils.debug_print('size of arm_pulled: ', arm_pulled.shape)
+        # utils.debug_print('size of X:', X.shape)
+        # utils.debug_print('size of arm_pulled: ', arm_pulled.shape)
 
         u = invV.dot(arm_pulled)
-        utils.debug_print('size of np.dot(X, u):', np.dot(X, u).shape)
+        # utils.debug_print('size of np.dot(X, u):', np.dot(X, u).shape)
         invV -= np.outer(u, u) / (1 + np.inner(arm_pulled, u))
 
         #x_invVt_norm -= np.dot(X, u) ** 2 / (1 + np.inner(arm_pulled, u))

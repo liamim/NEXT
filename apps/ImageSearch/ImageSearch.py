@@ -72,11 +72,11 @@ class ImageSearch(object):
         t2 = time.time()
         init_algs(alg_data)
         t3 = time.time()
-        if False:
-            utils.debug_print('Timing in initExp: ')
-            utils.debug_print('time to get through if else: ', t1 - t0)
-            utils.debug_print('time to setup variables: ', t2 - t1)
-            utils.debug_print('time to initialize algorithm: ', t3 - t2)
+        # if False:
+            # utils.debug_print('Timing in initExp: ')
+            # utils.debug_print('time to get through if else: ', t1 - t0)
+            # utils.debug_print('time to setup variables: ', t2 - t1)
+            # utils.debug_print('time to initialize algorithm: ', t3 - t2)
         del args['targets']
         return args
 
@@ -101,23 +101,23 @@ class ImageSearch(object):
 
         TODO: Document this further
         """
-        t0 = time.time()
+        # t0 = time.time()
         exp_uid = butler.exp_uid
-        t1 = time.time()
+        # t1 = time.time()
         participant_uid = args.get(u'participant_uid') #, exp_uid + '_{}'.format(np.random.randint(1e6)))
-        t2 = time.time()
+        # t2 = time.time()
         #participant_doc = butler.participants.get(uid=participant_uid)
         num_tries = butler.participants.get(uid=participant_uid, key='num_tries')
-        t3 = time.time()
+        # t3 = time.time()
 
-        utils.debug_print('time to get exp_uid: ', t1 - t0)
-        utils.debug_print('time to get p_uid: ', t2 - t1)
-        utils.debug_print('time to get p_doc: ', t3 - t2)
+        # utils.debug_print('time to get exp_uid: ', t1 - t0)
+        # utils.debug_print('time to get p_uid: ', t2 - t1)
+        # utils.debug_print('time to get p_doc: ', t3 - t2)
 
         if not num_tries or num_tries == 0:
-            utils.debug_print('came here 2')
-            utils.debug_print('num_tries was empty or it was 0, choosing start options')
-            t5 = time.time()
+            # utils.debug_print('came here 2')
+            # utils.debug_print('num_tries was empty or it was 0, choosing start options')
+            # t5 = time.time()
             #target_indices = random.sample(range(butler.experiment.get(key='args')['n']), 9)  # 9 here means "show 9 + 1 random queries at the start"
             #target_indices = [40767]
             #target_indices = [4050, 2959, 2226]
@@ -126,62 +126,62 @@ class ImageSearch(object):
             target_indices = [4050, 35793, 36255, 1234] # red boot, hard prewalker, asics and
             targets_list = [{'index': i, 'target': self.TargetManager.get_target_item(exp_uid, i)} for i in
                             target_indices]
-            t6 = time.time()
+            # t6 = time.time()
             return_dict = {'initial_query': True, 'targets': targets_list,
                            #'instructions': butler.experiment.get(key='args')['instructions']}
                            'instructions': 'Please select an initial image: '}
-            t7 = time.time()
+            # t7 = time.time()
 
-            utils.debug_print('time to get N: ', t5 - t3)
-            utils.debug_print('time to init target_list: ', t6 - t5)
-            utils.debug_print('time to set return dict: ', t7 - t6)
+            # utils.debug_print('time to get N: ', t5 - t3)
+            # utils.debug_print('time to init target_list: ', t6 - t5)
+            # utils.debug_print('time to set return dict: ', t7 - t6)
         else:
-            utils.debug_print('came here 3')
-            t8 = time.time()
+            # utils.debug_print('came here 3')
+            # t8 = time.time()
             #i_x, participant_args = alg({'participant_uid': participant_uid})
             i_x = alg({'participant_uid': participant_uid})
             #utils.debug_print('keys() after initial query: ', participant_args.keys())
             #i_x = alg({'participant_uid': participant_uid})
-            t9 = time.time()
-            t10 = time.time()
+            # t9 = time.time()
+            # t10 = time.time()
             #butler.participants.set(key=participant_uid, value=participant_args)
-            t11 = time.time()
+            # t11 = time.time()
             target = self.TargetManager.get_target_item(exp_uid, i_x)
-            t12 = time.time()
+            # t12 = time.time()
             targets_list = [{'index': i_x, 'target': target}]
-            t13 = time.time()
+            # t13 = time.time()
             init_index = butler.participants.get(uid=participant_uid, key="i_hat")
-            t14 = time.time()
+            # t14 = time.time()
             init_target = self.TargetManager.get_target_item(exp_uid, init_index)
-            t15 = time.time()
+            # t15 = time.time()
             experiment_dict = butler.experiment.get(key='args')
-            t16 = time.time()
+            # t16 = time.time()
 
             return_dict = {'initial_query': False, 'targets': targets_list, 'main_target': init_target,
                            #'instructions': butler.experiment.get(key='args')['instructions']} # changed query_instructions to instructions
                            'instructions': 'Is this the kind of image you are looking for?'}
 
-            t17 = time.time()
+            # t17 = time.time()
 
             if 'labels' in experiment_dict['rating_scale']:
                 labels = experiment_dict['rating_scale']['labels']
                 return_dict.update({'labels': labels})
-                t18 = time.time()
-                utils.debug_print('time to update return dict with labels: ', t18 - t17)
+                # t18 = time.time()
+                # utils.debug_print('time to update return dict with labels: ', t18 - t17)
 
                 if 'context' in experiment_dict and 'context_type' in experiment_dict:
                     return_dict.update({'context': experiment_dict['context'],
                                         'context_type': experiment_dict['context_type']})
-                    t19 = time.time()
-                    utils.debug_print('time to update return dict with context and context type: ', t19 - t18)
+                    # t19 = time.time()
+                    # utils.debug_print('time to update return dict with context and context type: ', t19 - t18)
 
-            utils.debug_print('time to run alg(): ', t9 - t8)
-            utils.debug_print('time to set p_args: ', t11 - t10)
-            utils.debug_print('time to get target: ', t12 - t11)
-            utils.debug_print('time to get target_list: ', t13 - t12)
-            utils.debug_print('time to get init_index: ', t14 - t13)
-            utils.debug_print('time to get init_target: ', t15 - t14)
-            utils.debug_print('time to get experiment_dict: ', t16 - t15)
+            # utils.debug_print('time to run alg(): ', t9 - t8)
+            # utils.debug_print('time to set p_args: ', t11 - t10)
+            # utils.debug_print('time to get target: ', t12 - t11)
+            # utils.debug_print('time to get target_list: ', t13 - t12)
+            # utils.debug_print('time to get init_index: ', t14 - t13)
+            # utils.debug_print('time to get init_target: ', t15 - t14)
+            # utils.debug_print('time to get experiment_dict: ', t16 - t15)
 
         return return_dict
 

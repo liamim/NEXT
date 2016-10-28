@@ -211,7 +211,7 @@ class OFUL_lite:
             d = X.shape[1]
             lambda_ = butler.algorithms.get(key='lambda_')
 
-            utils.debug_print('setting t for first time')
+            # utils.debug_print('setting t for first time')
             target_id = butler.participants.get(uid=participant_uid, key='i_hat')
             expected_rewards = X.dot(X[target_id,:])
             expected_rewards[target_id] = -np.inf
@@ -273,11 +273,11 @@ class OFUL_lite:
         x_invVt_norm = np.array(participant_doc['x_invVt_norm'], dtype=float)
 
         arm_pulled = X[target_id, :]
-        utils.debug_print('size of X:', X.shape)
-        utils.debug_print('size of arm_pulled: ', arm_pulled.shape)
+        # utils.debug_print('size of X:', X.shape)
+        # utils.debug_print('size of arm_pulled: ', arm_pulled.shape)
 
         u = invV.dot(arm_pulled)
-        utils.debug_print('size of np.dot(X, u):', np.dot(X, u).shape)
+        # utils.debug_print('size of np.dot(X, u):', np.dot(X, u).shape)
         invV -= np.outer(u, u) / (1 + np.inner(arm_pulled, u))
 
         x_invVt_norm -= np.dot(X, u) ** 2 / (1 + np.inner(arm_pulled, u))
