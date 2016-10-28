@@ -174,9 +174,15 @@ class FeaturesHelper(celery.Task):
         if self._features == None:
             next.utils.debug_print('asdasdaHAGFSCDGFASCD loading features for the first time with pid = %d'%(os.getpid()))
             self._features = self._get_feature_vectors()
+            next.utils.debug_print('done loading features')
         else:
             next.utils.debug_print('AasdasdaAAAAAAA already loaded for pid = %d' % (os.getpid()))
-        return self._features
+
+        next.utils.debug_print('serializing features')
+        x = self._features.tolist()
+        next.utils.debug_print('done serializing features')
+
+        return x
 
     @staticmethod
     def _get_feature_vectors():
