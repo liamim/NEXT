@@ -7,6 +7,7 @@ import requests
 from StringIO import StringIO
 import os
 import time
+import StringIO
 
 import next.apps.SimpleTargetManager
 import next.utils as utils
@@ -51,11 +52,52 @@ class ImageSearch(object):
         """
         
         utils.debug_print('loading features')
-        f = numpy.load('features_d1000.npy')
+        Lfeatures = numpy.load('features_d1000.npy')
+        
+        utils.debug_print('loading projections_all in',os.getpid())
+        Lprojections_all = numpy.load('projections_all.npy')
+        
+        utils.debug_print('loading projs in',os.getpid())
+        Lprojs = numpy.load('projs.npy')
+        
+        utils.debug_print('loading lsh in',os.getpid())
+        Llsh = numpy.load('hash_object.npy')
+        
         utils.debug_print('serialising features')
-        s = json.dumps(f.tolist())
+        s = StringIO.StringIO()
+        np.save(s,Lfeatures)
         utils.debug_print('storing features')
-        butler.memory.set('features',s)
+        butler.memory.set_file('features',s)
+        s=""
+        
+        utils.debug_print('serialising projections_all')
+        s = StringIO.StringIO()
+        np.save(s,Lprojections_all)
+        Lprojections_all = None
+        utils.debug_print('storing all')
+        butler.memory.set_file('projections_all',s)
+        
+        utils.debug_print('serialising projs')
+        s = StringIO.StringIO()
+        np.save(s,Lprojs)
+        Lprojs = None
+        utils.debug_print('storing projs')
+        butler.memory.set_file('projs',s)
+
+        utils.debug_print('serialising lsh')
+        s = StringIO.StringIO()
+        np.save(s,Llsh)
+        Llsh = None
+        utils.debug_print('storing projs')
+        butler.memory.set_file('lsh',s)
+        
+        s=None
+        # utils.debug_print('serialising lsh')
+        # s = json.dumps(Llsh.tolist())
+        # utils.debug_print('storing lsh')
+        # butler.memory.set('lsh',s)
+
+        
         
         t0 = time.time()
         if 'targetset' in args['targets'].keys():

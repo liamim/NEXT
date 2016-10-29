@@ -126,9 +126,11 @@ class OFUL_lite:
         """
         # setting the target matrix, a description of each target
         # X = np.asarray(params['X'])
-        #X = get_feature_vectors()
+        X = get_feature_vectors(butler)
         # X = butler.db.X
-        X = butler.db.get_features(butler.app_id, butler.exp_uid)
+        #X = butler.db.get_features(butler.app_id, butler.exp_uid)
+        #utils.debug_print('loading X')
+        #X = np.load(butler.memory.get_file('features'))
         # theta_star = np.asarray(params['theta_star'])
         d = X.shape[1]  # number of dimensions in feature
         n = X.shape[0]
@@ -203,8 +205,8 @@ class OFUL_lite:
         if not target_id:
             participant_doc = butler.participants.get(uid=participant_uid)
             # utils.debug_print('pargs in processAnswer:', participant_doc)
-            # X = get_feature_vectors()
-            X = butler.db.get_features(butler.app_id, butler.exp_uid)
+            X = get_feature_vectors(butler)
+            #X = butler.db.get_features(butler.app_id, butler.exp_uid)
             participant_uid = participant_doc['participant_uid']
 
             n = X.shape[0]
@@ -250,7 +252,8 @@ class OFUL_lite:
 
         participant_doc = butler.participants.get(uid=participant_uid)
         # X = butler.db.X
-        X = butler.db.get_features(butler.app_id, butler.exp_uid)
+        #X = butler.db.get_features(butler.app_id, butler.exp_uid)
+        X = get_feature_vectors(butler)
         n = X.shape[0]
         do_not_ask = participant_doc['do_not_ask']
         max_dist_comp = butler.algorithms.get(key='max_dist_comp')
@@ -318,4 +321,11 @@ class OFUL_lite:
         # correct?)
         return 0.5  # mu.tolist(), prec
 
-
+@timeit(fn_name="get_feature_vectors")
+def get_feature_vectors(butler):
+    utils.debug_print('loading X (lite)')
+    return np.load(butler.memory.get_file('features'))
+    # home_dir = '/Users/aniruddha'
+    # features = np.load('features_d100.npy'.format(home_dir))
+    # # utils.debug_print("OFUL.py 120, features.shape = {}".format(features.shape))
+    # return features

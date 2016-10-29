@@ -145,10 +145,12 @@ def argmax_reward(X, theta, invV, x_invVt_norm, do_not_ask=[], k=0):
 
 @timeit(fn_name="get_feature_vectors")
 def get_feature_vectors(butler):
-    home_dir = '/Users/aniruddha'
-    features = np.load('features_d100.npy'.format(home_dir))
-    # utils.debug_print("OFUL.py 120, features.shape = {}".format(features.shape))
-    return features
+    utils.debug_print('loading X')
+    return np.load(butler.memory.get_file('features'))
+    # home_dir = '/Users/aniruddha'
+    # features = np.load('features_d100.npy'.format(home_dir))
+    # # utils.debug_print("OFUL.py 120, features.shape = {}".format(features.shape))
+    # return features
 
 @timeit(fn_name="get_hashing_functions")
 def get_hashing_function():
@@ -182,15 +184,15 @@ class OFUL_Hashing:
           (boolean) didSucceed : did everything execute correctly
         """
         # setting the target matrix, a description of each target
-        #X = butler.db.X
+        X = get_feature_vectors(butler)
         #X = butler.memory.get('features')
-        ff = butler.memory.get('features')
-        utils.debug_print(type(ff),str(ff)[:100])
-        X = np.asarray(json.loads(ff))
+        #ff = butler.memory.get('features')
+        #utils.debug_print(type(ff),str(ff)[:100])
+        #X = np.asarray(json.loads(ff))
             
         d = X.shape[1]  # number of dimensions in feature
         n = X.shape[0]
-
+        utils.debug_print(d,n)
         lambda_ = 1.0
         R = 1.0
 
@@ -258,8 +260,8 @@ class OFUL_Hashing:
         if not target_id:
             participant_doc = butler.participants.get(uid=participant_uid)
             # utils.debug_print('pargs in processAnswer:', participant_doc)
-            # X = get_feature_vectors()
-            X = np.asarray(json.loads(butler.memory.get('features')))
+            X = get_feature_vectors(butler)
+            #X = np.asarray(json.loads(butler.memory.get('features')))
             participant_uid = participant_doc['participant_uid']
 
             n = X.shape[0]
@@ -309,12 +311,20 @@ class OFUL_Hashing:
         participant_uid = task_args['participant_uid']
 
         participant_doc = butler.participants.get(uid=participant_uid)
-        #X = butler.db.X
+        X = get_feature_vectors(butler)
         #lsh = butler.db.lsh
         
-        X = np.asarray(json.loads(butler.memory.get('features')))
-        #X = butler.memory.get('features')
-        lsh = butler.db.get_hash(butler.app_id, butler.exp_uid)
+        #X = np.asarray(json.loads(butler.memory.get('features')))
+        utils.debug_print('LOADING')
+        utils.debug_print('X')
+        X = np.load(butler.memory.get_file('features'))
+        utils.debug_print('lsh')
+        lsh = np.load(butler.memory.get_file('lsh'))
+        utils.debug_print('all')
+        projections_all = np.load(butler.memory.get_file('projections_all'))
+        utils.debug_print('projs')
+        projs = np.load(butler.memory.get_file('projs'))
+        #lsh = butler.db.get_hash(butler.app_id, butler.exp_uid)
         reward = target_reward
         participant_uid = participant_doc['participant_uid']
         i_hat = butler.participants.get(uid=participant_uid, key='i_hat')

@@ -4,11 +4,12 @@ import cPickle as pickle
 import os
 import next.constants as constants
 import redis
+import StringIO
 
 class Memory:
     def __init__(self):
         self.cache = redis.StrictRedis(host=constants.MINIONREDIS_HOST, port=constants.MINIONREDIS_PORT)
-        self.max_entry_size = 10000
+        self.max_entry_size = 500000000 # 500MB
 
     def num_entries(self, size):
         if size % self.max_entry_size == 0:
@@ -28,9 +29,25 @@ class Memory:
             utils.debug_print("REDIS OOPS: ",exc)
             return False
 
+    def set_file(self, key, f):
+        try:
+            f.seek(0,os.SEEK_END)
+            l = f.tell()
+            f.seek(0, 0)
+            n = self.num_entries(l)
+            utils.debug_print("Setting ",l,"bytes in",n,"entries")
+            for i in range(n):
+                k = key + ":" + str(i)
+                v = f.read(self.max_entry_size)
+                self.cache.set(k,v)
+            return self.cache.set(key,"{}:{}".format(str(n),str(l)))
+        except Exception as exc:
+            utils.debug_print("REDIS OOPS: ",exc)
+            return False
+
     def get(self, key):
         d =  self.cache.get(key)
-        l,n = d.split(":")
+        n,l = d.split(":")
         l = int(l)
         n = int(n)
         ans = ""
@@ -39,6 +56,20 @@ class Memory:
             k = key + ":" + str(i)
             ans += self.cache.get(k)
         return ans
+    
+    def get_file(self, key):
+        d =  self.cache.get(key)
+        f = StringIO.StringIO()
+        n,l = d.split(":")
+        l = int(l)
+        n = int(n)
+        ans = ""
+        utils.debug_print("Getting ",l,"bytes in",n,"entries")
+        for i in range(n):
+            k = key + ":" + str(i)
+            f.write(self.cache.get(k))
+        f.seek(0, 0)
+        return f
     
     def exists(self, key):
         return self.cache.exists(key)
@@ -192,25 +223,25 @@ class Butler(object):
         self.dashboard = Collection(self.app_id+":dashboard", "", self.exp_uid, db)
         self.other = Collection(self.app_id+":other", "{exp_uid}_", self.exp_uid, db)
 
-    def get_hashing_function(self):
-        # try:
-        #    with open('hashing_functions.pkl') as f:
-        #        data = pickle.load(f)
-        # except:
-        #    raise ValueError('Current path:', os.getcwd())
-        # from next.lib.hash import kjunutils, lsh_kjun_v3
-        with open('hashing_functions.pkl') as f:
-            index = pickle.load(f)
-        # with open('hashing_functions_d1000.pkl') as f:
-        #     index = pickle.load(f)
+    # def get_hashing_function(self):
+    #     # try:
+    #     #    with open('hashing_functions.pkl') as f:
+    #     #        data = pickle.load(f)
+    #     # except:
+    #     #    raise ValueError('Current path:', os.getcwd())
+    #     from next.lib.hash import kjunutils, lsh_kjun_v3
+    #     with open('hashing_functions.pkl') as f:
+    #         index = pickle.load(f)
+    #     # with open('hashing_functions_d1000.pkl') as f:
+    #     #     index = pickle.load(f)
 
-        #index = hash.to_serializable(index)
-        return index
+    #     #index = hash.to_serializable(index)
+    #     return index
 
-    def get_feature_vectors(self):
-        # features = np.load('features_10x10.npy')
-        features = np.load('features_d1000.npy')
-        return features
+    # def get_feature_vectors(self):
+    #     # features = np.load('features_10x10.npy')
+    #     features = np.load('features_d1000.npy')
+    #     return features
 
     def log(self, log_name, log_value):
         self.ell.log(self.app_id+":"+log_name, log_value)

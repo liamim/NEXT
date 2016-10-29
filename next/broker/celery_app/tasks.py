@@ -21,6 +21,17 @@ import next.constants
 import next.apps.Butler as Butler
 import next.lib.pijemont.verifier as verifier
 
+#next.utils.debug_print('loading features in',os.getpid())
+#db.features = numpy.load('features_d1000.npy')
+# next.utils.debug_print('loading projections_all in',os.getpid())
+# db.projections_all = numpy.load('projections_all.npy')
+# next.utils.debug_print('loading projs in',os.getpid())
+# db.projs = numpy.load('projs.npy')
+# next.utils.debug_print('loading lsh in',os.getpid())
+# db.lsh = numpy.load('hash_object.npy')
+# with open('hashing_functions_d1000.pkl') as f:
+#    db.lsh = pickle.load(f)
+
 Butler = Butler.Butler
 
 class App_Wrapper:
@@ -144,7 +155,7 @@ def apply_dashboard(app_id, exp_uid, args_in_json, enqueue_timestamp):
 #     @property
 #     def lsh(self):
 #         if self._lsh == None:
-#             next.utils.debug_print('HAGFSCDGFASCD loading hash for the first time with pid = %d'%(os.getpid()))
+#             next.utils.debug_print('HAGFSCDGFASCD loading hash for the first time with pid = %d'%(os.getpid()))w
 #             self._lsh = self._get_hashing_function()
 #         else:
 #             next.utils.debug_print('AAAAAAAA already loaded for pid = %d' % (os.getpid()))
