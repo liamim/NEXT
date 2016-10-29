@@ -2,6 +2,46 @@ from next.utils import utils
 import numpy as np
 import cPickle as pickle
 import os
+import next.constants as constants
+import redis
+
+class Memory:
+    def __init__(self):
+        self.cache = redis.StrictRedis(host=constants.MINIONREDIS_HOST, port=constants.MINIONREDIS_PORT)
+        self.max_entry_size = 10000
+
+    def num_entries(self, size):
+        if size % self.max_entry_size == 0:
+            return size / self.max_entry_size
+        else:
+            return (size / self.max_entry_size) + 1
+        
+    def set(self, key, value):
+        try:
+            n = self.num_entries(len(value))
+            utils.debug_print("Setting ",len(value),"bytes in",n,"entries")
+            for i in range(n):
+                k = key + ":" + str(i)
+                self.cache.set(k,value[i*self.max_entry_size:(i+1)*self.max_entry_size])
+            return self.cache.set(key,"{}:{}".format(str(n),str(len(value))))
+        except Exception as exc:
+            utils.debug_print("REDIS OOPS: ",exc)
+            return False
+
+    def get(self, key):
+        d =  self.cache.get(key)
+        l,n = d.split(":")
+        l = int(l)
+        n = int(n)
+        ans = ""
+        utils.debug_print("Getting ",l,"bytes in",n,"entries")
+        for i in range(n):
+            k = key + ":" + str(i)
+            ans += self.cache.get(k)
+        return ans
+    
+    def exists(self, key):
+        return self.cache.exists(key)
 
 class Collection(object):
     def __init__(self, collection, uid_prefix, exp_uid, db, timing=True):
@@ -125,6 +165,7 @@ class Butler(object):
         self.db = db
         self.ell = ell
         self.targets = targets
+        self.memory = Memory()
 
         # if self.db.lsh==None:
         #     utils.debug_print('Loading LSH in Butler for Worker: ', os.getpid())

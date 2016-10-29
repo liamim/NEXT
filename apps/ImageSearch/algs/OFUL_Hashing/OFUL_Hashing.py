@@ -183,8 +183,11 @@ class OFUL_Hashing:
         """
         # setting the target matrix, a description of each target
         #X = butler.db.X
-        X = butler.db.get_features(butler.app_id, butler.exp_uid)
-
+        #X = butler.memory.get('features')
+        ff = butler.memory.get('features')
+        utils.debug_print(type(ff),str(ff)[:100])
+        X = np.asarray(json.loads(ff))
+            
         d = X.shape[1]  # number of dimensions in feature
         n = X.shape[0]
 
@@ -256,7 +259,7 @@ class OFUL_Hashing:
             participant_doc = butler.participants.get(uid=participant_uid)
             # utils.debug_print('pargs in processAnswer:', participant_doc)
             # X = get_feature_vectors()
-            X = butler.db.get_features(butler.app_id, butler.exp_uid)
+            X = np.asarray(json.loads(butler.memory.get('features')))
             participant_uid = participant_doc['participant_uid']
 
             n = X.shape[0]
@@ -308,7 +311,9 @@ class OFUL_Hashing:
         participant_doc = butler.participants.get(uid=participant_uid)
         #X = butler.db.X
         #lsh = butler.db.lsh
-        X = butler.db.get_features(butler.app_id, butler.exp_uid)
+        
+        X = np.asarray(json.loads(butler.memory.get('features')))
+        #X = butler.memory.get('features')
         lsh = butler.db.get_hash(butler.app_id, butler.exp_uid)
         reward = target_reward
         participant_uid = participant_doc['participant_uid']

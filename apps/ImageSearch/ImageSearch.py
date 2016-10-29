@@ -49,6 +49,14 @@ class ImageSearch(object):
         -------
         exp_data: The experiment data, potentially modified.
         """
+        
+        utils.debug_print('loading features')
+        f = numpy.load('features_d1000.npy')
+        utils.debug_print('serialising features')
+        s = json.dumps(f.tolist())
+        utils.debug_print('storing features')
+        butler.memory.set('features',s)
+        
         t0 = time.time()
         if 'targetset' in args['targets'].keys():
             n = len(args['targets']['targetset'])

@@ -134,64 +134,64 @@ def apply_dashboard(app_id, exp_uid, args_in_json, enqueue_timestamp):
     return json.dumps(response), True, ''
 
 
-class HashHelper(celery.Task):
-    # def __init__(self):
-    next.utils.debug_print('UAYSGCUYASGCUYASGCUYASGCUYSAGCUAYSGCUYASCG initializing hash in tasks, pid=%d'%(os.getpid()))
-        #self.lsh = self._get_hashing_function()
-    _lsh = None
-    abstract = True
+# class HashHelper(celery.Task):
+#     # def __init__(self):
+#     next.utils.debug_print('UAYSGCUYASGCUYASGCUYASGCUYSAGCUAYSGCUYASCG initializing hash in tasks, pid=%d'%(os.getpid()))
+#         #self.lsh = self._get_hashing_function()
+#     _lsh = None
+#     abstract = True
 
-    @property
-    def lsh(self):
-        if self._lsh == None:
-            next.utils.debug_print('HAGFSCDGFASCD loading hash for the first time with pid = %d'%(os.getpid()))
-            self._lsh = self._get_hashing_function()
-        else:
-            next.utils.debug_print('AAAAAAAA already loaded for pid = %d' % (os.getpid()))
-        return self._lsh
+#     @property
+#     def lsh(self):
+#         if self._lsh == None:
+#             next.utils.debug_print('HAGFSCDGFASCD loading hash for the first time with pid = %d'%(os.getpid()))
+#             self._lsh = self._get_hashing_function()
+#         else:
+#             next.utils.debug_print('AAAAAAAA already loaded for pid = %d' % (os.getpid()))
+#         return self._lsh
 
-    @staticmethod
-    def _get_hashing_function():
-        #with open('hashing_functions_d1000.pkl') as f:
-        with open('hashing_functions.pkl') as f:
-            index = pickle.load(f)
+#     @staticmethod
+#     def _get_hashing_function():
+#         #with open('hashing_functions_d1000.pkl') as f:
+#         with open('hashing_functions.pkl') as f:
+#             index = pickle.load(f)
 
-        return index
+#         return index
 
-@app.task(base=HashHelper)
-def Hash():
-    return Hash.lsh
+# @app.task(base=HashHelper)
+# def Hash():
+#     return Hash.lsh
 
-class FeaturesHelper(celery.Task):
-    # def __init__(self):
-    next.utils.debug_print('UAYSGCUYASGCUYASGCUYASGCUYSAGCUAYSGCUYASCG initializing hash in tasks, pid=%d'%(os.getpid()))
-        #self.lsh = self._get_hashing_function()
-    _features = None
-    abstract = True
+# class FeaturesHelper(celery.Task):
+#     # def __init__(self):
+#     next.utils.debug_print('UAYSGCUYASGCUYASGCUYASGCUYSAGCUAYSGCUYASCG initializing hash in tasks, pid=%d'%(os.getpid()))
+#         #self.lsh = self._get_hashing_function()
+#     _features = None
+#     abstract = True
 
-    @property
-    def features(self):
-        if self._features == None:
-            next.utils.debug_print('asdasdaHAGFSCDGFASCD loading features for the first time with pid = %d'%(os.getpid()))
-            self._features = self._get_feature_vectors()
-            next.utils.debug_print('done loading features')
-        else:
-            next.utils.debug_print('AasdasdaAAAAAAA already loaded for pid = %d' % (os.getpid()))
+#     @property
+#     def features(self):
+#         if self._features == None:
+#             next.utils.debug_print('asdasdaHAGFSCDGFASCD loading features for the first time with pid = %d'%(os.getpid()))
+#             self._features = self._get_feature_vectors()
+#             next.utils.debug_print('done loading features')
+#         else:
+#             next.utils.debug_print('AasdasdaAAAAAAA already loaded for pid = %d' % (os.getpid()))
 
-        next.utils.debug_print('serializing features')
-        x = self._features.tolist()
-        next.utils.debug_print('done serializing features')
+#         next.utils.debug_print('serializing features')
+#         x = self._features.tolist()
+#         next.utils.debug_print('done serializing features')
 
-        return x
+#         return x
 
-    @staticmethod
-    def _get_feature_vectors():
-        return numpy.load('features_d1000.npy')
+#     @staticmethod
+#     def _get_feature_vectors():
+#         return numpy.load('features_d1000.npy')
 
 
-@app.task(base=FeaturesHelper)
-def Features():
-    return Features.features
+# @app.task(base=FeaturesHelper)
+# def Features():
+#     return Features.features
 
 
 # class Features(celery.Task):

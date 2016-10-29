@@ -92,29 +92,29 @@ class JobBroker:
             else:
                 return result
 
-    def HashSync(self, app_id, exp_uid):
-        domain = self.__get_domain_for_job(app_id + "_" + exp_uid)
-        if next.constants.CELERY_ON:
-            result = tasks.Hash.apply_async(args=[],
-                                                       exchange='Hash@' + domain,
-                                                       routing_key='Hash@' + domain)
-            return result.get(interval=0.001)
-        else:
-            result = tasks.Hash()
-            #return result.run()
-            return result
+    # def HashSync(self, app_id, exp_uid):
+    #     domain = self.__get_domain_for_job(app_id + "_" + exp_uid)
+    #     if next.constants.CELERY_ON:
+    #         result = tasks.Hash.apply_async(args=[],
+    #                                                    exchange='Hash@' + domain,
+    #                                                    routing_key='Hash@' + domain)
+    #         return result.get(interval=0.001)
+    #     else:
+    #         result = tasks.Hash()
+    #         #return result.run()
+    #         return result
 
-    def FeatureSync(self, app_id, exp_uid):
-        domain = self.__get_domain_for_job(app_id + "_" + exp_uid)
-        if next.constants.CELERY_ON:
-            result = tasks.Features.apply_async(args=[],
-                                                       exchange='Features@' + domain,
-                                                       routing_key='Features@' + domain)
-            return result.get(interval=0.001)
-        else:
-            result = tasks.Features()
-            #return result.run()
-            return  result
+    # def FeatureSync(self, app_id, exp_uid):
+    #     domain = self.__get_domain_for_job(app_id + "_" + exp_uid)
+    #     if next.constants.CELERY_ON:
+    #         result = tasks.Features.apply_async(args=[],
+    #                                                    exchange='Features@' + domain,
+    #                                                    routing_key='Features@' + domain)
+    #         return result.get(interval=0.001)
+    #     else:
+    #         result = tasks.Features()
+    #         #return result.run()
+    #         return  result
 
             
     def applySyncByNamespace(self, app_id, exp_uid, alg_id, alg_label, task_name, args, namespace=None, ignore_result=False,time_limit=0):

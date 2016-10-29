@@ -1,7 +1,7 @@
 #!/bin/sh
-export i=1
-celery -A next.broker.celery_app worker -l info --loglevel=WARNING --concurrency=1 -n hash_worker_${i}@${HOSTNAME} -Q Hash@${HOSTNAME} -- celeryd.prefetch_multiplier=1 &
-celery -A next.broker.celery_app worker -l info --loglevel=WARNING --concurrency=1 -n features_worker_${i}@${HOSTNAME} -Q Features@${HOSTNAME} -- celeryd.prefetch_multiplier=1 &
+#export i=1
+#celery -A next.broker.celery_app worker -l info --loglevel=WARNING --concurrency=1 -n hash_worker_${i}@${HOSTNAME} -Q Hash@${HOSTNAME} -- celeryd.prefetch_multiplier=1 &
+#celery -A next.broker.celery_app worker -l info --loglevel=WARNING --concurrency=1 -n features_worker_${i}@${HOSTNAME} -Q Features@${HOSTNAME} -- celeryd.prefetch_multiplier=1 &
 
 for i in `seq 2 $CELERY_ASYNC_WORKER_COUNT`
 do
