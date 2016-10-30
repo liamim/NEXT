@@ -321,6 +321,7 @@ class OFUL_Hashing:
         # lsh = np.load(butler.memory.get_file('lsh'))
         utils.debug_print('all')
         projections_all = np.load(butler.memory.get_file('projections_all'))
+        lsh.projections_all = projections_all
         # utils.debug_print('projs')
         # projs = np.load(butler.memory.get_file('projs'))
         #lsh = butler.db.get_hash(butler.app_id, butler.exp_uid)
