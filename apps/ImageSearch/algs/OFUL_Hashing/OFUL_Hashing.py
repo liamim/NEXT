@@ -311,19 +311,18 @@ class OFUL_Hashing:
         participant_uid = task_args['participant_uid']
 
         participant_doc = butler.participants.get(uid=participant_uid)
-        X = get_feature_vectors(butler)
-        #lsh = butler.db.lsh
+        lsh = butler.db.lsh
         
         #X = np.asarray(json.loads(butler.memory.get('features')))
         utils.debug_print('LOADING')
         utils.debug_print('X')
         X = np.load(butler.memory.get_file('features'))
-        utils.debug_print('lsh')
-        lsh = np.load(butler.memory.get_file('lsh'))
+        # utils.debug_print('lsh')
+        # lsh = np.load(butler.memory.get_file('lsh'))
         utils.debug_print('all')
         projections_all = np.load(butler.memory.get_file('projections_all'))
-        utils.debug_print('projs')
-        projs = np.load(butler.memory.get_file('projs'))
+        # utils.debug_print('projs')
+        # projs = np.load(butler.memory.get_file('projs'))
         #lsh = butler.db.get_hash(butler.app_id, butler.exp_uid)
         reward = target_reward
         participant_uid = participant_doc['participant_uid']

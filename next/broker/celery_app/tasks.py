@@ -20,6 +20,7 @@ import next.utils
 import next.constants
 import next.apps.Butler as Butler
 import next.lib.pijemont.verifier as verifier
+from billiard import current_process
 
 #next.utils.debug_print('loading features in',os.getpid())
 #db.features = numpy.load('features_d1000.npy')
@@ -27,12 +28,54 @@ import next.lib.pijemont.verifier as verifier
 # db.projections_all = numpy.load('projections_all.npy')
 # next.utils.debug_print('loading projs in',os.getpid())
 # db.projs = numpy.load('projs.npy')
-# next.utils.debug_print('loading lsh in',os.getpid())
-# db.lsh = numpy.load('hash_object.npy')
+
+# if db.lsh == None:
+#     next.utils.debug_print('loading lsh in',os.getpid())
+#     db.lsh = numpy.load('hash_object.npy')
+#     next.utils.debug_print('done loading lsh in',os.getpid())
+# else:
+#     next.utils.debug_print('already loaded lsh in',os.getpid())
+
+Memory = Butler.Memory
+Butler = Butler.Butler
+
+for i in range(len(sys.argv)):
+    if sys.argv[i] == '-n':
+        if 'sync' in sys.argv[i+1]:
+            if db.lsh == None:
+                next.utils.debug_print('loading lsh in',os.getpid())
+                db.lsh = numpy.load('hash_object.npy')
+                next.utils.debug_print('done loading lsh in',os.getpid())
+            else:
+                next.utils.debug_print('already loaded lsh in',os.getpid())
+        elif 'dashboard_worker_1' in sys.argv[i+1]:
+            next.utils.debug_print('loading features')
+            Lfeatures = numpy.load('features_d1000.npy')
+
+            next.utils.debug_print('loading projections_all in',os.getpid())
+            Lprojections_all = numpy.load('projections_all.npy')
+
+            memory = Memory()
+
+            next.utils.debug_print('serialising features')
+            s = StringIO.StringIO()
+            np.save(s,Lfeatures)
+            next.utils.debug_print('storing features')
+            memory.set_file('features',s)
+            s=""
+            
+            next.utils.debug_print('serialising projections_all')
+            s = StringIO.StringIO()
+            np.save(s,Lprojections_all)
+            Lprojections_all = None
+            next.utils.debug_print('storing all')
+            memory.set_file('projections_all',s)
+            s = ""
+            
+        break
+
 # with open('hashing_functions_d1000.pkl') as f:
 #    db.lsh = pickle.load(f)
-
-Butler = Butler.Butler
 
 class App_Wrapper:
     def __init__(self, app_id, exp_uid, db, ell):
@@ -53,6 +96,7 @@ class App_Wrapper:
 
 # Main application task
 def apply(app_id, exp_uid, task_name, args_in_json, enqueue_timestamp):
+    next.utils.debug_print('applying', task_name, os.getpid())
     enqueue_datetime = next.utils.str2datetime(enqueue_timestamp)
     dequeue_datetime = next.utils.datetimeNow()
     delta_datetime = dequeue_datetime - enqueue_datetime
@@ -294,3 +338,4 @@ if next.constants.CELERY_ON:
     #Features = app.task(Features)
     apply_sync_by_namespace = app.task(apply_sync_by_namespace)
 
+next.utils.debug_print('AAAAAAAAAAAAAA ready', os.getpid())

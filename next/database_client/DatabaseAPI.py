@@ -202,7 +202,7 @@ class DatabaseAPI(object):
         self.permStore = PermStore()
 
         self.lsh = None
-        self.X = None
+        self.loaded = False
 
         self.broker = None
 

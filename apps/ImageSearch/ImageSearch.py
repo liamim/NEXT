@@ -57,11 +57,11 @@ class ImageSearch(object):
         utils.debug_print('loading projections_all in',os.getpid())
         Lprojections_all = numpy.load('projections_all.npy')
         
-        utils.debug_print('loading projs in',os.getpid())
-        Lprojs = numpy.load('projs.npy')
+        # utils.debug_print('loading projs in',os.getpid())
+        # Lprojs = numpy.load('projs.npy')
         
-        utils.debug_print('loading lsh in',os.getpid())
-        Llsh = numpy.load('hash_object.npy')
+        # utils.debug_print('loading lsh in',os.getpid())
+        # Llsh = numpy.load('hash_object.npy')
         
         utils.debug_print('serialising features')
         s = StringIO.StringIO()
@@ -77,19 +77,19 @@ class ImageSearch(object):
         utils.debug_print('storing all')
         butler.memory.set_file('projections_all',s)
         
-        utils.debug_print('serialising projs')
-        s = StringIO.StringIO()
-        np.save(s,Lprojs)
-        Lprojs = None
-        utils.debug_print('storing projs')
-        butler.memory.set_file('projs',s)
+        # utils.debug_print('serialising projs')
+        # s = StringIO.StringIO()
+        # np.save(s,Lprojs)
+        # Lprojs = None
+        # utils.debug_print('storing projs')
+        # butler.memory.set_file('projs',s)
 
-        utils.debug_print('serialising lsh')
-        s = StringIO.StringIO()
-        np.save(s,Llsh)
-        Llsh = None
-        utils.debug_print('storing projs')
-        butler.memory.set_file('lsh',s)
+        # utils.debug_print('serialising lsh')
+        # s = StringIO.StringIO()
+        # np.save(s,Llsh)
+        # Llsh = None
+        # utils.debug_print('storing projs')
+        # butler.memory.set_file('lsh',s)
         
         s=None
         # utils.debug_print('serialising lsh')

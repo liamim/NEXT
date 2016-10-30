@@ -6,7 +6,7 @@ import next.constants as constants
 import redis
 import StringIO
 
-class Memory:
+class Memory(object):
     def __init__(self):
         self.cache = redis.StrictRedis(host=constants.MINIONREDIS_HOST, port=constants.MINIONREDIS_PORT)
         self.max_entry_size = 500000000 # 500MB
