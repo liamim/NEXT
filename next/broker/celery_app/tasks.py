@@ -10,6 +10,8 @@ import numpy
 from next.constants import DEBUG_ON
 import hashlib
 import cPickle as pickle
+import StringIO
+import numpy as np
 
 # import next.logging_client.LoggerHTTP as ell
 from next.database_client.DatabaseAPI import DatabaseAPI
@@ -48,29 +50,29 @@ for i in range(len(sys.argv)):
                 next.utils.debug_print('done loading lsh in',os.getpid())
             else:
                 next.utils.debug_print('already loaded lsh in',os.getpid())
-        elif 'dashboard_worker_1' in sys.argv[i+1]:
-            next.utils.debug_print('loading features')
-            Lfeatures = numpy.load('features_d1000.npy')
+        # elif 'dashboard_worker_1' in sys.argv[i+1]:
+        #     next.utils.debug_print('loading features')
+        #     Lfeatures = numpy.load('features_d1000.npy')
 
-            next.utils.debug_print('loading projections_all in',os.getpid())
-            Lprojections_all = numpy.load('projections_all.npy')
+        #     next.utils.debug_print('loading projections_all in',os.getpid())
+        #     Lprojections_all = numpy.load('projections_all.npy')
 
-            memory = Memory()
+        #     memory = Memory()
 
-            next.utils.debug_print('serialising features')
-            s = StringIO.StringIO()
-            np.save(s,Lfeatures)
-            next.utils.debug_print('storing features')
-            memory.set_file('features',s)
-            s=""
+        #     next.utils.debug_print('serialising features')
+        #     s = StringIO.StringIO()
+        #     np.save(s,Lfeatures)
+        #     next.utils.debug_print('storing features')
+        #     memory.set_file('features',s)
+        #     s=""
             
-            next.utils.debug_print('serialising projections_all')
-            s = StringIO.StringIO()
-            np.save(s,Lprojections_all)
-            Lprojections_all = None
-            next.utils.debug_print('storing all')
-            memory.set_file('projections_all',s)
-            s = ""
+        #     next.utils.debug_print('serialising projections_all')
+        #     s = StringIO.StringIO()
+        #     np.save(s,Lprojections_all)
+        #     Lprojections_all = None
+        #     next.utils.debug_print('storing all')
+        #     memory.set_file('projections_all',s)
+        #     s = ""
             
         break
 

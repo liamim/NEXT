@@ -52,7 +52,7 @@ class ImageSearch(object):
         """
         
         utils.debug_print('loading features')
-        Lfeatures = numpy.load('features_d1000.npy')
+        Lfeatures = numpy.load('features_d1000_16bits.npy')
         
         utils.debug_print('loading projections_all in',os.getpid())
         Lprojections_all = numpy.load('projections_all.npy')

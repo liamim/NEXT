@@ -619,7 +619,7 @@ def setup_cluster(conn, master_nodes, slave_nodes, opts, deploy_ssh_key):
 def rsync_dir(local_src_dir, ec2_dest_dir, opts, host):
     command = [
         'rsync',
-        #'--exclude=*.npy',
+        '--exclude=*.npy',
         '--exclude=*.pkl',
         '--exclude=.git', '--exclude=archive', '-rve',
         stringify_command(ssh_command(opts)),

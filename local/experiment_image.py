@@ -71,7 +71,7 @@ experiment_list.append(experiment)
 
 # Launch the experiment
 # host = "localhost:8000"
-host = 'ec2-35-161-172-0.us-west-2.compute.amazonaws.com:8000'
+host = 'ec2-35-160-13-248.us-west-2.compute.amazonaws.com:8000'
 print "It's happening"
 exp_uid_list = launch_experiment(host, experiment_list)
 print "Made experiments {}".format(exp_uid_list)
