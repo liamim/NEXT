@@ -18,11 +18,11 @@ from pprint import pprint
 __author__ = {'Scott Sievert':'stsievert@wisc.edu'}
 
 # TODO: Make FILENAME/etc command line arguments using library docopt
-FILENAME = 'results2.json'
+FILENAME = '/Users/aniruddha/Downloads/participants2.json'
 APP = 'cardinal' # APP in {'cardinal', 'dueling', 'triplets'}
 
 PRINT = False
-algorithms = ['OFUL']#, 'RoundRobin'] # for cardinal
+algorithms = ['OFUL_lite','OFUL_Hashing','NN']#, 'RoundRobin'] # for cardinal
 #algorithms = ['BR_Random'] # for round2 dueling
 
 def format_triplet_response_json(response_dict):
@@ -105,16 +105,21 @@ def format_carindal_response_json(response_dict):
             keys = ['participant_uid', 'response_time', 'network_delay',
                     'timestamp_query_generated', 'target_reward', 'alg_label']
             if 'target_reward' not in response.keys():
+                initial_target = response['targets'][0]['index']
                 unanswered += 1
             if set(keys).issubset(response.keys()):
                 keys += ['target']
+                keys += ['initial_target']
                 line = []
                 for key in keys:
                     if key == 'target':
-                        line += [response['target_indices'][0]['target']\
-                                 ['primary_description']]
+                        #line += response['targets'][0]['target']['primary_description']
+                        #line += response['target_id']
+                        line += ['{}'.format(response['target_id'])]
                     elif key == 'participant_uid':
                         line += [participant_uid]
+                    elif key == 'initial_target':
+                        line += initial_target
                     else:
                         line += ['{}'.format(response[key])]
                 line = ",".join(line)
@@ -192,7 +197,7 @@ if __name__ == '__main__':
 
 
     import pandas as pd
-    df = pd.DataFrame([line.split(',', maxsplit=6) for line in csv[1:]],
+    df = pd.DataFrame([line.split(',') for line in csv[1:]],
             columns=csv[0].split(','))
 
     # for sepearating individual algorithms

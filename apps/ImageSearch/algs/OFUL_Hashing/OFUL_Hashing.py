@@ -145,7 +145,7 @@ def argmax_reward(X, theta, invV, x_invVt_norm, do_not_ask=[], k=0):
 
 @timeit(fn_name="get_feature_vectors")
 def get_feature_vectors(butler):
-    utils.debug_print('loading X')
+    # utils.debug_print('loading X ...')
     return np.load(butler.memory.get_file('features'))
     # home_dir = '/Users/aniruddha'
     # features = np.load('features_d100.npy'.format(home_dir))
@@ -192,7 +192,7 @@ class OFUL_Hashing:
             
         d = X.shape[1]  # number of dimensions in feature
         n = X.shape[0]
-        utils.debug_print(d,n)
+        # utils.debug_print(d,n)
         lambda_ = 1.0
         R = 1.0
 
@@ -311,16 +311,19 @@ class OFUL_Hashing:
         participant_uid = task_args['participant_uid']
 
         participant_doc = butler.participants.get(uid=participant_uid)
+        # lsh = butler.db.lsh.tolist()
         lsh = butler.db.lsh
+        utils.debug_print('type of lsh: ', type(lsh))
         
         #X = np.asarray(json.loads(butler.memory.get('features')))
-        utils.debug_print('LOADING')
-        utils.debug_print('X')
+        # utils.debug_print('LOADING')
+        # utils.debug_print('X')
         X = np.load(butler.memory.get_file('features'))
         # utils.debug_print('lsh')
         # lsh = np.load(butler.memory.get_file('lsh'))
-        utils.debug_print('all')
+        # utils.debug_print('all')
         projections_all = np.load(butler.memory.get_file('projections_all'))
+        lsh.projections_all = projections_all
         # utils.debug_print('projs')
         # projs = np.load(butler.memory.get_file('projs'))
         #lsh = butler.db.get_hash(butler.app_id, butler.exp_uid)
@@ -367,6 +370,9 @@ class OFUL_Hashing:
         query = np.zeros((d + d ** 2, 1), 'float32')
         query[:d, 0] = theta_hat
         query[d:] = invV.reshape(d ** 2, 1) * (np.sqrt(sqrt_beta) / 4 / c1 / min_sqrt_eig)
+
+        #utils.debug_print('query size: ', query.shape)
+        #utils.debug_print('proj all size: ', projections_all.shape)
 
         foundSet, foundListTuple = lsh.FindUpto(query, max_dist_comp, randomize=True,
                                                 invalidSet=do_not_ask)

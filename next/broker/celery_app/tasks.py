@@ -46,7 +46,9 @@ for i in range(len(sys.argv)):
         if 'sync' in sys.argv[i+1]:
             if db.lsh == None:
                 next.utils.debug_print('loading lsh in',os.getpid())
-                db.lsh = numpy.load('hash_object.npy')
+                #db.lsh = numpy.load('hash_object.npy')
+                with open('hash_object.pkl') as f:
+                    db.lsh = pickle.load(f)
                 next.utils.debug_print('done loading lsh in',os.getpid())
             else:
                 next.utils.debug_print('already loaded lsh in',os.getpid())

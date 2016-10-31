@@ -181,9 +181,10 @@ class OFUL_lite:
         """
         expected_rewards = np.asarray(butler.participants.get(uid=participant_uid, key='expected_rewards'))
         do_not_ask = butler.participants.get(uid=participant_uid, key='do_not_ask')
-        utils.debug_print('dna: ', do_not_ask)
+        # utils.debug_print('dna: ', do_not_ask)
         expected_rewards[np.asarray(do_not_ask)] = -np.inf
         i_x = np.argmax(expected_rewards)
+        # utils.debug_print('add %d to dna'%(i_x))
         butler.participants.append(uid=participant_uid,
                                    key='do_not_ask', value=i_x)
         return i_x
