@@ -173,12 +173,14 @@ class ImageSearch(object):
             #target_indices = [4050, 2959, 2226]
             # target_indices = [35828] # a super hard starting point
             # target_indices = [35793]
-            target_indices = [4050, 35793, 36255, 1234] # red boot, hard prewalker, asics and
-            targets_list = [{'index': i, 'target': self.TargetManager.get_target_item(exp_uid, i)} for i in
-                            target_indices]
+            target_indices = [2226, 35793, 36255, 1234] # red boot, hard prewalker, asics and
+            target_instructions = {2226: 'Something', 35793: 'Instructions'}
+            targets_list = [{'index': i, 'target': self.TargetManager.get_target_item(exp_uid, i), 'instructions': target_instructions[i]}
+                             for i in target_indices]
             # t6 = time.time()
             return_dict = {'initial_query': True, 'targets': targets_list,
                            #'instructions': butler.experiment.get(key='args')['instructions']}
+                           'target_instructions': target_instructions,
                            'instructions': 'Please select an initial image: '}
             # t7 = time.time()
 
