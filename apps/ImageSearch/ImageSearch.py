@@ -52,7 +52,7 @@ class ImageSearch(object):
         """
         
         utils.debug_print('loading features')
-        Lfeatures = numpy.load('features_d1000_16bits.npy')
+        Lfeatures = numpy.load('features_d1000.npy')
         
         utils.debug_print('loading projections_all in',os.getpid())
         Lprojections_all = numpy.load('projections_all.npy')
@@ -174,7 +174,7 @@ class ImageSearch(object):
             # target_indices = [35828] # a super hard starting point
             # target_indices = [35793]
             target_indices = [2226, 35793, 36255, 1234] # red boot, hard prewalker, asics and
-            target_instructions = {2226: 'Something', 35793: 'Instructions'}
+            target_instructions = {2226: 'Something', 35793: 'Instructions', 36255: 'blah', 1234: 'tada'}
             targets_list = [{'index': i, 'target': self.TargetManager.get_target_item(exp_uid, i), 'instructions': target_instructions[i]}
                              for i in target_indices]
             # t6 = time.time()

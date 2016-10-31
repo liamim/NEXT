@@ -156,6 +156,7 @@ class App(object):
                               'alg_label':alg_label,
                               'timestamp_query_generated':str(utils.datetimeNow()),
                               'query_uid':query_uid})
+            utils.debug_print('qweq',query_uid,query_doc)
             self.butler.queries.set(uid=query_uid, value=query_doc)
             return json.dumps({'args':query_doc,'meta':{'log_entry_durations':self.log_entry_durations}}), True,''
         except Exception, error:
@@ -173,6 +174,7 @@ class App(object):
             args_dict = verifier.verify(args_dict, self.reference_dict['processAnswer']['args'])
             # Update timing info in query
             query = self.butler.queries.get(uid=args_dict['args']['query_uid'])
+            utils.debug_print('asd',query,args_dict['args']['query_uid'])
             delta_datetime = (utils.str2datetime(args_dict['args'].get('timestamp_answer_received',None)) -
                               utils.str2datetime(query['timestamp_query_generated']))
             round_trip_time = delta_datetime.seconds + delta_datetime.microseconds/1000000.
