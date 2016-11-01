@@ -43,14 +43,13 @@ div.option{
 }
 
 #query {
-	height:25%;
+	height:100px;
 	text-align:center;
 }
 
 .image_container{
 	display:inline-block;
 	width:100%;
-	height:50%;
 }
 
 #wrapper img{
@@ -88,7 +87,7 @@ div.option{
          id="{{target.index}}"
          onclick="submit_initial({{target.index}})">
           <img src="{{target.target.primary_description}}" />
-            <p>{{query.target_instructions[target.index]}}</p>
+            <p><b>{{query.target_instructions[target.index]}}</b></p>
         </div>
         {% endfor %}
      {% else %}

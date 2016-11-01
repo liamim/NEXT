@@ -8,6 +8,7 @@ import StringIO
 
 class Memory(object):
     def __init__(self):
+        utils.debug_print(constants.MINIONREDIS_PORT, constants.MINIONREDIS_PORT)
         self.cache = redis.StrictRedis(host=constants.MINIONREDIS_HOST, port=constants.MINIONREDIS_PORT)
         self.max_entry_size = 500000000 # 500MB
 

@@ -312,7 +312,8 @@ class OFUL_Hashing:
 
         participant_doc = butler.participants.get(uid=participant_uid)
         # lsh = butler.db.lsh.tolist()
-        lsh = butler.db.lsh
+        # lsh = butler.db.lsh
+        lsh = np.load(butler.memory.get_file('lsh')).tolist()
         utils.debug_print('type of lsh: ', type(lsh))
         
         #X = np.asarray(json.loads(butler.memory.get('features')))

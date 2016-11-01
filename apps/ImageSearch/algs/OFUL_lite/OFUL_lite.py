@@ -179,6 +179,7 @@ class OFUL_lite:
         if we want, we can find some way to have different arms
         pulled using the butler
         """
+        time.sleep(2.0)
         expected_rewards = np.asarray(butler.participants.get(uid=participant_uid, key='expected_rewards'))
         do_not_ask = butler.participants.get(uid=participant_uid, key='do_not_ask')
         # utils.debug_print('dna: ', do_not_ask)
@@ -205,23 +206,56 @@ class OFUL_lite:
 
         if not target_id:
             participant_doc = butler.participants.get(uid=participant_uid)
+            target_id = butler.participants.get(uid=participant_uid, key='i_hat')
             # utils.debug_print('pargs in processAnswer:', participant_doc)
             X = get_feature_vectors(butler)
             #X = butler.db.get_features(butler.app_id, butler.exp_uid)
             participant_uid = participant_doc['participant_uid']
 
+            # Initialize the variables
             n = X.shape[0]
             d = X.shape[1]
             lambda_ = butler.algorithms.get(key='lambda_')
+            R = butler.algorithms.get(key='R')
+            scale = 0.0001
+            delta = butler.algorithms.get(key='failure_probability')
+            b = np.zeros(d)
+            invV = np.eye(d)/lambda_
+            x_invVt_norm = np.ones(n) / lambda_
+            t = 1
+            sub_inds = range((t - 1) * 1000, t * 1000)
+            arm_pulled = X[target_id, :]
+            theta_hat = arm_pulled
+
+            sqrt_beta = CalcSqrtBeta(d, t, scale, R, lambda_, delta)
+            utils.debug_print('sqrt_beta=', sqrt_beta)
+            expected_rewards = -np.inf * np.ones(n)
+            expected_rewards[sub_inds] = np.dot(X[sub_inds, :], theta_hat) + sqrt_beta * np.sqrt(x_invVt_norm[sub_inds])
+            expected_rewards[target_id] = -np.inf
+
+            u1 = invV.dot(arm_pulled)
+            u2 = u1.dot(arm_pulled)
+            utils.debug_print('arm pulled = %d')
+            utils.debug_print('first 10 features of arm pulled = ', arm_pulled[:10])
+            # utils.debug_print('size of np.dot(X, u):', np.dot(X, u).shape)
+            utils.debug_print('u1 : ', u1[:10])
+            utils.debug_print('u2 : ', u2)
+            invV -= np.outer(u1, u1) / (1 + u2)
+
+            x_invVt_norm -= np.dot(X, u1) ** 2 / (1 + u2)
+
+            b += arm_pulled
+            theta_hat = X[target_id, :] + invV.dot(b)
 
             # utils.debug_print('setting t for first time')
-            target_id = butler.participants.get(uid=participant_uid, key='i_hat')
-            expected_rewards = X.dot(X[target_id,:])
-            expected_rewards[target_id] = -np.inf
-            data = {'t': 1,
-                    'b': np.zeros(d),
-                    'invV': np.eye(d)/lambda_,
-                    'x_invVt_norm': np.ones(n)/lambda_,
+
+            # expected_rewards = X.dot(X[target_id,:])
+            # expected_rewards[1000::] = -np.inf
+            # expected_rewards[target_id] = -np.inf
+            data = {'t': t+1,
+                    'b': b,
+                    'invV': invV,
+                    'x_invVt_norm': x_invVt_norm,
                     'do_not_ask': [target_id],
                     'expected_rewards': expected_rewards
                     }
@@ -258,7 +292,10 @@ class OFUL_lite:
         n = X.shape[0]
         do_not_ask = participant_doc['do_not_ask']
         max_dist_comp = butler.algorithms.get(key='max_dist_comp')
-        sub_inds = np.random.choice(np.setdiff1d(range(n), do_not_ask), max_dist_comp)
+        t = participant_doc['t']
+        utils.debug_print('t = %d'%(t))
+        # sub_inds = np.random.choice(np.setdiff1d(range(n), do_not_ask), max_dist_comp)
+        sub_inds = range((t-1)*1000,t*1000)
 
         reward = target_reward
         participant_uid = participant_doc['participant_uid']
@@ -268,9 +305,12 @@ class OFUL_lite:
         lambda_ = butler.algorithms.get(key='lambda_')
         R = butler.algorithms.get(key='R')
 
-        butler.participants.increment(uid=participant_uid, key='t')
+        # butler.participants.increment(uid=participant_uid, key='t')
 
         scale = 0.0001
+        delta = butler.algorithms.get(key='failure_probability')
+
+        utils.debug_print('lambda=%f, R = %f, scale = %f, delta = %f'%(lambda_, R, scale, delta))
 
         b = np.array(participant_doc['b'], dtype=float)
         invV = np.array(participant_doc['invV'], dtype=float)
@@ -280,27 +320,37 @@ class OFUL_lite:
         # utils.debug_print('size of X:', X.shape)
         # utils.debug_print('size of arm_pulled: ', arm_pulled.shape)
 
-        u = invV.dot(arm_pulled)
+        u1 = invV.dot(arm_pulled)
+        u2 = u1.dot(arm_pulled)
+        utils.debug_print('arm pulled = %d', i_hat)
+        utils.debug_print('first 10 features of arm pulled = ', arm_pulled[:10])
         # utils.debug_print('size of np.dot(X, u):', np.dot(X, u).shape)
-        invV -= np.outer(u, u) / (1 + np.inner(arm_pulled, u))
+        utils.debug_print('u1 : ', u1[:10])
+        utils.debug_print('u2 : ', u2)
+        invV -= np.outer(u1, u1) / (1 + u2)
 
-        x_invVt_norm -= np.dot(X, u) ** 2 / (1 + np.inner(arm_pulled, u))
+        x_invVt_norm -= np.dot(X, u1) ** 2 / (1 + u2)
 
         b += reward * arm_pulled
         theta_hat = X[i_hat, :] + invV.dot(b)
 
-        sqrt_beta = CalcSqrtBeta(d, participant_doc['t'], scale, R, lambda_,
-                                 butler.algorithms.get(key='failure_probability'))
-        expected_rewards = np.dot(X, theta_hat) + sqrt_beta * np.sqrt(x_invVt_norm)
-        expected_rewards[do_not_ask] = -np.inf * np.ones(n)
+        sqrt_beta = CalcSqrtBeta(d, t, scale, R, lambda_, delta)
+        utils.debug_print('sqrt_beta=', sqrt_beta)
+        expected_rewards = -np.inf * np.ones(n)
         expected_rewards[sub_inds] = np.dot(X[sub_inds,:], theta_hat) + sqrt_beta * np.sqrt(x_invVt_norm[sub_inds])
+        expected_rewards[do_not_ask] = -np.inf
+
+        utils.debug_print('first 10 valid expected rewards = ', expected_rewards[sub_inds[::10]])
+        utils.debug_print('first 10 largest expected rewards = ', expected_rewards.argsort()[::-1][:10])
+        utils.debug_print('max = %f , argmax = %d'%(np.max(expected_rewards), np.argmax(expected_rewards)))
 
         # save the results
         data = {'x_invVt_norm': x_invVt_norm,
                 'b': b,
                 'invV': invV,
                 'theta_hat': theta_hat,
-                'expected_rewards': expected_rewards
+                'expected_rewards': expected_rewards,
+                't': t+1
                 }
         participant_doc.update(data)
 
