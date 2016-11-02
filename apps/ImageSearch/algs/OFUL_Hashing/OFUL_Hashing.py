@@ -89,13 +89,9 @@ import time
 import cPickle as pickle
 import os
 import json
-#import kjunutils
-#prefix = '/Users/aniruddha/Dropbox/2016/NEXT_v1/apps/ImageSearch/algs/OFUL_Hashing/'
-#import sys
-#sys.path.insert(0, prefix)
-from next.lib.hash import lsh_kjun_v3 as hash
-#import lsh_kjun
-#import pdb
+
+from next.lib.hash import lsh_kjun_v3
+from next.lib.bandits import banditclass as bc
 
 
 # TODO: change this to 1
@@ -169,131 +165,41 @@ def get_hashing_function():
 class OFUL_Hashing:
     def initExp(self, butler, params=None, n=None, R=None, ridge=None,
                 failure_probability=None):
-        """
-        initialize the experiment
-
-        (int) n : number of arms
-        (float) R : sub-Gaussian parameter, e.g. E[exp(t*X)]<=exp(t^2 R^2/2),
-                    defaults to R=0.5 (satisfies X \in [0,1])
-        (float) failure_probability : confidence
-                imp note: delta
-        (dict) params : algorithm-specific parameters (if none provided in
-                        alg_list of init experiment, params=None)
-
-        Expected output (comma separated):
-          (boolean) didSucceed : did everything execute correctly
-        """
-        # setting the target matrix, a description of each target
-        X = get_feature_vectors(butler)
-        #X = butler.memory.get('features')
-        #ff = butler.memory.get('features')
-        #utils.debug_print(type(ff),str(ff)[:100])
-        #X = np.asarray(json.loads(ff))
-            
-        d = X.shape[1]  # number of dimensions in feature
-        n = X.shape[0]
-        # utils.debug_print(d,n)
-        lambda_ = 1.0
-        R = 1.0
-
-        to_save = {#'X': X.tolist(),
-                   'R': R, 'd': d, 'n': n, 'c1': 4.0, 'max_dist_comp': 500,
-                   'lambda_': lambda_,
-                   'total_pulls': 0.0,
-                   'rewards': [],
-                   'ask_indices': range(n),
-                   'arms_pulled': [],
-                   #'lsh': json.dumps(lsh),
-                   'failure_probability': failure_probability}
-
-        for name in to_save:
-            butler.algorithms.set(key=name, value=to_save[name])
-
-        # utils.debug_print('OFUL#L185')
 
         return True
 
     @timeit(fn_name='alg:getQuery')
     def getQuery(self, butler, participant_uid):
-        """
-        A request to ask which index/arm to pull
-
-        Expected input:
-          (list of int) do_not_ask_list : indices in {0,...,n-1} that the
-                algorithm must not return. If there does not exist an index
-                that is not in do_not_ask_list then any index is acceptable
-                (this changes for each participant so they are not asked the
-                same question twice)
-
-        Expected output (comma separated):
-          (int) target_index : idnex of arm to pull (in 0,n-1)
-
-         particpant_doc is butler.participants corresponding to this
-         participant
-
-        if we want, we can find some way to have different arms
-        pulled using the butler
-        """
-        expected_rewards = np.asarray(butler.participants.get(uid=participant_uid, key='expected_rewards'))
-        do_not_ask = butler.participants.get(uid=participant_uid, key='do_not_ask')
+        expected_rewards = np.asarray(butler.participants.get(uid=participant_uid, key='_bo_expected_rewards'))
+        do_not_ask = butler.participants.get(uid=participant_uid, key='_bo_do_not_ask')
         # utils.debug_print('dna: ', do_not_ask)
         expected_rewards[np.asarray(do_not_ask)] = -np.inf
         i_x = np.argmax(expected_rewards)
+        # utils.debug_print('add %d to dna'%(i_x))
         butler.participants.append(uid=participant_uid,
-                                   key='do_not_ask', value=i_x)
+                                   key='_bo_do_not_ask', value=i_x)
         return i_x
 
     @timeit(fn_name='alg:processAnswer')
     def processAnswer(self, butler, target_id=None,
                       target_reward=None, participant_uid=None):
-        """
-        reporting back the reward of pulling the arm suggested by getQuery
-
-        Expected input:
-          (int) target_index : index of arm pulled
-          (int) target_reward : reward of arm pulled
-
-        Expected output (comma separated):
-          (boolean) didSucceed : did everything execute correctly
-        """
-
         if not target_id:
             participant_doc = butler.participants.get(uid=participant_uid)
+            target_id = butler.participants.get(uid=participant_uid, key='i_hat')
             # utils.debug_print('pargs in processAnswer:', participant_doc)
             X = get_feature_vectors(butler)
-            #X = np.asarray(json.loads(butler.memory.get('features')))
-            participant_uid = participant_doc['participant_uid']
+            lsh = np.load(butler.memory.get_file('lsh')).tolist()
+            lsh.projections_all = np.load(butler.memory.get_file('projections_all'))
 
-            n = X.shape[0]
-            d = X.shape[1]
-            lambda_ = butler.algorithms.get(key='lambda_')
-
-            # utils.debug_print('setting t for first time')
-            target_id = butler.participants.get(uid=participant_uid, key='i_hat')
-            expected_rewards = X.dot(X[target_id,:])
-            expected_rewards[target_id] = -np.inf
-            data = {'t': 1,
-                    'b': np.zeros(d),
-                    'invV': np.eye(d)/lambda_,
-                    'x_invVt_norm': np.ones(n)/lambda_,
-                    'do_not_ask': [target_id],
-                    'expected_rewards': expected_rewards
-                    }
-            participant_doc.update(data)
-            #for key in data.keys():
-            #    butler.participants.set(uid=participant_uid, key=key)
-
-            butler.participants.set_many(uid=participant_doc['participant_uid'],
-                                         key_value_dict=participant_doc)
+            utils.debug_print('find upto function: ', lsh.FindUpto)
+            opts = bc.bandit_init_options()
+            opts['lsh'] = lsh
+            opts['lsh_index_array'] = np.load(butler.memory.get_file('lsh_index_array'))
+            utils.debug_print('lsh index array: ', opts['lsh_index_array'])
+            bandit_context = bc.bandit_init('ofulx9_lsh', target_id, X, opts=opts)
+            butler.participants.set_many(uid=participant_uid, key_value_dict=bandit_context)
 
             return True
-
-        # task_args = json.dumps({
-        #     'butler': butler,
-        #     'target_id': target_id,
-        #     'target_reward': target_reward,
-        #     'participant_uid': participant_uid
-        # })
 
         task_args = {
             'target_id': target_id,
@@ -310,96 +216,16 @@ class OFUL_Hashing:
         target_reward = task_args['target_reward']
         participant_uid = task_args['participant_uid']
 
-        participant_doc = butler.participants.get(uid=participant_uid)
-        # lsh = butler.db.lsh.tolist()
-        # lsh = butler.db.lsh
+        X = get_feature_vectors(butler)
         lsh = np.load(butler.memory.get_file('lsh')).tolist()
-        utils.debug_print('type of lsh: ', type(lsh))
-        
-        #X = np.asarray(json.loads(butler.memory.get('features')))
-        # utils.debug_print('LOADING')
-        # utils.debug_print('X')
-        X = np.load(butler.memory.get_file('features'))
-        # utils.debug_print('lsh')
-        # lsh = np.load(butler.memory.get_file('lsh'))
-        # utils.debug_print('all')
-        projections_all = np.load(butler.memory.get_file('projections_all'))
-        lsh.projections_all = projections_all
-        # utils.debug_print('projs')
-        # projs = np.load(butler.memory.get_file('projs'))
-        #lsh = butler.db.get_hash(butler.app_id, butler.exp_uid)
-        reward = target_reward
-        participant_uid = participant_doc['participant_uid']
+        lsh.projections_all = np.load(butler.memory.get_file('projections_all'))
+
+        participant_doc = butler.participants.get(uid=participant_uid)
+        bandit_context = bc.bandit_extract_context(participant_doc)
         i_hat = butler.participants.get(uid=participant_uid, key='i_hat')
+        bc.bandit_update(bandit_context, X, i_hat, target_reward, {'lsh': lsh})
 
-        d = X.shape[1]
-        n = X.shape[0]
-        lambda_ = butler.algorithms.get(key='lambda_')
-        c1 = butler.algorithms.get(key='c1')
-        R = butler.algorithms.get(key='R')
-        max_dist_comp = butler.algorithms.get(key='max_dist_comp')
-        index_array = range(n)
-
-        butler.participants.increment(uid=participant_uid, key='t')
-
-        scale = 0.0
-
-        # this makes sure the reward propogates from getQuery to processAnswer
-        b = np.array(participant_doc['b'], dtype=float)
-        do_not_ask = participant_doc['do_not_ask']
-        validinds = np.setdiff1d(index_array, do_not_ask).astype('int')
-        invV = np.array(participant_doc['invV'], dtype=float)
-        #x_invVt_norm = np.array(participant_doc['x_invVt_norm'], dtype=float)
-
-        arm_pulled = X[target_id, :]
-        # utils.debug_print('size of X:', X.shape)
-        # utils.debug_print('size of arm_pulled: ', arm_pulled.shape)
-
-        u = invV.dot(arm_pulled)
-        # utils.debug_print('size of np.dot(X, u):', np.dot(X, u).shape)
-        invV -= np.outer(u, u) / (1 + np.inner(arm_pulled, u))
-
-        #x_invVt_norm -= np.dot(X, u) ** 2 / (1 + np.inner(arm_pulled, u))
-
-        b += reward * arm_pulled
-        theta_hat = X[i_hat, :] + invV.dot(b)
-
-        sqrt_beta = CalcSqrtBeta(d, participant_doc['t'], scale, R, lambda_,
-                                 butler.algorithms.get(key='failure_probability'))
-
-        min_sqrt_eig = 1 / np.sqrt(lambda_)
-        query = np.zeros((d + d ** 2, 1), 'float32')
-        query[:d, 0] = theta_hat
-        query[d:] = invV.reshape(d ** 2, 1) * (np.sqrt(sqrt_beta) / 4 / c1 / min_sqrt_eig)
-
-        #utils.debug_print('query size: ', query.shape)
-        #utils.debug_print('proj all size: ', projections_all.shape)
-
-        foundSet, foundListTuple = lsh.FindUpto(query, max_dist_comp, randomize=True,
-                                                invalidSet=do_not_ask)
-
-        foundList = [index_array[x[0]] for x in foundListTuple]
-        foundList = np.intersect1d(foundList, validinds)
-
-        sub_X = X[foundList, :]
-
-        term1 = np.sum(sub_X * np.dot(sub_X, invV), axis=1)
-        term2 = np.dot(sub_X, theta_hat)
-
-        total = term2 + (np.sqrt(sqrt_beta) / 4 / c1 / min_sqrt_eig) * term1
-        # i_x = foundList[np.argmax(total)]
-
-        expected_rewards = np.ones(n)*-np.inf
-        expected_rewards[foundList] = total
-
-        # save the results
-        data = {#'x_invVt_norm': x_invVt_norm,
-                'b': b,
-                'invV': invV,
-                'theta_hat': theta_hat,
-                'expected_rewards': expected_rewards
-                }
-        participant_doc.update(data)
+        participant_doc.update(bandit_context)
 
         butler.participants.set_many(uid=participant_doc['participant_uid'],
                                      key_value_dict=participant_doc)

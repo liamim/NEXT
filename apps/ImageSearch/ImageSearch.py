@@ -9,9 +9,12 @@ import os
 import time
 import StringIO
 
+from next.lib.hash import lsh_kjun_v3
+from next.lib.hash import lsh_kjun_nonquad
+from next.lib.hash.kjunutils import *
+
 import next.apps.SimpleTargetManager
 import next.utils as utils
-
 
 def timeit(fn_name=''):
     def timeit_(func, *args, **kwargs):
@@ -33,6 +36,20 @@ class ImageSearch(object):
         self.app_id = 'ImageSearch'
         self.TargetManager = next.apps.SimpleTargetManager.SimpleTargetManager(db)
 
+    def load_and_save_numpy(self, butler, filename, property_name):
+        from next.lib.hash import lsh_kjun_nonquad
+        utils.debug_print('loading file: %s'%(filename))
+        data = numpy.load(filename)
+        if property_name == 'lsh_index_array':
+            utils.debug_print('lsh index array: ', data)
+        utils.debug_print('serialising %s'%property_name)
+        s = StringIO.StringIO()
+        np.save(s, data)
+        utils.debug_print('storing %s'%property_name)
+        butler.memory.set_file(property_name, s)
+        data = ""
+        s = ""
+
     def initExp(self, butler, init_algs, args):
         """
         This function is meant to store any additional components in the
@@ -51,31 +68,41 @@ class ImageSearch(object):
         exp_data: The experiment data, potentially modified.
         """
         
-        utils.debug_print('loading features')
-        Lfeatures = numpy.load('features_d1000.npy')
+        # utils.debug_print('loading features')
+        # Lfeatures = numpy.load('features_d1000.npy')
+        self.load_and_save_numpy(butler, filename='features_d1000.npy', property_name='features')
         
-        utils.debug_print('loading projections_all in',os.getpid())
-        Lprojections_all = numpy.load('projections_all.npy')
+        # utils.debug_print('loading projections_all in',os.getpid())
+        # Lprojections_all = numpy.load('projections_all.npy')
+        self.load_and_save_numpy(butler, filename='projections_all.npy', property_name='projections_all')
         
         # utils.debug_print('loading projs in',os.getpid())
         # Lprojs = numpy.load('projs.npy')
         
-        utils.debug_print('loading lsh in',os.getpid())
-        Llsh = numpy.load('hash_object.npy')
+        # utils.debug_print('loading lsh in',os.getpid())
+        # Llsh = numpy.load('hash_object.npy')
+        self.load_and_save_numpy(butler, filename='hash_object.npy', property_name='lsh')
+
+        self.load_and_save_numpy(butler, filename='lsh_index_array.npy', property_name='lsh_index_array')
+
+        self.load_and_save_numpy(butler, filename='projections_nonquad.npy', property_name='projections_nonquad')
+
+        # self.load_and_save_numpy(butler, filename='hash_object_nonquad.npy', property_name='lsh_non_quad')
+
         
-        utils.debug_print('serialising features')
-        s = StringIO.StringIO()
-        np.save(s,Lfeatures)
-        utils.debug_print('storing features')
-        butler.memory.set_file('features',s)
-        s=""
+        # utils.debug_print('serialising features')
+        # s = StringIO.StringIO()
+        # np.save(s,Lfeatures)
+        # utils.debug_print('storing features')
+        # butler.memory.set_file('features',s)
+        # s=""
         
-        utils.debug_print('serialising projections_all')
-        s = StringIO.StringIO()
-        np.save(s,Lprojections_all)
-        Lprojections_all = None
-        utils.debug_print('storing all')
-        butler.memory.set_file('projections_all',s)
+        # utils.debug_print('serialising projections_all')
+        # s = StringIO.StringIO()
+        # np.save(s,Lprojections_all)
+        # Lprojections_all = None
+        # utils.debug_print('storing all')
+        # butler.memory.set_file('projections_all',s)
         
         # utils.debug_print('serialising projs')
         # s = StringIO.StringIO()
@@ -84,14 +111,14 @@ class ImageSearch(object):
         # utils.debug_print('storing projs')
         # butler.memory.set_file('projs',s)
 
-        utils.debug_print('serialising lsh')
-        s = StringIO.StringIO()
-        np.save(s,Llsh)
-        Llsh = None
-        utils.debug_print('storing projs')
-        butler.memory.set_file('lsh',s)
+        # utils.debug_print('serialising lsh')
+        # s = StringIO.StringIO()
+        # np.save(s,Llsh)
+        # Llsh = None
+        # utils.debug_print('storing projs')
+        # butler.memory.set_file('lsh',s)
         
-        s=None
+        # s=None
         # utils.debug_print('serialising lsh')
         # s = json.dumps(Llsh.tolist())
         # utils.debug_print('storing lsh')
