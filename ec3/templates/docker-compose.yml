@@ -82,7 +82,7 @@ nextbackenddocker:
 ######### PERSISTENT STORE #########
 mongodb:
   build: next/base_docker_image
-  command: numactl --interleave=all /usr/bin/mongod --smallfiles --rest
+  command: numactl --interleave=all /usr/bin/mongod --smallfiles --rest --quiet --diaglog 0 --profile 0 --slowms 1000000
   volumes:
    - .:/next_backend 
    - /dump

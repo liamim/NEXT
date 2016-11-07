@@ -4,17 +4,23 @@ import random
 import numpy as np
 import urllib2
 import requests
-from StringIO import StringIO
 import os
 import time
-import StringIO
-
-from next.lib.hash import lsh_kjun_v3
-from next.lib.hash import lsh_kjun_nonquad
-from next.lib.hash.kjunutils import *
+import datetime
+import pickle
+# today = str(datetime.today())[:10]
+today = '2016-11-04'
 
 import next.apps.SimpleTargetManager
 import next.utils as utils
+
+# utils.debug_print('TTTqwe1', time.time())
+# from next.lib.hash import lsh_kjun_v3
+# utils.debug_print('TTTqwe2', time.time())
+# from next.lib.hash import lsh_kjun_nonquad
+# utils.debug_print('TTTqwe3', time.time())
+# from next.lib.hash.kjunutils import *
+# utils.debug_print('TTTqwe4', time.time())
 
 def timeit(fn_name=''):
     def timeit_(func, *args, **kwargs):
@@ -36,19 +42,17 @@ class ImageSearch(object):
         self.app_id = 'ImageSearch'
         self.TargetManager = next.apps.SimpleTargetManager.SimpleTargetManager(db)
 
-    def load_and_save_numpy(self, butler, filename, property_name):
-        from next.lib.hash import lsh_kjun_nonquad
-        utils.debug_print('loading file: %s'%(filename))
-        data = numpy.load(filename)
-        if property_name == 'lsh_index_array':
-            utils.debug_print('lsh index array: ', data)
-        utils.debug_print('serialising %s'%property_name)
-        s = StringIO.StringIO()
-        np.save(s, data)
-        utils.debug_print('storing %s'%property_name)
-        butler.memory.set_file(property_name, s)
-        data = ""
-        s = ""
+    # def load_and_save_numpy(self, butler, filename, property_name):
+    #     utils.debug_print('loading file: %s'%(filename))
+    #     data = numpy.load(filename)
+    #
+    #     utils.debug_print('serialising %s'%property_name)
+    #     s = StringIO.StringIO()
+    #     np.save(s, data)
+    #     utils.debug_print('storing %s'%property_name)
+    #     butler.memory.set_file(property_name, s)
+    #     data = ""
+    #     s = ""
 
     def initExp(self, butler, init_algs, args):
         """
@@ -70,23 +74,23 @@ class ImageSearch(object):
         
         # utils.debug_print('loading features')
         # Lfeatures = numpy.load('features_d1000.npy')
-        self.load_and_save_numpy(butler, filename='features_d1000.npy', property_name='features')
-        
+        # self.load_and_save_numpy(butler, filename='features_d1000.npy', property_name='features')
+        #
         # utils.debug_print('loading projections_all in',os.getpid())
         # Lprojections_all = numpy.load('projections_all.npy')
-        self.load_and_save_numpy(butler, filename='projections_all.npy', property_name='projections_all')
+        # self.load_and_save_numpy(butler, filename='projections_all.npy', property_name='projections_all')
         
         # utils.debug_print('loading projs in',os.getpid())
         # Lprojs = numpy.load('projs.npy')
         
         # utils.debug_print('loading lsh in',os.getpid())
         # Llsh = numpy.load('hash_object.npy')
-        self.load_and_save_numpy(butler, filename='hash_object.npy', property_name='lsh')
-
-        self.load_and_save_numpy(butler, filename='lsh_index_array.npy', property_name='lsh_index_array')
-
-        self.load_and_save_numpy(butler, filename='projections_nonquad.npy', property_name='projections_nonquad')
-
+        # self.load_and_save_numpy(butler, filename='hash_object.npy', property_name='lsh')
+        #
+        # self.load_and_save_numpy(butler, filename='lsh_index_array.npy', property_name='lsh_index_array')
+        #
+        # self.load_and_save_numpy(butler, filename='projections_nonquad.npy', property_name='projections_nonquad')
+        #
         # self.load_and_save_numpy(butler, filename='hash_object_nonquad.npy', property_name='lsh_non_quad')
 
         
@@ -178,7 +182,7 @@ class ImageSearch(object):
 
         TODO: Document this further
         """
-        # t0 = time.time()
+        t0 = time.time()
         exp_uid = butler.exp_uid
         # t1 = time.time()
         participant_uid = args.get(u'participant_uid') #, exp_uid + '_{}'.format(np.random.randint(1e6)))
@@ -200,14 +204,16 @@ class ImageSearch(object):
             #target_indices = [4050, 2959, 2226]
             # target_indices = [35828] # a super hard starting point
             # target_indices = [35793]
-            target_indices = [2226, 35793, 36227, 1234] # red boot, hard prewalker, asics and
-            target_instructions = {2226: 'Pick red boots', 35793: 'Pick only shoes for small children', 36227: 'Pick only ASICS branded shoes', 1234: 'Pick dark colored short boots (ankle boots)'}
+            # target_indices = [2226, 35793, 36227, 1234] # red boot, hard prewalker, asics and
+            # target_instructions = {2226: 'Pick red boots', 35793: 'Pick only shoes for small children', 36227: 'Pick only ASICS branded shoes', 1234: 'Pick dark colored short boots (ankle boots)'}
+            target_indices = [2226]  # red boot, hard prewalker, asics and
+            target_instructions = {2226: 'Pick red boots'}  #, 35793: 'Pick only shoes for small children', 36227: 'Pick only ASICS branded shoes', 1234: 'Pick dark colored short boots (ankle boots)'}
             targets_list = [{'index': i, 'target': self.TargetManager.get_target_item(exp_uid, i), 'instructions': target_instructions[i]} for i in
                             target_indices]
             # t6 = time.time()
             return_dict = {'initial_query': True, 'targets': targets_list,
                            #'instructions': butler.experiment.get(key='args')['instructions']}
-                           'instructions': 'Please select an initial image: '}
+                           'instructions': 'Please select an image and allow for 15-20 seconds after selecting initial image: '}
             # t7 = time.time()
 
             # utils.debug_print('time to get N: ', t5 - t3)
@@ -234,16 +240,22 @@ class ImageSearch(object):
             # t15 = time.time()
             experiment_dict = butler.experiment.get(key='args')
             # t16 = time.time()
+            t = butler.participants.get(uid=participant_uid, key="num_tries")
+            utils.debug_print('pargs.num_tries: ', t)
+            counterString = '{t}/50'.format(t=t)
 
             return_dict = {'initial_query': False, 'targets': targets_list, 'main_target': init_target,
                            #'instructions': butler.experiment.get(key='args')['instructions']} # changed query_instructions to instructions
-                           'instructions': 'Is this the kind of image you are looking for?'}
+                           'instructions': 'Is this the kind of image you are looking for?',
+                           'count': counterString
+                           }
 
             # t17 = time.time()
 
             if 'labels' in experiment_dict['rating_scale']:
                 labels = experiment_dict['rating_scale']['labels']
                 return_dict.update({'labels': labels})
+
                 # t18 = time.time()
                 # utils.debug_print('time to update return dict with labels: ', t18 - t17)
 
@@ -260,7 +272,17 @@ class ImageSearch(object):
             # utils.debug_print('time to get init_index: ', t14 - t13)
             # utils.debug_print('time to get init_target: ', t15 - t14)
             # utils.debug_print('time to get experiment_dict: ', t16 - t15)
-
+        t1 = time.time()
+        # utils.debug_print('app getQuery took: %f seconds'%(t1-t0))
+        # bargs = butler.experiment.get(key='args')
+        # utils.debug_print('bargs[alglist]: ', bargs['alg_list'])
+        # utils.debug_print('len(bargs_alist) = ', len(bargs['alg_list']))
+        # num_algs = len(bargs['alg_list'])
+        # test_alg_label = []
+        # for i in range(num_algs):
+        #     test_alg_label += [bargs['alg_list'][i]['alg_label']]
+        # utils.debug_print('test_alg_labels = ', test_alg_label)
+        # utils.debug_print('Butler experiment bargs: ', bargs.keys())
         return return_dict
 
     @timeit(fn_name='myApp:processAnswer')
@@ -282,6 +304,7 @@ class ImageSearch(object):
         algorithm would then be called with
         ``alg.processAnswer(butler, a=1, b=2)``
         """
+        t1 = time.time()
         participant_uid = butler.queries.get(uid=args['query_uid'],key='participant_uid')
         butler.participants.increment(uid=participant_uid, key='num_tries')
         if args['initial_query']:
@@ -289,6 +312,8 @@ class ImageSearch(object):
             initial_arm = args['answer']['initial_arm']
             butler.participants.set(uid=participant_uid, key="i_hat", value=initial_arm)
             alg({'participant_uid': participant_uid})
+            t2 = time.time()
+            utils.debug_print('app processAnswer took: %f seconds' % (t2 - t1))
             return {}
         query_uid = args['query_uid']
         target_id = butler.queries.get(uid=query_uid)['targets'][0]['index']
@@ -296,33 +321,27 @@ class ImageSearch(object):
 
         alg({'target_id': target_id, 'target_reward': target_reward, 'participant_uid': participant_uid})
         # return query_update, alg_args_dict
+        t2 = time.time()
+        utils.debug_print('app processAnswer took: %f seconds' % (t2 - t1))
+        # query = butler.queries.get(uid=args['query_uid'])
+        # participant_uid = args.get(u'participant_uid')
+        # butler.job('getModel',
+        #            json.dumps({'participant_uid': participant_uid,
+        #                        'args': {'alg_label': query['alg_label'], 'logging': True}
+        #                        })
+        #            )
+
         return {'target_id': target_id, 'target_reward': target_reward}
 
     #def getModel(self, exp_uid, alg_response, args_dict, butler):
     def getModel(self, butler, alg, args):
-        #scores, precisions = alg_response
-        scores, precisions = alg()
-        ranks = (-numpy.array(scores)).argsort().tolist()
-        n = len(scores)
-        indexes = numpy.array(range(n))[ranks]
-        scores = numpy.array(scores)[ranks]
-        precisions = numpy.array(precisions)[ranks]
-        ranks = range(n)
-
-        targets = []
-        for index in range(n):
-            targets.append({'index': indexes[index],
-                            'target': self.TargetManager.get_target_item(exp_uid, indexes[index]),
-                            'rank': ranks[index],
-                            'score': scores[index],
-                            'precision': precisions[index]})
-        num_reported_answers = butler.experiment.get('num_reported_answers')
-        return {'targets': targets, 'num_reported_answers': num_reported_answers}
+        return alg()
 
     def getStats(self, exp_uid, stats_request, dashboard, butler):
         """
         Get statistics to display on the dashboard.
         """
+        utils.debug_print("came into getStats")
         stat_id = stats_request['args']['stat_id']
         task = stats_request['args']['params'].get('task', None)
         alg_label = stats_request['args']['params'].get('alg_label', None)
@@ -331,7 +350,7 @@ class ImageSearch(object):
                      'compute_duration_detailed_stacked_area_plot': dashboard.compute_duration_detailed_stacked_area_plot,
                      'response_time_histogram': dashboard.response_time_histogram,
                      'network_delay_histogram': dashboard.network_delay_histogram,
-                     'most_current_ranking': dashboard.most_current_ranking}
+                     'cumulative_reward_plot': dashboard.cumulative_reward_plot}
 
         default = [self.app_id, exp_uid]
         args = {'api_activity_histogram': default + [task],
@@ -339,6 +358,6 @@ class ImageSearch(object):
                 'compute_duration_detailed_stacked_area_plot': default + [task, alg_label],
                 'response_time_histogram': default + [alg_label],
                 'network_delay_histogram': default + [alg_label],
-                'most_current_ranking': default + [alg_label]}
+                'cumulative_reward_plot': default + [alg_label]}
         return functions[stat_id](*args[stat_id])
 

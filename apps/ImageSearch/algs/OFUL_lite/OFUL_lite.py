@@ -7,6 +7,9 @@ import numpy as np
 import next.utils as utils
 import time
 from next.lib.bandits import banditclass as bc
+from StringIO import StringIO
+import StringIO
+import pandas as pd
 
 # TODO: change this to 1
 reward_coeff = 1.00
@@ -29,56 +32,37 @@ def CalcSqrtBeta(d, t, scale, R, ridge, delta, S_hat=1.0):
 
 
 class OFUL_lite:
+    def __init__(self):
+        self.alg_id = 'TS'
+
+    def load_and_save_numpy(self, butler, filename, property_name, load_lib):
+        if not butler.memory.exists(property_name):
+            if load_lib:
+                from next.lib.hash import kjunutils
+                from next.lib.hash import lsh_kjun_v3
+                from next.lib.hash import lsh_kjun_nonquad
+
+            utils.debug_print('loading file: %s'%(filename))
+            data = np.load(filename)
+
+            utils.debug_print('serialising %s'%property_name)
+            s = StringIO.StringIO()
+            np.save(s, data)
+            utils.debug_print('storing %s'%property_name)
+            butler.memory.set_file(property_name, s)
+            data = ""
+            s = ""
+
     def initExp(self, butler, params=None, n=None, R=None, ridge=None,
                 failure_probability=None):
-        """
-        initialize the experiment
-
-        (int) n : number of arms
-        (float) R : sub-Gaussian parameter, e.g. E[exp(t*X)]<=exp(t^2 R^2/2),
-                    defaults to R=0.5 (satisfies X \in [0,1])
-        (float) failure_probability : confidence
-                imp note: delta
-        (dict) params : algorithm-specific parameters (if none provided in
-                        alg_list of init experiment, params=None)
-
-        Expected output (comma separated):
-          (boolean) didSucceed : did everything execute correctly
-        """
-        # setting the target matrix, a description of each target
-        # X = np.asarray(params['X'])
-        # X = get_feature_vectors(butler)
-        # X = butler.db.X
-        #X = butler.db.get_features(butler.app_id, butler.exp_uid)
-        #utils.debug_print('loading X')
-        #X = np.load(butler.memory.get_file('features'))
-        # theta_star = np.asarray(params['theta_star'])
-        # d = X.shape[1]  # number of dimensions in feature
-        # n = X.shape[0]
-
-        #lambda_ = ridge
-        # lambda_ = 1.0
-        # R = 1.0
-
-        # initial sampling arm
-        # theta_hat = X[:, np.random.randint(X.shape[1])]
-        # theta_hat = np.random.randn(d)
-        # theta_hat /= np.linalg.norm(theta_hat)
-
-        # to_save = {'R': R, 'd': d, 'n': n,
-        #            'lambda_': lambda_,
-        #            'total_pulls': 0.0,
-        #            'rewards': [],
-        #            'arms_pulled': [],
-        #            'failure_probability': failure_probability}
-        #
-        # for name in to_save:
-        #     butler.algorithms.set(key=name, value=to_save[name])
+        load_lib = False
+        self.load_and_save_numpy(butler, filename='features_d1000.npy', property_name='features', load_lib=load_lib)
 
         return True
 
     @timeit(fn_name='alg:getQuery')
     def getQuery(self, butler, participant_uid):
+        utils.debug_print('Running OFUL Light')
         expected_rewards = np.asarray(butler.participants.get(uid=participant_uid, key='_bo_expected_rewards'))
         do_not_ask = butler.participants.get(uid=participant_uid, key='_bo_do_not_ask')
         # utils.debug_print('dna: ', do_not_ask)
@@ -101,6 +85,9 @@ class OFUL_lite:
 
             opts = bc.bandit_init_options()
             bandit_context = bc.bandit_init('oful_light', target_id, X, opts=opts)
+            bandit_context['plot_data'] = []
+            bandit_context['t'] = 0
+            bandit_context['init_arm'] = target_id
             butler.participants.set_many(uid=participant_uid, key_value_dict=bandit_context)
 
             return True
@@ -124,29 +111,51 @@ class OFUL_lite:
         X = get_feature_vectors(butler)
 
         participant_doc = butler.participants.get(uid=participant_uid)
+        # plot_data = participant_doc['plot_data']
+        plot_data = butler.experiment.get(key='plot_data')
+        if plot_data is None:
+            plot_data = []
+        utils.debug_print('plot data before update: ', plot_data)
+        t = participant_doc['t']
+        utils.debug_print('keys: ', participant_doc.keys())
         bandit_context = bc.bandit_extract_context(participant_doc)
         i_hat = butler.participants.get(uid=participant_uid, key='i_hat')
         bc.bandit_update(bandit_context, X, i_hat, target_reward, {'lsh': None})
-
+        if target_reward < 0:
+            target_reward = 0
+        update_plot_data = {'rewards': target_reward,
+                            'participant_uid': participant_uid,
+                            'initial arm': participant_doc['init_arm'],
+                            'arm_pulled': target_id,
+                            'alg': self.alg_id,
+                            'time': t}
+        butler.algorithms.append(key='plot_data', value=update_plot_data)
+        utils.debug_print('plot_data: ', bandit_context['plot_data'])
+        bandit_context['t'] += 1
         participant_doc.update(bandit_context)
-
         butler.participants.set_many(uid=participant_doc['participant_uid'],
                                      key_value_dict=participant_doc)
         return True
 
     def getModel(self, butler):
         """
-        uses current model to return empirical estimates with uncertainties
-
-        Expected output:
-          (list float) mu : list of floats representing the emprirical means
-          (list float) prec : list of floats representing the precision values
-                              (or standard deviation)
+        Return cumulative sum of current rewards
         """
-        # TODO: I can't see the results without this
-        # (and we also need to change the label name if we want to see results,
-        # correct?)
-        return 0.5  # mu.tolist(), prec
+        plot_data = butler.algorithms.get(key='plot_data')
+        utils.debug_print('plot data in get modeL: ', plot_data)
+        # data is a list of dicts with keys in bandit_context['plot_data']
+        if plot_data is not None:
+            # data is a list of dicts with keys in bandit_context['plot_data']
+            df = pd.DataFrame(plot_data)
+            utils.debug_print('df: ', df)
+            df = df.pivot_table(columns='initial arm', index='time', value='reward', aggfunc=np.mean)
+
+            # return the right python builtin which is a dict with values of list
+            d = dict(df)
+            d = {key: list(value) for key, value in d.items()}
+        else:
+            d = {}
+        return d
 
 @timeit(fn_name="get_feature_vectors")
 def get_feature_vectors(butler):

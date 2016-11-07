@@ -11,7 +11,7 @@ import os
 import sys
 import numpy
 import json
-import traceback
+import traceback, time
 import next.utils as utils
 import next.lib.pijemont.verifier as verifier
 import next.constants
@@ -25,25 +25,38 @@ git_hash = next.constants.GIT_HASH
 #TODO: move __import__ to importlib
 class App(object):
     def __init__(self, app_id, exp_uid, db, ell):
+        # utils.debug_print('TTT2.3.1', time.time())
         self.app_id = app_id
         self.exp_uid = exp_uid
         self.helper = Helper()
+        # utils.debug_print('TTT2.3.2', time.time())
         self.myApp = __import__('apps.'+self.app_id, fromlist=[''])
+        # utils.debug_print('TTT2.3.3', time.time())
         self.myApp = getattr(self.myApp, app_id)
+        # utils.debug_print('TTT2.3.4', time.time())
         self.myApp = self.myApp(db)
+        # utils.debug_print('TTT2.3.5', time.time())
         self.butler = Butler(self.app_id, self.exp_uid, self.myApp.TargetManager, db, ell)
+        # utils.debug_print('TTT2.3.6', time.time())
         base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__),"../../apps"))
+        # utils.debug_print('TTT2.3.7', time.time())
         self.reference_dict,app_errs = verifier.load_doc("{}/{}.yaml".format(app_id, app_id), base_dir)
+        # utils.debug_print('TTT2.3.8', time.time())
         self.algs_reference_dict,alg_errs = verifier.load_doc("{}/algs/Algs.yaml".format(app_id, app_id), base_dir)
+        # utils.debug_print('TTT2.3.9', time.time())
         if len(app_errs) > 0 or len(alg_errs) > 0:
             raise Exception("App YAML formatting errors: \n{}\n\nAlg YAML formatting errors: \n{}".format(
                 str(app_errs),
                 str(alg_errs)
             ))
+        # utils.debug_print('TTT2.3.10', time.time())
         dashboard_string = 'apps.' + self.app_id + \
                            '.dashboard.Dashboard'
+        # utils.debug_print('TTT2.3.11', time.time())
         dashboard_module = __import__(dashboard_string, fromlist=[''])
+        # utils.debug_print('TTT2.3.12', time.time())
         self.dashboard = getattr(dashboard_module, app_id+'Dashboard')
+        # utils.debug_print('TTT2.3.13', time.time())
         self.log_entry_durations = {}
 
     def run_alg(self, butler, alg_label, alg, func_name, alg_args):

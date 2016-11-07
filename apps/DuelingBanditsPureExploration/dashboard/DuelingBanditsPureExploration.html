@@ -18,7 +18,7 @@
             {% for alg in alg_list %}
                 {% if loop.first %}
                     <li role="presentation" class="active"><a href="#ranking_{{ alg.alg_label_clean }}" aria-controls="ranking_{{ alg.alg_label_clean }}" role="tab" data-toggle="tab">{{ alg.alg_label_clean }}</a></li>
-                {% else %}
+                {% else %
                     <li role="presentation"><a href="#ranking_{{ alg.alg_label_clean }}" aria-controls="ranking_{{ alg.alg_label_clean }}" role="tab" data-toggle="tab">{{ alg.alg_label_clean }}</a></li>
                 {% endif %}
             {% endfor %}

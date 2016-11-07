@@ -37,11 +37,13 @@ class JobBroker:
             task_name(app_id, exp_id, args)
 
         """
+        # utils.debug_print('TTT123', time.time())
         submit_timestamp = utils.datetimeNow('string')
         domain = self.__get_domain_for_job(app_id+"_"+exp_uid)
         utils.debug_print('Line 42 in broker.py, nc_on=', next.constants.CELERY_ON)
         utils.debug_print(app_id, exp_uid, task_name)#, args)
         if next.constants.CELERY_ON:
+            # utils.debug_print('TTTqwe', time.time())
             result = tasks.apply.apply_async(args=[app_id,
                                                    exp_uid,
                                                    task_name,

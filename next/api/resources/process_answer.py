@@ -23,7 +23,7 @@ import next.utils as utils
 import next.broker.broker
 
 from next.api.resource_manager import ResourceManager
-
+import time
 resource_manager = ResourceManager()
 broker = next.broker.broker.JobBroker()
 
@@ -62,11 +62,15 @@ class processAnswer(Resource):
         app_id = resource_manager.get_app_id(exp_uid)
         # Parse out a target_winner. If the argument doesn't exist, return a meta dictionary error.
         args_json = json.dumps(args_data) 
-        # Execute processAnswer 
+        # Execute processAnswer
+        t1 = time.time()
         response_json,didSucceed,message = broker.applyAsync(app_id,
                                                              exp_uid,
                                                              'processAnswer',
                                                              args_json)
+        t2 = time.time()
+        utils.debug_print('api processAnswer took: %f seconds'%(t2-t1))
+
 
         if didSucceed:
             return attach_meta(eval(response_json), meta_success), 200

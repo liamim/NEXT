@@ -6,32 +6,95 @@ import next.apps.SimpleTargetManager
 class ImageSearchDashboard(AppDashboard):
     def __init__(self,db,ell):
         AppDashboard.__init__(self,db,ell)
+        self.app_id = 'ImageSearch'
 
-    def most_current_ranking(self,app_id,exp_uid,alg_label):
+    def cumulative_reward_plot(self, app, butler):
         """
-        Description: Returns a ranking of arms in the form of a list of dictionaries, which is conveneint for downstream applications
+        Description: Returns multiline plot where there is a one-to-one mapping lines to
+        algorithms and each line indicates the error on the validation set with respect to number of reported answers
 
         Expected input:
-          (string) alg_label : must be a valid alg_label contained in alg_list list of dicts 
-
-        The 'headers' contains a list of dictionaries corresponding to each column of the table with fields 'label' and 'field' where 'label' is the label of the column to be put on top of the table, and 'field' is the name of the field in 'data' that the column correpsonds to 
+          None
 
         Expected output (in dict):
-          plot_type : 'columnar_table'
-          headers : [ {'label':'Rank','field':'rank'}, {'label':'Target','field':'index'} ]  
-          (list of dicts with fields) data (each dict is a row, each field is the column for that row): 
-            (int) index : index of target
-            (int) ranking : rank (0 to number of targets - 1) representing belief of being best arm
+          (dict) MPLD3 plot dictionary
         """
-        next_app = utils.get_app(app_id, exp_uid, self.db, self.ell)
-        getModel_args_dict = json.loads(next_app.getModel(exp_uid, json.dumps({'exp_uid':exp_uid, 'args':{'alg_label':alg_label}}))[0])
-        item = getModel_args_dict['args']
+        # get list of algorithms associated with project
+        utils.debug_print('came into Dashboard')
+        args = butler.experiment.get(key='args')
+        num_algs = len(args['alg_list'])
+        alg_labels = []
+        for i in range(num_algs):
+            alg_labels += [args['alg_list'][i]['alg_label']]
 
-        return_dict = {}
-        return_dict['headers'] = [{'label':'Rank','field':'rank'},
-                                  {'label':'Target','field':'index'},
-                                  {'label':'Score','field':'score'},
-                                  {'label':'Precision','field':'precision'}]
-        return_dict['data'] = item['targets']
-        return_dict['plot_type'] = 'columnar_table'
-        return return_dict
+        # rewards = app.getModel(json.dumps({'exp_uid': app.exp_uid, 'args': {'alg_label': alg_label}}))
+
+        for algorithm in alg_labels:
+            alg = utils.get_app_alg(self.app_id, algorithm)
+            # list_of_log_dict, didSucceed, message = butler.ell.get_logs_with_filter(app.app_id + ':ALG-EVALUATION',
+            #                                                                         {'exp_uid': app.exp_uid,
+            #                                                                          'alg_label': algorithm})
+            utils.debug_print('Trying to extract data for : ', algorithm)
+            list_of_log_dict, didSucceed, message = butler.ell.get_logs_with_filter(app.app_id, {'exp_uid': app.exp_uid,
+                                                                                      'alg_label': algorithm})
+            utils.debug_print('didSuceed, message', didSucceed, message)
+            utils.debug_print('app.expUID', app.exp_uid)
+            utils.debug_print('alg_label', algorithm)
+            utils.debug_print('list of log dict: ', list_of_log_dict)
+            data = alg.getModel(butler)
+            utils.debug_print(data)
+            # list_of_log_dict, didSucceed, message = butler.ell.get_logs_with_filter(app.app_id + ':ALG-EVALUATION',
+            #                                                                         {'exp_uid': app.exp_uid,
+            #                                                                          'alg_label': algorithm})
+            # list_of_log_dict = sorted(list_of_log_dict, key=lambda item: utils.str2datetime(item['timestamp']))
+            # utils.debug_print('list_of_log_dict: ', list_of_log_dict)
+            # x = []
+            # y = []
+            # for item in list_of_log_dict:
+            #     num_reported_answers = item['num_reported_answers']
+            #     Xd = item['X']
+            #     err = 0.5
+            #     if len(test_S) > 0:
+                    # compute error rate
+                    # number_correct = 0.
+                    # for query in test_S:
+                    #     if 'q' in query:
+                    #         i, j, k = query['q']
+                    #         score = numpy.dot(Xd[j], Xd[j]) - 2 * numpy.dot(Xd[j], Xd[k]) + 2 * numpy.dot(Xd[i], Xd[
+                    #             k]) - numpy.dot(Xd[i], Xd[i])
+                    #         if score > 0:
+                    #             number_correct += 1.0
+                    #
+                    # accuracy = number_correct / len(test_S)
+                    # err = 1.0 - accuracy
+                # x.append(num_reported_answers)
+                # y.append(err)
+            # alg_dict = {'legend_label': alg_label, 'x': x, 'y': y}
+            # try:
+            #     x_min = min(x_min, min(x))
+            #     x_max = max(x_max, max(x))
+            #     y_min = min(y_min, min(y))
+            #     y_max = max(y_max, max(y))
+            # except:
+            #     pass
+            # list_of_alg_dicts.append(alg_dict)
+        #
+        import matplotlib.pyplot as plt
+        import mpld3
+        fig = plt.plot([1],[1])
+
+        # fig, ax = plt.subplots(subplot_kw=dict(axisbg='#EEEEEE'))
+        # for alg_dict in list_of_alg_dicts:
+        #     ax.plot(alg_dict['x'], alg_dict['y'], label=alg_dict['legend_label'])
+        # ax.set_xlabel('Number of answered triplets')
+        # ax.set_ylabel('Error on hold-out set')
+        # ax.set_xlim([x_min, x_max])
+        # ax.set_ylim([y_min, y_max])
+        # ax.grid(color='white', linestyle='solid')
+        # ax.set_title('Triplet Test Error', size=14)
+        # legend = ax.legend(loc=2, ncol=3, mode="expand")
+        # for label in legend.get_texts():
+        #     label.set_fontsize('small')
+        plot_dict = mpld3.fig_to_dict(fig)
+        # plt.close()
+        return plot_dict

@@ -9,8 +9,12 @@ import StringIO
 class Memory(object):
     def __init__(self):
         utils.debug_print(constants.MINIONREDIS_PORT, constants.MINIONREDIS_PORT)
-        self.cache = redis.StrictRedis(host=constants.MINIONREDIS_HOST, port=constants.MINIONREDIS_PORT)
+        self.cache = None
         self.max_entry_size = 500000000 # 500MB
+
+    def ensure_connection(self):
+        if self.cache is None:
+            self.cache = redis.StrictRedis(host=constants.MINIONREDIS_HOST, port=constants.MINIONREDIS_PORT)
 
     def num_entries(self, size):
         if size % self.max_entry_size == 0:
@@ -19,6 +23,7 @@ class Memory(object):
             return (size / self.max_entry_size) + 1
         
     def set(self, key, value):
+        self.ensure_connection()
         try:
             n = self.num_entries(len(value))
             utils.debug_print("Setting ",len(value),"bytes in",n,"entries")
@@ -31,6 +36,8 @@ class Memory(object):
             return False
 
     def set_file(self, key, f):
+        self.ensure_connection()
+
         try:
             f.seek(0,os.SEEK_END)
             l = f.tell()
@@ -47,6 +54,7 @@ class Memory(object):
             return False
 
     def get(self, key):
+        self.ensure_connection()
         d =  self.cache.get(key)
         n,l = d.split(":")
         l = int(l)
@@ -59,6 +67,7 @@ class Memory(object):
         return ans
     
     def get_file(self, key):
+        self.ensure_connection()
         d =  self.cache.get(key)
         f = StringIO.StringIO()
         n,l = d.split(":")
@@ -73,6 +82,7 @@ class Memory(object):
         return f
     
     def exists(self, key):
+        self.ensure_connection()
         return self.cache.exists(key)
 
 class Collection(object):

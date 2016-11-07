@@ -34,8 +34,11 @@ def get_app(app_id, exp_uid, db, ell):
   """
   app_id = str(app_id) # soemtimes input is unicode formatted which causes error
   next_path = 'next.apps.App'
+  # debug_print('TTT2.1', time.time())
   app_module = __import__(next_path,fromlist=[''])
+  # debug_print('TTT2.2', time.time())
   app_class = getattr(app_module, 'App')
+  # debug_print('TTT2.3', time.time())
   return app_class(app_id, exp_uid, db, ell)
 
 def get_app_alg(app_id,alg_id):

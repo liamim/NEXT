@@ -61,11 +61,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # By Malcolm Slaney, Yahoo! Research
 
 import random, numpy, numpy as np, pickle, os, operator, traceback, sys, math, time, ipdb
-import numpy.random as ra, ipdb, cPickle as pickle, time, scipy.io as sio
+import numpy.random as ra, ipdb, cPickle as pickle, time
 import itertools          # For Multiprobe
 import copy
 from datetime import datetime
-from kjunutils import *
+#from kjunutils import *
 
 #######################################################################
 # Note, the data is always a numpy array of size Dx1.
@@ -115,6 +115,7 @@ def to_serializable(index3):
   myDict['projections'] = []; #copy.deepcopy(myDict['projections']);
   for p in index3.projections:
     innerDict = copy.copy(p.__dict__);
+#    innerDict = p.__dict__;
     innerDict['rawProjs'] = None;
     myDict['projections'].append(innerDict);
 

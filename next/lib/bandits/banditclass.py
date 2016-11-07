@@ -1,12 +1,13 @@
 import sys 
-from next.lib.hash.kjunutils import *
+#prefix = '../OptimalLSH/';
+prefix = 'OptimalLSH/';
+sys.path.insert(0, prefix);
+from kjunutils import *;
 import numpy, time, numpy as np;
-from numpy import *;
-from numpy.linalg import *
+from numpy import *; from numpy.linalg import *
 import numpy.random as ra, ipdb, cPickle as pickle, time, scipy.io as sio, numpy.linalg as la;
 import warnings,sys,os,copy
-from next import utils
-# from choldate import cholupdate, choldowndate
+from choldate import cholupdate, choldowndate
 
 def CalcSqrtBeta(d,t,scale,R,ridge,delta,S_hat):
   return scale*(R * sqrt(d * log((1 + t / (ridge * d)) / delta)) + sqrt(ridge) * S_hat)
@@ -897,8 +898,6 @@ class ofulx9_lsh(banditclass):
         validinds = setdiff1d(range(self.n), self.do_not_ask);
         invalidList = self.do_not_ask; #numpy.setdiff1d(range(self.n), validinds);
         query_2_mat = self.invVt*(numpy.sqrt(self.sqrt_beta)/4 /self.c1 /self.min_sqrt_eig);
-        utils.debug_print('lsh_wrap: ', self.lsh_wrap)
-        utils.debug_print('lsh_wrap.FindUpto: ', self.lsh_wrap.FindUpto)
         foundList, maxDepth, debugDict = self.lsh_wrap.FindUpto(self.thetahat, query_2_mat, self.max_dist_comp, randomize=True, invalidList=invalidList, maxLookup=self.lsh_max_lookup);
         assert( len(numpy.intersect1d(foundList, validinds)) == len(foundList) );
         self.time_lsh_ary.append(toc(time_lsh));  
@@ -1453,7 +1452,7 @@ class thompson_lsh(banditclass):
         self.t = 1
         self.max_dist_comp = opts['max_dist_comp'];
 
-        self.do_chol_onestep = opts['do_chol_onestep'];
+#        self.do_chol_onestep = opts['do_chol_onestep'];
 
         #- on lsh
         self.lsh_max_lookup = opts['lsh_max_lookup'];
@@ -1470,11 +1469,12 @@ class thompson_lsh(banditclass):
         self.v = self.scale * numpy.sqrt( 9 * self.d * numpy.log(1/self.delta) ) 
         self.thetahat = self.x0
         self.invVt = numpy.eye(d); # I guess ridge parameter is 1 for TS
-        if (self.do_chol_onestep):
-          self.matR = numpy.eye(d);
-          matR = self.matR;
-        else:
-          matR = np.eye(d);
+#        if (self.do_chol_onestep):
+#           self.matR = numpy.eye(d);
+#           matR = self.matR;
+#         else:
+#           matR = np.eye(d);
+        matR = np.eye(d); 
 
         self.XTy = numpy.zeros(self.d)
         self.expected_rewards = -np.inf*np.ones(self.n);
@@ -1520,12 +1520,13 @@ class thompson_lsh(banditclass):
 
         #- update matR; this is call by reference.  
         #- note that the second argument will be corrupted, so be sure to do .copy() 
-        if self.do_chol_onestep:
-          choldowndate(self.matR, tempval1 / np.sqrt(1 + tempval2)) 
-          matR = self.matR;
-        else:
-          #         matR = linalg.cholesky(invVt).T;
-          matR = la.cholesky(self.invVt).T;
+#         if self.do_chol_onestep:
+#           choldowndate(self.matR, tempval1 / np.sqrt(1 + tempval2)) 
+#           matR = self.matR;
+#         else:
+#           #         matR = linalg.cholesky(invVt).T;
+#           matR = la.cholesky(invVt).T;
+        matR = la.cholesky(invVt).T;
 
         self.t += 1
 
@@ -1661,6 +1662,7 @@ def bandit_init_options():
           'lsh_index_array': None,
           'lazy_subsample_type':  'lsh',
           'lazy_C':         10**.5,
+#          'do_chol_onestep':True,
   };
   return opts;
 
@@ -1746,10 +1748,11 @@ def bandit_update(context, X, pulled_arm, reward, argDict={}):
   banditObj.__dict__ = context;
   banditObj.X = X;
   banditObj.invVt = np.array(banditObj.invVt, dtype=float64);
-  if (algo_name == 'ts_lsh'):
-    banditObj.matR = np.array(banditObj.matR, dtype=float64);
+#   if (algo_name == 'ts_lsh' and banditObj.do_chol_onestep):
+#     banditObj.matR = np.array(banditObj.matR, dtype=float64);
   banditObj.thetahat = np.array(banditObj.thetahat, dtype=float64);
   banditObj.XTy = np.array(banditObj.XTy, dtype=float64);
+  banditObj.expected_rewards = np.array(banditObj.expected_rewards, dtype=float64);
 
   #- process reward!!
   banditObj._process_reward(reward, pulled_arm);

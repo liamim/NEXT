@@ -7,9 +7,11 @@ from launch_experiment import *
 experiment_list = []
 #alg_ids = ['Greedy']
 #alg_ids = ['OFUL']
-alg_ids = ['OFUL_Hashing']
+#alg_ids = ['OFUL_Hashing']
+# alg_ids = ['OFUL_lazy_lsh']
 # alg_ids = ['OFUL_lite']
-# alg_ids = ['OFUL_Hashing', 'OFUL_lite', 'NN']
+alg_ids = ['TS']
+# alg_ids = ['OFUL_Hashing', 'OFUL_lite', 'TS', 'OFUL_lazy_lsh']
 
 # Create common alg_list
 alg_list = []
@@ -55,7 +57,7 @@ initExp['args']['algorithm_management_settings'] = algorithm_management_settings
 initExp['args']['alg_list'] = alg_list
 initExp['R'] = 0.001 #For OFUL 0.001
 initExp['ridge'] = 0.1
-initExp['args']['instructions'] = 'Test instructions'
+initExp['args']['instructions'] = 'Test instructions: Please select an image and follow the instructions under the image you selected'
 initExp['args']['debrief'] = 'Thanks for answering questions. You can close the window now.'
 initExp['app_id'] = 'ImageSearch'
 #initExp['site_id'] = 'replace this with working site id'
@@ -71,7 +73,7 @@ experiment_list.append(experiment)
 
 # Launch the experiment
 # host = "localhost:8000"
-host = 'ec2-35-162-165-227.us-west-2.compute.amazonaws.com:8000'
+host = 'ec2-35-160-70-193.us-west-2.compute.amazonaws.com:8000'
 print "It's happening"
 exp_uid_list = launch_experiment(host, experiment_list)
 print "Made experiments {}".format(exp_uid_list)

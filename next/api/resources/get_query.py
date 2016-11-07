@@ -12,6 +12,13 @@ from next.api.api_util import *
 import next.utils as utils
 from next.api.resource_manager import ResourceManager
 from jinja2 import Environment, FileSystemLoader
+import time
+import pickle
+import os
+import datetime
+#today = str(datetime.today())[:10]
+today = '2016-11-04'
+
 resource_manager = ResourceManager()
 broker = next.broker.broker.JobBroker()
 
@@ -56,11 +63,27 @@ class getQuery(Resource):
 
         render_widget = args_data['args'].get('widget',False)
 
-        # Execute getQuery 
+        # Execute getQuery
+        t1 = time.time()
+        # utils.debug_print('TTT',time.time())
         response_json,didSucceed,message = broker.applyAsync(app_id,exp_uid,"getQuery", json.dumps(args_data))
+        t2 = time.time()
+        utils.debug_print('api getQuery took: %f seconds'%(t2-t1))
         response_dict = json.loads(response_json)
         if not didSucceed:
             return attach_meta({},meta_error['QueryGenerationError'], backend_error=message)
+
+        filename = 'imagesearch_logs-{}.pkl'.format(today)
+        if filename not in os.listdir('.'):
+            with open(filename, 'wb') as f:
+                pickle.dump({}, f)
+        # with open(filename, 'rb') as f:
+        #     logging = pickle.load(f)
+        #     log = {'response_dict': response_dict, 'time_getQuery': t2 - t1,
+        #            'participant_uid': args_data['args']['participant_uid']}
+            # logging += [log]
+        # with open(filename, 'wb') as f:
+        #     pickle.dump(logging, f)
 
         if render_widget:
             TEMPLATES_DIRECTORY = 'apps/{}/widgets'.format(resource_manager.get_app_id(exp_uid))
