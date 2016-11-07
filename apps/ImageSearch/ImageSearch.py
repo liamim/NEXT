@@ -204,10 +204,10 @@ class ImageSearch(object):
             #target_indices = [4050, 2959, 2226]
             # target_indices = [35828] # a super hard starting point
             # target_indices = [35793]
-            # target_indices = [2226, 35793, 36227, 1234] # red boot, hard prewalker, asics and
-            # target_instructions = {2226: 'Pick red boots', 35793: 'Pick only shoes for small children', 36227: 'Pick only ASICS branded shoes', 1234: 'Pick dark colored short boots (ankle boots)'}
-            target_indices = [2226]  # red boot, hard prewalker, asics and
-            target_instructions = {2226: 'Pick red boots'}  #, 35793: 'Pick only shoes for small children', 36227: 'Pick only ASICS branded shoes', 1234: 'Pick dark colored short boots (ankle boots)'}
+            target_indices = [2226, 35793, 36227, 1234] # red boot, hard prewalker, asics and
+            target_instructions = {2226: 'Pick red boots', 35793: 'Pick only shoes for small children', 36227: 'Pick only ASICS branded shoes', 1234: 'Pick dark colored short boots (ankle boots)'}
+            # target_indices = [2226]  # red boot, hard prewalker, asics and
+            # target_instructions = {2226: 'Pick red boots'}  #, 35793: 'Pick only shoes for small children', 36227: 'Pick only ASICS branded shoes', 1234: 'Pick dark colored short boots (ankle boots)'}
             targets_list = [{'index': i, 'target': self.TargetManager.get_target_item(exp_uid, i), 'instructions': target_instructions[i]} for i in
                             target_indices]
             # t6 = time.time()

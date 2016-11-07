@@ -2,6 +2,8 @@ import json
 from next.utils import utils
 from next.apps.AppDashboard import AppDashboard
 import next.apps.SimpleTargetManager
+import pandas as pd
+import numpy as np
 
 class ImageSearchDashboard(AppDashboard):
     def __init__(self,db,ell):
@@ -29,20 +31,42 @@ class ImageSearchDashboard(AppDashboard):
 
         # rewards = app.getModel(json.dumps({'exp_uid': app.exp_uid, 'args': {'alg_label': alg_label}}))
 
-        for algorithm in alg_labels:
-            alg = utils.get_app_alg(self.app_id, algorithm)
-            # list_of_log_dict, didSucceed, message = butler.ell.get_logs_with_filter(app.app_id + ':ALG-EVALUATION',
-            #                                                                         {'exp_uid': app.exp_uid,
-            #                                                                          'alg_label': algorithm})
-            utils.debug_print('Trying to extract data for : ', algorithm)
-            list_of_log_dict, didSucceed, message = butler.ell.get_logs_with_filter(app.app_id, {'exp_uid': app.exp_uid,
-                                                                                      'alg_label': algorithm})
-            utils.debug_print('didSuceed, message', didSucceed, message)
-            utils.debug_print('app.expUID', app.exp_uid)
-            utils.debug_print('alg_label', algorithm)
-            utils.debug_print('list of log dict: ', list_of_log_dict)
-            data = alg.getModel(butler)
-            utils.debug_print(data)
+        # for algorithm in alg_labels:
+        #     alg = utils.get_app_alg(self.app_id, algorithm)
+        #     list_of_log_dict, didSucceed, message = butler.ell.get_logs_with_filter(app.app_id + ':ALG-EVALUATION',
+        #                                                                             {'exp_uid': app.exp_uid,
+        #                                                                              'alg_label': algorithm})
+            # utils.debug_print('Trying to extract data for : ', algorithm)
+            # list_of_log_dict, didSucceed, message = butler.ell.get_logs_with_filter(app.app_id, {'exp_uid': app.exp_uid,
+            #                                                                           'alg_label': algorithm})
+            # utils.debug_print('didSuceed, message', didSucceed, message)
+            # utils.debug_print('app.expUID', app.exp_uid)
+            # utils.debug_print('alg_label', algorithm)
+            # utils.debug_print('list of log dict: ', list_of_log_dict)
+            # data = alg.getModel(butler)
+        plot_data = butler.dashboard.get(key='plot_data')
+        # utils.debug_print('butler.algs.plot_data in Dashboard: ', plot_data)
+        df = pd.DataFrame(plot_data)
+        df.columns = [u'alg', u'arm_pulled', u'initial_arm', u'participant_uid', u'rewards', u'time']
+        # utils.debug_print('df: ', df)
+        # df = df.pivot_table(columns='initial arm', index='time', values='rewards', aggfunc=np.mean)
+        # utils.debug_print('df: ', df)
+
+        algs = list(df['alg'].unique())
+        init_arms = df['initial_arm'].unique()
+        import matplotlib.pyplot as plt
+        import mpld3
+        fig, ax = plt.subplots(subplot_kw=dict(axisbg='#EEEEEE'))
+        for init_arm in init_arms:
+            for alg in algs:
+                print alg
+                print init_arm
+                result = df.query('alg == "{alg}" and initial_arm == {iarm}'.format(alg=alg, iarm=init_arm))[
+                    ['time', 'rewards', 'participant_uid']].groupby('time').mean()
+                rewards = np.array(result['rewards'])
+
+                ax.plot(range(len(rewards)), np.cumsum(rewards), label='Alg: {alg} and SP: {sp}'.format(alg=alg, sp=init_arm))
+
             # list_of_log_dict, didSucceed, message = butler.ell.get_logs_with_filter(app.app_id + ':ALG-EVALUATION',
             #                                                                         {'exp_uid': app.exp_uid,
             #                                                                          'alg_label': algorithm})
@@ -79,22 +103,20 @@ class ImageSearchDashboard(AppDashboard):
             #     pass
             # list_of_alg_dicts.append(alg_dict)
         #
-        import matplotlib.pyplot as plt
-        import mpld3
-        fig = plt.plot([1],[1])
 
-        # fig, ax = plt.subplots(subplot_kw=dict(axisbg='#EEEEEE'))
-        # for alg_dict in list_of_alg_dicts:
-        #     ax.plot(alg_dict['x'], alg_dict['y'], label=alg_dict['legend_label'])
-        # ax.set_xlabel('Number of answered triplets')
-        # ax.set_ylabel('Error on hold-out set')
+
+
+
+
+        ax.set_xlabel('Time')
+        ax.set_ylabel('Average cumulative rewards')
         # ax.set_xlim([x_min, x_max])
         # ax.set_ylim([y_min, y_max])
         # ax.grid(color='white', linestyle='solid')
-        # ax.set_title('Triplet Test Error', size=14)
-        # legend = ax.legend(loc=2, ncol=3, mode="expand")
-        # for label in legend.get_texts():
-        #     label.set_fontsize('small')
+        ax.set_title('Cumulative rewards', size=14)
+        legend = ax.legend(loc=2, ncol=3, mode="expand")
+        for label in legend.get_texts():
+            label.set_fontsize('small')
         plot_dict = mpld3.fig_to_dict(fig)
-        # plt.close()
+        plt.close()
         return plot_dict

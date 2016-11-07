@@ -10,8 +10,8 @@ experiment_list = []
 #alg_ids = ['OFUL_Hashing']
 # alg_ids = ['OFUL_lazy_lsh']
 # alg_ids = ['OFUL_lite']
-alg_ids = ['TS']
-# alg_ids = ['OFUL_Hashing', 'OFUL_lite', 'TS', 'OFUL_lazy_lsh']
+# alg_ids = ['TS']
+alg_ids = ['OFUL_Hashing', 'OFUL_lite', 'TS', 'OFUL_lazy_lsh']
 
 # Create common alg_list
 alg_list = []

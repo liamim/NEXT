@@ -65,6 +65,9 @@ class TS:
 
         butler.algorithms.set(key='plot_data', value=[])
 
+        if butler.dashboard.set(key='plot_data', value=[]) is None:
+            butler.dashboard.set(key='plot_data', value=[])
+
         return True
 
     @timeit(fn_name='alg:getQuery')
@@ -130,19 +133,25 @@ class TS:
         t = participant_doc[u't']
         update_plot_data = {'rewards': target_reward,
                             'participant_uid': participant_uid,
-                            'initial arm': participant_doc['init_arm'],
+                            'initial_arm': participant_doc['init_arm'],
                             'arm_pulled': target_id,
                             'alg': self.alg_id,
                             'time': t}
 
-        butler.algorithms.append(key='plot_data', value=update_plot_data)
+        # butler.algorithms.append(key='plot_data', value=update_plot_data)
+        butler.dashboard.append(key='plot_data', value=update_plot_data)
+        # utils.debug_print('butler info: ', butler.exp_uid, butler.app_id, butler.alg_id, butler.alg_label)
         # butler.job('logData',
         #            json.dumps({'exp_uid': butler.exp_uid, 'args': {'plot_data': update_plot_data, 'logging': True}}))
-        butler.log('plot_data', json.dumps(update_plot_data))
+        # butler.log('plot_data', json.dumps(update_plot_data))
         bandit_context['t'] = t + 1
         participant_doc.update(bandit_context)
         butler.participants.set_many(uid=participant_doc['participant_uid'],
                                      key_value_dict=participant_doc)
+
+        # plot_data = butler.algorithms.get(key='plot_data')
+        # plot_data = butler.dashboard.get(key='plot_data')
+        # utils.debug_print('butler.algs.plot_data in modelUpdate: ', plot_data)
         return True
 
     def logData(self, exp_uid, args):
@@ -153,9 +162,12 @@ class TS:
         """
         Return cumulative sum of current rewards
         """
-        plot_data = butler.algorithms.get(key='plot_data')
+        # plot_data = butler.algorithms.get(key='plot_data')
+        plot_data = butler.dashboard.get(key='plot_data')
         utils.debug_print('butler.algorithms.get(): ', butler.algorithms.get())
-        utils.debug_print('plot data in get model: ', plot_data)
+        # utils.debug_print('plot data in get model: ', plot_data)
+        utils.debug_print('butler.algs.plot_data in getModel: ', plot_data)
+
         # data is a list of dicts with keys in bandit_context['plot_data']
         if plot_data is not None:
             # data is a list of dicts with keys in bandit_context['plot_data']

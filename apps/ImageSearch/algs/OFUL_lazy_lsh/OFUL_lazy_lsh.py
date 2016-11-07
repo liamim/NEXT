@@ -63,6 +63,10 @@ class OFUL_lazy_lsh:
         load_lib = True
         self.load_and_save_numpy(butler, filename='hash_object_nonquad.npy', property_name='lsh_non_quad',
                                  load_lib=load_lib)
+
+        if butler.dashboard.set(key='plot_data', value=[]) is None:
+            butler.dashboard.set(key='plot_data', value=[])
+
         return True
 
     @timeit(fn_name='alg:getQuery')
@@ -121,12 +125,7 @@ class OFUL_lazy_lsh:
         lsh.projections_all = np.load(butler.memory.get_file('projections_nonquad'))
 
         participant_doc = butler.participants.get(uid=participant_uid)
-        # plot_data = participant_doc['plot_data']
-        plot_data = butler.experiment.get(key='plot_data')
-        if plot_data is None:
-            plot_data = []
-        utils.debug_print('plot data before update: ', plot_data)
-        utils.debug_print('keys: ', participant_doc.keys())
+
         bandit_context = bc.bandit_extract_context(participant_doc)
         i_hat = butler.participants.get(uid=participant_uid, key='i_hat')
         bc.bandit_update(bandit_context, X, i_hat, target_reward, {'lsh': lsh})
@@ -138,13 +137,16 @@ class OFUL_lazy_lsh:
         t = participant_doc['t']
         update_plot_data = {'rewards': target_reward,
                             'participant_uid': participant_uid,
-                            'initial arm': participant_doc['init_arm'],
+                            'initial_arm': participant_doc['init_arm'],
                             'arm_pulled': target_id,
                             'alg': self.alg_id,
                             'time': t}
 
-        butler.algorithms.append(key='plot_data', value=update_plot_data)
-        bandit_context[u't'] += 1
+        # butler.algorithms.append(key='plot_data', value=update_plot_data)
+        butler.dashboard.append(key='plot_data', value=update_plot_data)
+
+        # butler.algorithms.append(key='plot_data', value=update_plot_data)
+        bandit_context['t'] = t + 1
         participant_doc.update(bandit_context)
         butler.participants.set_many(uid=participant_doc['participant_uid'],
                                      key_value_dict=participant_doc)
