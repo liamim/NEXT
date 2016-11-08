@@ -29,7 +29,7 @@ def timeit(fn_name=''):
 
 class OFUL_lazy_lsh:
     def __init__(self):
-        self.alg_id = 'TS'
+        self.alg_id = 'OFUL_Lazy_Hashing'
 
     def load_and_save_numpy(self, butler, filename, property_name, load_lib):
         if not butler.memory.exists(property_name):

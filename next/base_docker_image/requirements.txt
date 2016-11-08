@@ -5,7 +5,6 @@ gunicorn
 ipdb
 pymongo
 redis
-celery
 boto
 greenlet
 mpld3

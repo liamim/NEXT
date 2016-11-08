@@ -23,6 +23,7 @@ RUN \
   rm -rf /var/lib/apt/lists/*
 
 # Install python dependencies for next_backend
+RUN pip install celery==3.1.25
 RUN pip install cython
 RUN pip install git+git://github.com/jcrudy/choldate.git
 ADD requirements.txt /requirements.txt

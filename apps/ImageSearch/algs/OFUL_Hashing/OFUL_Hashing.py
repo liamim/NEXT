@@ -32,7 +32,7 @@ def get_feature_vectors(butler):
 
 class OFUL_Hashing:
     def __init__(self):
-        self.alg_id = 'TS'
+        self.alg_id = 'OFUL_X9_Hashing'
 
     def load_and_save_numpy(self, butler, filename, property_name, load_lib):
         if not butler.memory.exists(property_name):

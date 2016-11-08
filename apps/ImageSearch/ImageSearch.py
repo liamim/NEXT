@@ -204,6 +204,7 @@ class ImageSearch(object):
             #target_indices = [4050, 2959, 2226]
             # target_indices = [35828] # a super hard starting point
             # target_indices = [35793]
+            butler.participants.set(uid=participant_uid, key='ntries', value=1)
             target_indices = [2226, 35793, 36227, 1234] # red boot, hard prewalker, asics and
             target_instructions = {2226: 'Pick red boots', 35793: 'Pick only shoes for small children', 36227: 'Pick only ASICS branded shoes', 1234: 'Pick dark colored short boots (ankle boots)'}
             # target_indices = [2226]  # red boot, hard prewalker, asics and
@@ -240,7 +241,8 @@ class ImageSearch(object):
             # t15 = time.time()
             experiment_dict = butler.experiment.get(key='args')
             # t16 = time.time()
-            t = butler.participants.get(uid=participant_uid, key="num_tries")
+            # t = butler.participants.get(uid=participant_uid, key="num_tries")
+            t = butler.participants.get(uid=participant_uid, key='ntries')
             utils.debug_print('pargs.num_tries: ', t)
             counterString = '{t}/50'.format(t=t)
 
@@ -249,6 +251,7 @@ class ImageSearch(object):
                            'instructions': 'Is this the kind of image you are looking for?',
                            'count': counterString
                            }
+            butler.participants.set(uid=participant_uid, key='ntries', value=t+1)
 
             # t17 = time.time()
 
