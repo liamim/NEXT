@@ -296,3 +296,8 @@ class ImageSearch(object):
                 'network_delay_histogram': default + [alg_label],
                 'cumulative_reward_plot': default + [alg_label]}
         return functions[stat_id](*args[stat_id])
+
+    def chooseAlg(self, butler, args):
+        experiment_dict = butler.experiment.get()
+        alg_list = experiment_dict['args']['alg_list']
+        return np.random.choice(alg_list)
