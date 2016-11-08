@@ -6,11 +6,8 @@ from __future__ import division
 import numpy as np
 import next.utils as utils
 import time
-from StringIO import StringIO
-import StringIO
+
 from next.lib.bandits import banditclass as bc
-import pandas as pd
-import json
 
 # TODO: change this to 1
 reward_coeff = 1.00
@@ -38,6 +35,9 @@ class TS:
                 from next.lib.hash import kjunutils
                 from next.lib.hash import lsh_kjun_v3
                 from next.lib.hash import lsh_kjun_nonquad
+
+            from StringIO import StringIO
+            import StringIO
 
             utils.debug_print('loading file: %s'%(filename))
             data = np.load(filename)
@@ -98,6 +98,8 @@ class TS:
             opts = bc.bandit_init_options()
             opts['lsh'] = lsh
             opts['lsh_index_array'] = np.load(butler.memory.get_file('lsh_index_array'))
+            opts['param2'] = 10.0 ** -6
+            opts['max_dist_comp'] = 2501
             bandit_context = bc.bandit_init('ts_lsh', target_id, X, opts=opts)
             bandit_context['t'] = 0
             bandit_context['init_arm'] = target_id
@@ -138,11 +140,7 @@ class TS:
                             'alg': self.alg_id,
                             'time': t}
 
-        # butler.algorithms.append(key='plot_data', value=update_plot_data)
         butler.dashboard.append(key='plot_data', value=update_plot_data)
-        # utils.debug_print('butler info: ', butler.exp_uid, butler.app_id, butler.alg_id, butler.alg_label)
-        # butler.job('logData',
-        #            json.dumps({'exp_uid': butler.exp_uid, 'args': {'plot_data': update_plot_data, 'logging': True}}))
         # butler.log('plot_data', json.dumps(update_plot_data))
         bandit_context['t'] = t + 1
         participant_doc.update(bandit_context)
@@ -163,6 +161,7 @@ class TS:
         Return cumulative sum of current rewards
         """
         # plot_data = butler.algorithms.get(key='plot_data')
+        import pandas as pd
         plot_data = butler.dashboard.get(key='plot_data')
         utils.debug_print('butler.algorithms.get(): ', butler.algorithms.get())
         # utils.debug_print('plot data in get model: ', plot_data)

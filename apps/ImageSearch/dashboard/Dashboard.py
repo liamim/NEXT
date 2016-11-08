@@ -72,9 +72,9 @@ class ImageSearchDashboard(AppDashboard):
                 # ax.set_ylim([y_min, y_max])
                 # ax.grid(color='white', linestyle='solid')
                 ax[i].set_title('Cumulative rewards for {sp}'.format(sp=init_arm), size=10)
-                legend = ax[i].legend(loc=2, ncol=1, mode="expand")
+                legend = ax[i].legend(loc=2, ncol=2, mode="expand")
                 for label in legend.get_texts():
-                    label.set_fontsize('x-small')
+                    label.set_fontsize('xx-small')
 
         plot_dict = mpld3.fig_to_dict(fig)
         plt.close()

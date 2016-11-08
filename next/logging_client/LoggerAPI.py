@@ -60,7 +60,6 @@ class LoggerAPI(object):
         Usage: ::\n
             didSucceed,message = db.log(bucket_id,doc_uid)
         """
-        utils.debug_print('in logs: log_dict = ', log_dict)
         return self.permStore.setDoc(constants.logs_database_id,bucket_id,None,log_dict)
 
     def ensure_index(self,bucket_id,index_dict):

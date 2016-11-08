@@ -2,11 +2,7 @@ from __future__ import division
 import numpy as np
 import next.utils as utils
 import time
-
-from StringIO import StringIO
-import StringIO
 from next.lib.bandits import banditclass as bc
-import pandas as pd
 
 # TODO: change this to 1
 reward_coeff = 1.00
@@ -32,7 +28,7 @@ def get_feature_vectors(butler):
 
 class OFUL_Hashing:
     def __init__(self):
-        self.alg_id = 'OFUL_X9_Hashing'
+        self.alg_id = 'OFUL_X9'
 
     def load_and_save_numpy(self, butler, filename, property_name, load_lib):
         if not butler.memory.exists(property_name):
@@ -40,6 +36,9 @@ class OFUL_Hashing:
                 from next.lib.hash import kjunutils
                 from next.lib.hash import lsh_kjun_v3
                 from next.lib.hash import lsh_kjun_nonquad
+
+            from StringIO import StringIO
+            import StringIO
 
             utils.debug_print('loading file: %s'%(filename))
             data = np.load(filename)
@@ -99,6 +98,8 @@ class OFUL_Hashing:
             opts = bc.bandit_init_options()
             opts['lsh'] = lsh
             opts['lsh_index_array'] = np.load(butler.memory.get_file('lsh_index_array'))
+            opts['param2'] = 10.0 ** -4
+            opts['max_dist_comp'] = 500
             # utils.debug_print('lsh index array: ', opts['lsh_index_array'])
             bandit_context = bc.bandit_init('ofulx9_lsh', target_id, X, opts=opts)
             bandit_context['t'] = 0
@@ -158,6 +159,7 @@ class OFUL_Hashing:
         """
         Return cumulative sum of current rewards
         """
+        import pandas as pd
         plot_data = butler.algorithms.get(key='plot_data')
         print('plot_data: ', plot_data)
         if plot_data is not None:

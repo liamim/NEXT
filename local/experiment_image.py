@@ -5,9 +5,9 @@ sys.path.append("../")
 from launch_experiment import *
 
 experiment_list = []
-#alg_ids = ['Greedy']
-#alg_ids = ['OFUL']
-#alg_ids = ['OFUL_Hashing']
+# alg_ids = ['Greedy']
+# alg_ids = ['OFUL']
+# alg_ids = ['OFUL_Hashing']
 # alg_ids = ['OFUL_lazy_lsh']
 # alg_ids = ['OFUL_lite']
 # alg_ids = ['TS']
@@ -15,53 +15,48 @@ alg_ids = ['OFUL_Hashing', 'OFUL_lite', 'TS', 'OFUL_lazy_lsh']
 
 # Create common alg_list
 alg_list = []
-for idx,alg_id in enumerate(alg_ids):
-  alg_item = {}
-  alg_item['alg_id'] = alg_id
-  alg_item['alg_label'] = alg_id
-  alg_list.append(alg_item)
+for idx, alg_id in enumerate(alg_ids):
+    alg_item = {}
+    alg_item['alg_id'] = alg_id
+    alg_item['alg_label'] = alg_id
+    alg_list.append(alg_item)
 
 # Create common algorithm management settings  
 params = []
 for algorithm in alg_list:
     params += [{'alg_label': algorithm['alg_label'],
-	        'proportion': 1.0 / len(alg_list)}]
+                'proportion': 1.0 / len(alg_list)}]
 
 algorithm_management_settings = {}
 algorithm_management_settings['mode'] = 'fixed_proportions'
 algorithm_management_settings['params'] = params
 
-
 # Create experiment dictionary
 initExp = {}
 initExp['args'] = {}
-initExp['args']['d'] = 100
-initExp['args']['rating_scale'] = {'labels':[{'label': 'No', 'reward': -1},
-                                             {'label': 'Yes', 'reward': 1}]}
+initExp['args']['rating_scale'] = {'labels': [{'label': 'No', 'reward': -1},
+                                              {'label': 'Yes', 'reward': 1}]}
 
-
-#with open(sys.argv[1], 'r') as f:
+# with open(sys.argv[1], 'r') as f:
 #    filenames = json.load(f).keys()
 with open(sys.argv[1], 'r') as f:
     data = json.load(f)
 
-filenames = [n.keys()[0] for i,n in enumerate(data)]
+filenames = [n.keys()[0] for i, n in enumerate(data)]
 
 initExp['args']['feature_filenames'] = filenames
-initExp['args']['features'] = 'http://localhost:8002/features_10x10.npy'
-initExp['args']['features'] = 'https://www.dropbox.com/s/r9qlkppxvtomk9t/features.npy?dl=1'
-initExp['args']['features'] = 'https://www.dropbox.com/s/2sfxmo6pg3yw5d0/features_10x10.npy?dl=1'
 initExp['args']['failure_probability'] = .1
 initExp['args']['participant_to_algorithm_management'] = 'one_to_one'
-initExp['args']['algorithm_management_settings'] = algorithm_management_settings 
+initExp['args']['algorithm_management_settings'] = algorithm_management_settings
 initExp['args']['alg_list'] = alg_list
-initExp['R'] = 0.001 #For OFUL 0.001
+initExp['R'] = 0.001  # For OFUL 0.001
 initExp['ridge'] = 0.1
-initExp['args']['instructions'] = 'Test instructions: Please select an image and follow the instructions under the image you selected'
+initExp['args'][
+    'instructions'] = 'Test instructions: Please select an image and follow the instructions under the image you selected'
 initExp['args']['debrief'] = 'Thanks for answering questions. You can close the window now.'
 initExp['app_id'] = 'ImageSearch'
-#initExp['site_id'] = 'replace this with working site id'
-#initExp['site_key'] = 'replace this with working site key'
+# initExp['site_id'] = 'replace this with working site id'
+# initExp['site_key'] = 'replace this with working site key'
 
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
@@ -73,7 +68,7 @@ experiment_list.append(experiment)
 
 # Launch the experiment
 # host = "localhost:8000"
-host = 'ec2-35-160-70-193.us-west-2.compute.amazonaws.com:8000'
+host = 'ec2-35-163-106-97.us-west-2.compute.amazonaws.com:8000'
 print "It's happening"
 exp_uid_list = launch_experiment(host, experiment_list)
 print "Made experiments {}".format(exp_uid_list)

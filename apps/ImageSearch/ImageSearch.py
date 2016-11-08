@@ -1,15 +1,6 @@
-import json
-import numpy
-import random
 import numpy as np
-import urllib2
-import requests
-import os
 import time
-import datetime
-import pickle
-# today = str(datetime.today())[:10]
-today = '2016-11-04'
+today = '2016-11-08'
 
 import next.apps.SimpleTargetManager
 import next.utils as utils
@@ -244,8 +235,8 @@ class ImageSearch(object):
             # t = butler.participants.get(uid=participant_uid, key="num_tries")
             t = butler.participants.get(uid=participant_uid, key='ntries')
             utils.debug_print('pargs.num_tries: ', t)
-            counterString = '{t}/50'.format(t=t)
-
+            # counterString = '{t}/50'.format(t=t)
+            counterString = 'Query image'
             return_dict = {'initial_query': False, 'targets': targets_list, 'main_target': init_target,
                            #'instructions': butler.experiment.get(key='args')['instructions']} # changed query_instructions to instructions
                            'instructions': 'Is this the kind of image you are looking for?',

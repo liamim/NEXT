@@ -7,9 +7,6 @@ import numpy as np
 import next.utils as utils
 import time
 from next.lib.bandits import banditclass as bc
-from StringIO import StringIO
-import StringIO
-import pandas as pd
 
 # TODO: change this to 1
 reward_coeff = 1.00
@@ -41,6 +38,9 @@ class OFUL_lite:
                 from next.lib.hash import kjunutils
                 from next.lib.hash import lsh_kjun_v3
                 from next.lib.hash import lsh_kjun_nonquad
+
+            from StringIO import StringIO
+            import StringIO
 
             utils.debug_print('loading file: %s'%(filename))
             data = np.load(filename)
@@ -87,6 +87,8 @@ class OFUL_lite:
             X = get_feature_vectors(butler)
 
             opts = bc.bandit_init_options()
+            opts['param2'] = 10.0 ** -4
+            opts['max_dist_comp'] = 1000
             bandit_context = bc.bandit_init('oful_light', target_id, X, opts=opts)
             bandit_context['plot_data'] = []
             bandit_context['t'] = 0
@@ -116,7 +118,7 @@ class OFUL_lite:
         participant_doc = butler.participants.get(uid=participant_uid)
         # plot_data = participant_doc['plot_data']
         t = participant_doc['t']
-        utils.debug_print('keys: ', participant_doc.keys())
+        # utils.debug_print('keys: ', participant_doc.keys())
         bandit_context = bc.bandit_extract_context(participant_doc)
         i_hat = butler.participants.get(uid=participant_uid, key='i_hat')
         bc.bandit_update(bandit_context, X, i_hat, target_reward, {'lsh': None})
@@ -143,6 +145,7 @@ class OFUL_lite:
         """
         Return cumulative sum of current rewards
         """
+        import pandas as pd
         plot_data = butler.algorithms.get(key='plot_data')
         utils.debug_print('plot data in get modeL: ', plot_data)
         # data is a list of dicts with keys in bandit_context['plot_data']

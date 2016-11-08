@@ -7,9 +7,6 @@ import numpy as np
 import next.utils as utils
 import time
 from next.lib.bandits import banditclass as bc
-from StringIO import StringIO
-import StringIO
-import pandas as pd
 
 # TODO: change this to 1
 reward_coeff = 1.00
@@ -29,7 +26,7 @@ def timeit(fn_name=''):
 
 class OFUL_lazy_lsh:
     def __init__(self):
-        self.alg_id = 'OFUL_Lazy_Hashing'
+        self.alg_id = 'OFUL_Lazy'
 
     def load_and_save_numpy(self, butler, filename, property_name, load_lib):
         if not butler.memory.exists(property_name):
@@ -37,6 +34,9 @@ class OFUL_lazy_lsh:
                 from next.lib.hash import kjunutils
                 from next.lib.hash import lsh_kjun_v3
                 from next.lib.hash import lsh_kjun_nonquad
+
+            from StringIO import StringIO
+            import StringIO
 
             utils.debug_print('loading file: %s'%(filename))
             data = np.load(filename)
@@ -96,6 +96,9 @@ class OFUL_lazy_lsh:
             opts = bc.bandit_init_options()
             opts['lsh'] = lsh
             opts['lsh_index_array'] = np.load(butler.memory.get_file('lsh_index_array'))
+            opts['param2'] = 10.0 ** -4
+            opts['lazy_C'] = 10.0 ** 0.5
+            opts['max_dist_comp'] = 2501
             # utils.debug_print('lsh index array: ', opts['lsh_index_array'])
             bandit_context = bc.bandit_init('oful_lazy_lsh', target_id, X, opts=opts)
             bandit_context['plot_data'] = []
@@ -156,6 +159,7 @@ class OFUL_lazy_lsh:
         """
         Return cumulative sum of current rewards
         """
+        import pandas as pd
         plot_data = butler.algorithms.get(key='plot_data')
         # data is a list of dicts with keys in bandit_context['plot_data']
         if plot_data is not None:
