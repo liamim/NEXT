@@ -187,14 +187,14 @@ class App(object):
             args_dict = verifier.verify(args_dict, self.reference_dict['processAnswer']['args'])
             # Update timing info in query
             query = self.butler.queries.get(uid=args_dict['args']['query_uid'])
-            utils.debug_print('asd',query,args_dict['args']['query_uid'])
+            # utils.debug_print('asd',query,args_dict['args']['query_uid'])
             delta_datetime = (utils.str2datetime(args_dict['args'].get('timestamp_answer_received',None)) -
                               utils.str2datetime(query['timestamp_query_generated']))
             round_trip_time = delta_datetime.seconds + delta_datetime.microseconds/1000000.
             response_time = float(args_dict['args'].get('response_time',0.))
 
             query_update = self.call_app_fn(query['alg_label'], query['alg_id'], 'processAnswer', args_dict)
-            utils.debug_print("ASD",query_update)
+            # utils.debug_print("ASD",query_update)
             query_update.update({'response_time':response_time,'network_delay':round_trip_time - response_time})
             self.butler.queries.set_many(uid=args_dict['args']['query_uid'],key_value_dict=query_update)
 
