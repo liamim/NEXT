@@ -61,11 +61,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # By Malcolm Slaney, Yahoo! Research
 
 import random, numpy, numpy as np, pickle, os, operator, traceback, sys, math, time, ipdb
-import numpy.random as ra, ipdb, cPickle as pickle, time, scipy.io as sio
+import numpy.random as ra, ipdb, cPickle as pickle, time
 import itertools          # For Multiprobe
 import copy
 from datetime import datetime
-from kjunutils import *
+#from kjunutils import *
 
 #######################################################################
 # Note, the data is always a numpy array of size Dx1.
@@ -95,6 +95,19 @@ def from_v1_to_v3(index1):
   index3.projections_all = projections_all;
   return index3;
 
+#- obsolete
+# def to_16bits(index): 
+#   index16 = index_quad(index.w,index.k,index.l,16);
+#   index16.myIDs = index.myIDs;
+#   index16.projections_all = index.projections_all.astype(np.float16);
+#   for (i,p) in enumerate(index.projections): # of tables
+#     index16.projections[i].projections = None;
+#     index16.projections[i].buckets = p.buckets;
+#     index16.projections[i].binsStat = p.binsStat;
+#     index16.projections[i].rawProjs = p.rawProjs;
+#   return index16;
+
+
 def to_serializable(index3):
 #def from_nonnext_to_next(index3):
   myDict = copy.copy(index3.__dict__);
@@ -102,6 +115,7 @@ def to_serializable(index3):
   myDict['projections'] = []; #copy.deepcopy(myDict['projections']);
   for p in index3.projections:
     innerDict = copy.copy(p.__dict__);
+#    innerDict = p.__dict__;
     innerDict['rawProjs'] = None;
     myDict['projections'].append(innerDict);
 
@@ -133,7 +147,9 @@ class lsh_quad:
   and stores the results in a table for later retrieval.  Input parameters
   are the bin width (w, floating point, or float('inf') to get binary LSH), 
   and the number of projections to compute for one table entry (k, an integer).'''
-  def __init__(self, w, k, bits=64):
+  def __init__(self, index, lshId, w, k, bits=64):
+    self.index = index; # save the parent.
+    self.lshId = lshId;
     self.k = k  # Number of projections
     self.w = w  # Bin width
 #     self.projections_a = None
@@ -143,6 +159,9 @@ class lsh_quad:
     self.binsStat = [{} for i in range(self.k)];
     self.rawProjs = {}
     self.bits = bits;
+
+  def GetProjectionRange(self):
+    return xrange(self.k * self.lshId, self.k * (self.lshId + 1));
 
   #- KJUNQUAD
   def KeepProjectionsAndRepopulate_k(self, k):
@@ -182,6 +201,7 @@ class lsh_quad:
   # Can't do this until we see some data, so we know the 
   # diementionality.
   def CreateProjections(self, dim):
+    assert False, "not implemented";
     self.dim = dim
 #     self.projections_a = np.random.randn(self.k, self.dim)     #- KJUNQUAD
 #     self.projections_b = np.random.randn(self.k, self.dim, self.dim)  #- KJUNQUAD
@@ -217,9 +237,7 @@ class lsh_quad:
     '''Multiply the projection data (KxD) by some data (Dx1), 
     and quantize'''
 #    if self.projections_a is None:            # KJUNQUAD 
-    if self.projections is None:            # KJUNQUAD 
-      assert(data.shape[0] > 1 or data.shape[1] > 2);
-      self.CreateProjections(max(data.shape[0], data.shape[1]))
+    assert(self.index.projections_all is not None);
     rawProj = np.zeros((self.k,1), 'float');  # KJUNQUAD
     bins = np.zeros((self.k,1), 'int')
     if self.w == lsh_quad.infinity:
@@ -264,9 +282,7 @@ class lsh_quad:
   def CalculateHashesBulk(self, dataMat):
     '''Multiply the projection data (KxD) by some data (Dx1), 
     and quantize'''
-#    if self.projections_a is None:            # KJUNQUAD 
-    if self.projections is None:            # KJUNQUAD 
-      self.CreateProjections(dataMat.shape[0]);
+    assert self.index.projections_all is not None;
     rawProjMat = self.CalcRawProjectionBulk(dataMat);
     N = dataMat.shape[1];
     binsMat = np.zeros((self.k,N), 'int');
@@ -306,13 +322,14 @@ class lsh_quad:
                 np.dot(data.transpose(), np.dot(self.projections_b, data))[0,:,:]) # KJUNQUAD: see below for how the trick works 
 
   def CalcRawProjectionBulk(self, dataMat):    
-    if (self.bits == 32): dataMat = dataMat.astype(np.float32); # in case of 32bit 
-    ret = np.array((self.k, dataMat.shape[1]), ndmin=2);
-#     for i in range(self.k):
-#       ret[i,:] = np.dot(self.projections_a[i,:], dataMat) + \
-#           np.dot(dataMat,T, np.dot(self.projections_b[i,:,:]
-    return np.dot(self.projections_a, dataMat) + \
-        np.sum(dataMat * np.dot(self.projections_b, dataMat), 1);
+    if (self.bits == 32 and dataMat.dtype != np.float32): dataMat = dataMat.astype(np.float32); # in case of 32bit 
+    proj_a = self.index.projections_all[self.GetProjectionRange(),:self.dim];
+    proj_b = self.index.projections_all[self.GetProjectionRange(),self.dim:].reshape(self.k, self.dim, self.dim);
+    #- To test above, do 
+    #--- A = array([[1,2,3,4],[5,6,7,8],[9,10,11,12]]);
+    #--- A.reshape(3,2,2);
+    return np.dot(proj_a, dataMat) + \
+        np.sum(dataMat * np.dot(proj_b, dataMat), 1);
     
   #- FIXME: this is hash for finding hash of the key.
   # Input: A Nx1 array (of integers)
@@ -363,10 +380,10 @@ class lsh_quad:
   # a bin ID (t1,t2)
   # [Need to store bins in integer array so we don't convert to         % FIXME what does this mean?
   # longs prematurely and get the wrong hash!]
-  def CalculateHashIterator(self, query, multiprobeRadius=0, queryRawProjection=None, probeUpto=True):
+  def CalculateHashIterator(self, query, multiprobeRadius=0, queryRawProjection=None, 
+      probeUpto=True, lookupCnt=None, maxLookup=np.inf):
+    assert lookupCnt is not None;
     assert(self.projections is None);
-#     if self.projections is None: # KJUNQUAD
-#       self.CreateProjections(len(query))
     bins = np.zeros((self.k,1), 'int')
     directVector = np.zeros((self.k,1), 'int')
     newProbe = np.zeros((self.k,1), 'int')
@@ -387,8 +404,7 @@ class lsh_quad:
       bins[:] = np.floor(points);
       directVector[:] = np.sign(points-np.floor(points)-0.5)      # FIXME for multiprove
     if (probeUpto): # do multiprove from 0 to multiprobeRadius
-#       t1 = self.ListHash(bins)
-#       t2 = self.ListHash(bins[::-1])
+      assert False, 'not tested';
       t1,t2 = self.ListHashBoth(bins)
       yield (t1,t2)
       if multiprobeRadius > 0:
@@ -400,31 +416,25 @@ class lsh_quad:
             deltaVector *= 0            # Start Empty                  #FIXME a trick to be fast
             deltaVector[list(candidates), 0] = 1  # Set some bits
             newProbe[:] = bins + deltaVector*directVector  # New probe  #FIXME elementwise product.
-#             t1 = self.ListHash(newProbe)
-#             t2 = self.ListHash(newProbe[::-1])    # Reverse query for second hash
             t1,t2 = self.ListHashBoth(newProbe)
-            # print "Multiprobe probe:",newProbe, t1, t2
             yield (t1,t2)
     else: # KJUNQUAD  do multiprove for exactly `multiprobeRadius`
       if multiprobeRadius == 0:
-#         t1 = self.ListHash(bins)
-#         t2 = self.ListHash(bins[::-1])
         t1,t2 = self.ListHashBoth(bins)
         yield (t1,t2)
+        lookupCnt[0] += 1;
       else:
         dimensions = range(self.k)
         deltaVector = np.zeros((self.k, 1), 'int')  # Preallocate
         r = multiprobeRadius;
-        # http://docs.python.org/library/itertools.html
         for candidates in itertools.combinations(dimensions, r):     
+          if (lookupCnt[0] >= maxLookup):
+            return; # finish the loop
           deltaVector *= 0            # Start Empty                  
           deltaVector[list(candidates), 0] = 1  # Set some bits
           newProbe[:] = bins + deltaVector*directVector  # New probe  
-#           t1 = self.ListHash(newProbe)
-#           t2 = self.ListHash(newProbe[::-1])    # Reverse query for second hash
-#           t1,t2 = self.ListHashBoth(newProbe)
-#           yield (t1,t2)
           yield self.ListHashBoth(newProbe)
+          lookupCnt[0] += 1;
   
   # Put some data into the hash bucket for this LSH projection
   def InsertIntoTable(self, idnum, data):
@@ -447,6 +457,7 @@ class lsh_quad:
     self.rawProjs[idnum] = rawProj;
 
   def InsertIntoTableBulk(self, dataMat):
+    self.dim = dataMat.shape[0];
     (t, binsMat, rawProjMat) = self.CalculateHashesBulk(dataMat) # t is the hashed key
     for ii in range(t.shape[1]):
       t1, t2 = t[0,ii],t[1,ii]
@@ -551,11 +562,15 @@ class lsh_quad:
   #- KJUNQUAD: distFunc must be (query, idnum) form where query is d+d^2 by 1 array and idnum is the index of the datapoint.
   #- also returns `nDistComp` which will tell us if we have exhausted the loop or not.
   #- provide debugHistMinCache=[] if you want to retrieve the history of minimum distance.
-  def FindUpto(self, query, maxDistComp, foundSet, foundList, multiprobeRadius=0, queryRawProjection=None, lshId=None, invalidSet=set()):
+  def FindUpto(self, query, maxDistComp, foundSet, foundList, multiprobeRadius,
+      queryRawProjection, lshId=None, invalidSet=set(), lookupCnt=None, maxLookup=np.inf):
     '''Find the points that are close to the query data.  Use multiprobe
     to also look in nearby buckets.'''
+    assert lookupCnt is not None;
     foundAll = False;
-    for (t1,t2) in self.CalculateHashIterator(query, multiprobeRadius, queryRawProjection, probeUpto=False): 
+    #- note that lookupCnt is length-1 list since I want a call-by-reference.
+    for (t1,t2) in self.CalculateHashIterator(query, multiprobeRadius, queryRawProjection, 
+        probeUpto=False, lookupCnt=lookupCnt, maxLookup=maxLookup): 
       # print "Find t1:", t1
       if t1 not in self.buckets:
         continue
@@ -664,12 +679,14 @@ class index_quad:
     self.k = k; 
     self.l = l
     self.w = w
+    self.dim = None;
     self.projections = []
     self.projections_all = None;
     self.myIDs = []
     self.bits = bits;
+    self.flags = dict();
     for i in range(0,l):  # Create all LSH buckets
-      self.projections.append(lsh_quad(w, k,bits=bits))
+      self.projections.append(lsh_quad(self, i, w, k,bits=bits))
 
 #   def set_w(self, w):
 #     self.w = w;
@@ -726,8 +743,15 @@ class index_quad:
       p.InsertIntoTable(idnum, data)
 
   def InsertIntoTableBulk(self, dataMat):
-    assert False, "not implemented";
-#    intID = self.AddIDToIndex(idnum)   # KJUNQUAD this is not useful for our case.
+    self.dim = dataMat.shape[0];
+    if (self.projections_all == None):
+      # NOTE I am doing float16 so I could save space when pickling.
+      self.flags['float16_compatible'] = True;
+      p_all = ra.randn(self.k*self.l, self.dim + self.dim**2).astype(np.float16); 
+      if (self.bits == 32):
+        self.projections_all = p_all.astype(np.float32);
+      else:
+        self.projections_all = p_all.astype(np.float64);
     for p in self.projections:
       p.InsertIntoTableBulk(dataMat)
 
@@ -783,36 +807,16 @@ class index_quad:
           debugHistMinCache=debugHistMinCache)
     return minId, nDistComp
 
-  def FindUpto_old(self, query, maxDistComp, randomize=False, invalidSet=set()):
-    if self.bits == 32: query = query.astype(np.float32);  # conver to 32 bit if necessary
-    queryRawProjectionAry = [];
-    for p in self.projections:
-      queryRawProjectionAry.append( p.CalcRawProjectionForQuery(query) );
-    foundSet = set();
-    foundList = [];
-    for multiprobeRadius in range(0,self.k+1):
-      idxAry = range(len(self.projections));
-      if (randomize):
-        idxAry = ra.permutation(len(self.projections));
-      for i in idxAry:
-        p = self.projections[i];
-        p.FindUpto(query, maxDistComp, foundSet, foundList, \
-                   multiprobeRadius, queryRawProjectionAry[i], lshId=i, invalidSet=invalidSet)
-        if (len(foundSet) >= maxDistComp):
-          break;
-      if (len(foundSet) >= maxDistComp):
-        break;
-    return foundSet, foundList
-
   #- in v3, we compute projections all at the same time.
-  def FindUpto(self, query, maxDistComp, randomize=False, invalidSet=set()):
-    if self.bits == 32: query = query.astype(np.float32);  # conver to 32 bit if necessary
+  def FindUpto(self, query, maxDistComp, randomize=False, invalidSet=set(), maxLookup=np.inf):
+    if self.bits == 32 and query.dtype != np.float32: query = query.astype(np.float32);  # conver to 32 bit if necessary
 #     queryRawProjectionAry = [];
 #     for p in self.projections:
 #       queryRawProjectionAry.append( p.CalcRawProjectionForQuery(query) );
     queryRawProjectionAry = np.dot(self.projections_all, query);
     foundSet = set();
     foundList = [];
+    lookupCnt = [0];
     for multiprobeRadius in range(0,self.k+1):
       idxAry = range(self.l);
       if (randomize):
@@ -821,16 +825,14 @@ class index_quad:
         p = self.projections[i];
         p.FindUpto(query, maxDistComp, foundSet, foundList,
             multiprobeRadius, queryRawProjectionAry[(self.k*i):(self.k*(i+1)),:],
-            lshId=i, invalidSet=invalidSet)
+            lshId=i, invalidSet=invalidSet, lookupCnt=lookupCnt, maxLookup=maxLookup)
         if (len(foundSet) >= maxDistComp):
           break;
       if (len(foundSet) >= maxDistComp):
         break;
-    return foundSet, foundList
+    dbgDict = {'lookupCnt':lookupCnt[0]};
+    return foundSet, foundList, dbgDict
 
-  def hello(self):
-    print('hello');
-    
   def FindExact(self, queryData, GetData, multiprobeR=0):
     '''Return a list of results sorted by their exact 
     distance from the query.  GetData is a function that

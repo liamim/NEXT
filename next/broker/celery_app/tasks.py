@@ -41,15 +41,17 @@ from billiard import current_process
 Memory = Butler.Memory
 Butler = Butler.Butler
 
-for i in range(len(sys.argv)):
-    if sys.argv[i] == '-n':
-        if 'sync' in sys.argv[i+1]:
-            if db.lsh == None:
-                next.utils.debug_print('loading lsh in',os.getpid())
-                db.lsh = numpy.load('hash_object.npy')
-                next.utils.debug_print('done loading lsh in',os.getpid())
-            else:
-                next.utils.debug_print('already loaded lsh in',os.getpid())
+# for i in range(len(sys.argv)):
+#     if sys.argv[i] == '-n':
+#         if 'sync' in sys.argv[i+1]:
+#             if db.lsh == None:
+#                 next.utils.debug_print('loading lsh in',os.getpid())
+#                 db.lsh = numpy.load('hash_object.npy')
+#                 with open('hash_object.pkl') as f:
+#                     db.lsh = pickle.load(f)
+#                 next.utils.debug_print('done loading lsh in',os.getpid())
+#             else:
+#                 next.utils.debug_print('already loaded lsh in',os.getpid())
         # elif 'dashboard_worker_1' in sys.argv[i+1]:
         #     next.utils.debug_print('loading features')
         #     Lfeatures = numpy.load('features_d1000.npy')
@@ -74,7 +76,7 @@ for i in range(len(sys.argv)):
         #     memory.set_file('projections_all',s)
         #     s = ""
             
-        break
+        # break
 
 # with open('hashing_functions_d1000.pkl') as f:
 #    db.lsh = pickle.load(f)
@@ -98,6 +100,7 @@ class App_Wrapper:
 
 # Main application task
 def apply(app_id, exp_uid, task_name, args_in_json, enqueue_timestamp):
+    # next.utils.debug_print('TTTasdasd', time.time())
     next.utils.debug_print('applying', task_name, os.getpid())
     enqueue_datetime = next.utils.str2datetime(enqueue_timestamp)
     dequeue_datetime = next.utils.datetimeNow()
@@ -105,16 +108,20 @@ def apply(app_id, exp_uid, task_name, args_in_json, enqueue_timestamp):
     time_enqueued = delta_datetime.seconds + delta_datetime.microseconds/1000000.
 
     # modify args_in
+    # next.utils.debug_print('TTT1', time.time())
     if task_name == 'processAnswer':
         args_in_dict = json.loads(args_in_json)
         args_in_dict['args']['timestamp_answer_received'] = enqueue_timestamp
         args_in_json = json.dumps(args_in_dict)
     # get stateless app
+    # next.utils.debug_print('TTT2', time.time())
     next_app = next.utils.get_app(app_id, exp_uid, db, ell)
     # pass it to a method
+    # next.utils.debug_print('TTT2.5', time.time())
     method = getattr(next_app, task_name)
-    print("ASD",method,next_app)
+    # next.utils.debug_print('TTT3', time.time())
     response, dt = next.utils.timeit(method)(exp_uid, args_in_json)
+    # next.utils.debug_print('TTT4', time.time())
     args_out_json,didSucceed,message = response
     args_out_dict = json.loads(args_out_json)
     if 'args' in args_out_dict:
@@ -129,6 +136,7 @@ def apply(app_id, exp_uid, task_name, args_in_json, enqueue_timestamp):
     else:
         return_value = (args_out_json,didSucceed,message)
     print '#### Finished %s,  time_enqueued=%s,  execution_time=%s ####' % (task_name,time_enqueued,dt)
+    next.utils.debug_print('TTT5', time.time())
     return return_value
 
 def apply_dashboard(app_id, exp_uid, args_in_json, enqueue_timestamp):

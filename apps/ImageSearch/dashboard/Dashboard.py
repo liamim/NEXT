@@ -1,37 +1,81 @@
-import json
 from next.utils import utils
 from next.apps.AppDashboard import AppDashboard
-import next.apps.SimpleTargetManager
+import pandas as pd
+import numpy as np
 
 class ImageSearchDashboard(AppDashboard):
     def __init__(self,db,ell):
         AppDashboard.__init__(self,db,ell)
+        self.app_id = 'ImageSearch'
 
-    def most_current_ranking(self,app_id,exp_uid,alg_label):
+    def cumulative_reward_plot(self, app, butler):
         """
-        Description: Returns a ranking of arms in the form of a list of dictionaries, which is conveneint for downstream applications
+        Description: Returns multiline plot where there is a one-to-one mapping lines to
+        algorithms and each line indicates the error on the validation set with respect to number of reported answers
 
         Expected input:
-          (string) alg_label : must be a valid alg_label contained in alg_list list of dicts 
-
-        The 'headers' contains a list of dictionaries corresponding to each column of the table with fields 'label' and 'field' where 'label' is the label of the column to be put on top of the table, and 'field' is the name of the field in 'data' that the column correpsonds to 
+          None
 
         Expected output (in dict):
-          plot_type : 'columnar_table'
-          headers : [ {'label':'Rank','field':'rank'}, {'label':'Target','field':'index'} ]  
-          (list of dicts with fields) data (each dict is a row, each field is the column for that row): 
-            (int) index : index of target
-            (int) ranking : rank (0 to number of targets - 1) representing belief of being best arm
+          (dict) MPLD3 plot dictionary
         """
-        next_app = utils.get_app(app_id, exp_uid, self.db, self.ell)
-        getModel_args_dict = json.loads(next_app.getModel(exp_uid, json.dumps({'exp_uid':exp_uid, 'args':{'alg_label':alg_label}}))[0])
-        item = getModel_args_dict['args']
+        # get list of algorithms associated with project
+        utils.debug_print('came into Dashboard')
+        args = butler.experiment.get(key='args')
+        num_algs = len(args['alg_list'])
+        alg_labels = []
+        for i in range(num_algs):
+            alg_labels += [args['alg_list'][i]['alg_label']]
 
-        return_dict = {}
-        return_dict['headers'] = [{'label':'Rank','field':'rank'},
-                                  {'label':'Target','field':'index'},
-                                  {'label':'Score','field':'score'},
-                                  {'label':'Precision','field':'precision'}]
-        return_dict['data'] = item['targets']
-        return_dict['plot_type'] = 'columnar_table'
-        return return_dict
+        # rewards = app.getModel(json.dumps({'exp_uid': app.exp_uid, 'args': {'alg_label': alg_label}}))
+
+        # for algorithm in alg_labels:
+        #     alg = utils.get_app_alg(self.app_id, algorithm)
+        #     list_of_log_dict, didSucceed, message = butler.ell.get_logs_with_filter(app.app_id + ':ALG-EVALUATION',
+        #                                                                             {'exp_uid': app.exp_uid,
+        #                                                                              'alg_label': algorithm})
+            # utils.debug_print('Trying to extract data for : ', algorithm)
+            # list_of_log_dict, didSucceed, message = butler.ell.get_logs_with_filter(app.app_id, {'exp_uid': app.exp_uid,
+            #                                                                           'alg_label': algorithm})
+            # utils.debug_print('didSuceed, message', didSucceed, message)
+            # utils.debug_print('app.expUID', app.exp_uid)
+            # utils.debug_print('alg_label', algorithm)
+            # utils.debug_print('list of log dict: ', list_of_log_dict)
+            # data = alg.getModel(butler)
+        plot_data = butler.dashboard.get(key='plot_data')
+        # utils.debug_print('butler.algs.plot_data in Dashboard: ', plot_data)
+        df = pd.DataFrame(plot_data)
+        df.columns = [u'alg', u'arm_pulled', u'initial_arm', u'participant_uid', u'rewards', u'time']
+        # utils.debug_print('df: ', df)
+        # df = df.pivot_table(columns='initial arm', index='time', values='rewards', aggfunc=np.mean)
+        # utils.debug_print('df: ', df)
+        utils.debug_print('Came into Dashbord, trying to pring algs and init_arms')
+        algs = list(df['alg'].unique())
+        utils.debug_print('algs: ', algs)
+        init_arms = df['initial_arm'].unique()
+        utils.debug_print('init_arms: ', init_arms)
+        import matplotlib.pyplot as plt
+        import mpld3
+        fig, ax = plt.subplots(nrows=1, ncols=len(init_arms), subplot_kw=dict(axisbg='#EEEEEE'))
+        for i, init_arm in enumerate(init_arms):
+            for alg in algs:
+                print alg
+                print init_arm
+                result = df.query('alg == "{alg}" and initial_arm == {iarm}'.format(alg=alg, iarm=init_arm))[
+                    ['time', 'rewards', 'participant_uid']].groupby('time').mean()
+                rewards = np.array(result['rewards'])
+
+                ax[i].plot(range(len(rewards)), np.cumsum(rewards), label='{alg}'.format(alg=alg))
+                ax[i].set_xlabel('Time')
+                ax[i].set_ylabel('Average cumulative rewards')
+                # ax.set_xlim([x_min, x_max])
+                # ax.set_ylim([y_min, y_max])
+                # ax.grid(color='white', linestyle='solid')
+                ax[i].set_title('Cumulative rewards for {sp}'.format(sp=init_arm), size=10)
+                legend = ax[i].legend(loc=2, ncol=2, mode="expand")
+                for label in legend.get_texts():
+                    label.set_fontsize('xx-small')
+
+        plot_dict = mpld3.fig_to_dict(fig)
+        plt.close()
+        return plot_dict

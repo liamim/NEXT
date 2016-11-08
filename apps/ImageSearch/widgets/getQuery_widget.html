@@ -43,14 +43,13 @@ div.option{
 }
 
 #query {
-	height:25%;
+	height:100px;
 	text-align:center;
 }
 
 .image_container{
 	display:inline-block;
 	width:100%;
-	height:50%;
 }
 
 #wrapper img{
@@ -81,14 +80,14 @@ div.option{
 <br>
 {% if query.context_type %}
 <div class="row" id="center">
-  <div class="col-xs-12"> 
+  <div class="col-xs-12">
     {% if query.initial_query %}
         {% for target in query.targets %}
         <div class="option"
          id="{{target.index}}"
          onclick="submit_initial({{target.index}})">
           <img src="{{target.target.primary_description}}" />
-            <p>{{query.target_instructions[target.index]}}</p>
+            <p><b>{{query.target_instructions[target.index]}}</b></p>
         </div>
         {% endfor %}
      {% else %}
@@ -118,21 +117,21 @@ div.option{
          id="{{target.index}}"
          onclick="submit_initial({{target.index}})">
           <img src="{{target.target.primary_description}}" />
-            <p>{{target.instructions}}</p>
+            <p><b>{{target.instructions}}</b></p>
         </div>
         {% endfor %}
     {% else %}
         {% if query.targets[0].target.primary_type == "image" or query.targets[0].target.primary_type == "img" %}
         <div class="image_container"> 
           <img class="image" src="{{ query.targets[0].target.primary_description }}"> </img>
-          <p></p><p> target index: {{ query.targets[0].target.target_id }} </p>
+          <p></p><p> {{ query.count }} </p>
         </div>
         <div id="init_query" style="float:right;"> 
           Starting image: <br /><img width="50%" height="50%" class="image" src="{{ query.main_target.primary_description }}"> </img>
         </div>
         {% elif query.targets[0].target.primary_type == "text"%}
         <div class="text_container">
-          <div class="text">{{ query.targets[0].target.primary_description }}</div>
+          <div class="text">{{ query.count }}</div>
         </div>
         {% endif %}
     {% endif %}

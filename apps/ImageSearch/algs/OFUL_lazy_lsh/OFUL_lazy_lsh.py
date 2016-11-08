@@ -1,5 +1,5 @@
 """
-Bandits
+Lazy Bandits
 """
 
 from __future__ import division
@@ -24,13 +24,9 @@ def timeit(fn_name=''):
     return timeit_
 
 
-def CalcSqrtBeta(d, t, scale, R, ridge, delta, S_hat=1.0):
-    return scale * (R * np.sqrt(d * np.log((1 + t / (ridge * d)) / delta)) + np.sqrt(ridge) * S_hat)
-
-
-class OFUL_lite:
+class OFUL_lazy_lsh:
     def __init__(self):
-        self.alg_id = 'OFUL_Light'
+        self.alg_id = 'OFUL_Lazy'
 
     def load_and_save_numpy(self, butler, filename, property_name, load_lib):
         if not butler.memory.exists(property_name):
@@ -58,6 +54,16 @@ class OFUL_lite:
         load_lib = False
         self.load_and_save_numpy(butler, filename='features_d1000.npy', property_name='features', load_lib=load_lib)
 
+        self.load_and_save_numpy(butler, filename='lsh_index_array.npy', property_name='lsh_index_array',
+                                 load_lib=load_lib)
+
+        self.load_and_save_numpy(butler, filename='projections_nonquad.npy', property_name='projections_nonquad',
+                                 load_lib=load_lib)
+
+        load_lib = True
+        self.load_and_save_numpy(butler, filename='hash_object_nonquad.npy', property_name='lsh_non_quad',
+                                 load_lib=load_lib)
+
         if butler.dashboard.set(key='plot_data', value=[]) is None:
             butler.dashboard.set(key='plot_data', value=[])
 
@@ -65,7 +71,7 @@ class OFUL_lite:
 
     @timeit(fn_name='alg:getQuery')
     def getQuery(self, butler, participant_uid):
-        utils.debug_print('Running OFUL Light')
+        utils.debug_print('Running OFUL Lazy Hashing')
         expected_rewards = np.asarray(butler.participants.get(uid=participant_uid, key='_bo_expected_rewards'))
         do_not_ask = butler.participants.get(uid=participant_uid, key='_bo_do_not_ask')
         # utils.debug_print('dna: ', do_not_ask)
@@ -85,11 +91,16 @@ class OFUL_lite:
             target_id = butler.participants.get(uid=participant_uid, key='i_hat')
             # utils.debug_print('pargs in processAnswer:', participant_doc)
             X = get_feature_vectors(butler)
-
+            lsh = np.load(butler.memory.get_file('lsh_non_quad')).tolist()
+            lsh.projections_all = np.load(butler.memory.get_file('projections_nonquad'))
             opts = bc.bandit_init_options()
+            opts['lsh'] = lsh
+            opts['lsh_index_array'] = np.load(butler.memory.get_file('lsh_index_array'))
             opts['param2'] = 10.0 ** -4
-            opts['max_dist_comp'] = 1000
-            bandit_context = bc.bandit_init('oful_light', target_id, X, opts=opts)
+            opts['lazy_C'] = 10.0 ** 0.5
+            opts['max_dist_comp'] = 2501
+            # utils.debug_print('lsh index array: ', opts['lsh_index_array'])
+            bandit_context = bc.bandit_init('oful_lazy_lsh', target_id, X, opts=opts)
             bandit_context['plot_data'] = []
             bandit_context['t'] = 0
             bandit_context['init_arm'] = target_id
@@ -103,7 +114,6 @@ class OFUL_lite:
             'participant_uid': participant_uid
         }
 
-
         butler.job('modelUpdate', task_args, ignore_result=True)
 
         return True
@@ -114,16 +124,20 @@ class OFUL_lite:
         participant_uid = task_args['participant_uid']
 
         X = get_feature_vectors(butler)
+        lsh = np.load(butler.memory.get_file('lsh_non_quad')).tolist()
+        lsh.projections_all = np.load(butler.memory.get_file('projections_nonquad'))
 
         participant_doc = butler.participants.get(uid=participant_uid)
-        # plot_data = participant_doc['plot_data']
-        t = participant_doc['t']
-        # utils.debug_print('keys: ', participant_doc.keys())
+
         bandit_context = bc.bandit_extract_context(participant_doc)
         i_hat = butler.participants.get(uid=participant_uid, key='i_hat')
-        bc.bandit_update(bandit_context, X, i_hat, target_reward, {'lsh': None})
+        bc.bandit_update(bandit_context, X, i_hat, target_reward, {'lsh': lsh})
         if target_reward < 0:
             target_reward = 0
+
+        # utils.debug_print('bandit context keys: ', bandit_context.keys())
+        participant_doc.update(bandit_context)
+        t = participant_doc['t']
         update_plot_data = {'rewards': target_reward,
                             'participant_uid': participant_uid,
                             'initial_arm': participant_doc['init_arm'],
@@ -131,10 +145,10 @@ class OFUL_lite:
                             'alg': self.alg_id,
                             'time': t}
 
-
+        # butler.algorithms.append(key='plot_data', value=update_plot_data)
         butler.dashboard.append(key='plot_data', value=update_plot_data)
 
-        # utils.debug_print('plot_data: ', bandit_context['plot_data'])
+        # butler.algorithms.append(key='plot_data', value=update_plot_data)
         bandit_context['t'] = t + 1
         participant_doc.update(bandit_context)
         butler.participants.set_many(uid=participant_doc['participant_uid'],
@@ -147,7 +161,6 @@ class OFUL_lite:
         """
         import pandas as pd
         plot_data = butler.algorithms.get(key='plot_data')
-        utils.debug_print('plot data in get modeL: ', plot_data)
         # data is a list of dicts with keys in bandit_context['plot_data']
         if plot_data is not None:
             # data is a list of dicts with keys in bandit_context['plot_data']
@@ -164,7 +177,7 @@ class OFUL_lite:
 
 @timeit(fn_name="get_feature_vectors")
 def get_feature_vectors(butler):
-    utils.debug_print('loading X (in oful_lite)')
+    # utils.debug_print('loading X (lite)')
     return np.load(butler.memory.get_file('features'))
     # home_dir = '/Users/aniruddha'
     # features = np.load('features_d100.npy'.format(home_dir))

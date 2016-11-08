@@ -27,9 +27,10 @@ from sklearn.preprocessing import normalize
 import pickle
 import os
 norm = np.linalg.norm
+from joblib import Parallel, delayed
 
-HOSTNAME = os.environ.get('NEXT_BACKEND_GLOBAL_HOST', 'localhost')+':'+os.environ.get('NEXT_BACKEND_GLOBAL_PORT', '8000')
-
+# HOSTNAME = os.environ.get('NEXT_BACKEND_GLOBAL_HOST', 'localhost')+':'+os.environ.get('NEXT_BACKEND_GLOBAL_PORT', '8000')
+HOSTNAME = 'ec2-35-162-233-217.us-west-2.compute.amazonaws.com:8000'
 PRINT = False
 
 def reward(x, theta, R=2):
@@ -46,23 +47,22 @@ def run_all(assert_200, home_dir='/Users/scott/', total_pulls_per_client=50,
     """
     ### BEGIN params to change
     # The experiment we have launched via the `NEXT/examples/zappos/` dir
-    exp_uid = 'a1c1df3c440276fe882ba5d554ae16'
+    exp_uid = '4642937c7c94421faaeb122867cd1e'
 
     # We need X and i_star to decide what answer to give
     # the feature matrix
-    X = np.load('../../../features_d1000.npy')
+    # X = np.load('../../../features_d1000.npy')
 
     # the index of the "ground truth" arm
-    i_star = X.shape[0] // 2
+    # i_star = X.shape[0] // 2
     # END parameter to tune
 
-    num_arms = n = X.shape[0]
+    # num_arms = n = X.shape[0]
 
     # Because the filenames are in a .mat file, play with formatting them
     # names = names['Names']
     # feature_filenames = [name[0][0][0] for name in names]
 
-    pool = Pool(processes=num_clients)
 
     # Testing the responses
     url = "http://"+HOSTNAME+"/api/experiment/"+exp_uid
@@ -74,16 +74,26 @@ def run_all(assert_200, home_dir='/Users/scott/', total_pulls_per_client=50,
     alg_list = initExp_response_dict['args']['alg_list']
     alg_names = [alg['alg_label'] for alg in alg_list]
 
-
+    print alg_list
+    # This shouldn't be need but still
+    i_star = 2226
     # TODO: use more participants to average the errors.
     # Generate a single participant
-    participant_uid = '%030x' % random.randrange(16**30)
-    pool_args = [(exp_uid, participant_uid, total_pulls_per_client,
-                 i_star, X, assert_200)]
+
+    pool_args = []
+    for i in range(num_clients):
+        participant_uid = '%030x' % random.randrange(16**30)
+        pool_args += [(exp_uid, participant_uid, total_pulls_per_client,
+                    i_star, assert_200)]
 
     # results = pool.map(simulate_one_client, pool_args)
-    results = map(simulate_one_client, pool_args)
-
+    print 'num_clients',num_clients
+    #pool = Pool(processes=10)
+    #results = pool.map(simulate_one_client, pool_args)
+    print("pool args len ", len(pool_args))
+    results = Parallel(n_jobs=num_clients)(delayed(simulate_one_client)(args) for args in pool_args)
+    print(results)
+    #pool.join()
     exp_params_to_save = results[0][1]
     print(exp_params_to_save)
     time_id = datetime.now().isoformat()[:10]
@@ -100,8 +110,9 @@ def run_all(assert_200, home_dir='/Users/scott/', total_pulls_per_client=50,
 
 
 
-def simulate_one_client(input_args, avg_response_time=0.1):
-    exp_uid, participant_uid, total_pulls, i_star, X, assert_200 = input_args
+def simulate_one_client(input_args, avg_response_time=0.2):
+    exp_uid, participant_uid, total_pulls, i_star, assert_200 = input_args
+    print "participant_uid"
     with open('red_boots_label.pkl') as f:
         labels = pickle.load(f)
     getQuery_times = []
@@ -121,12 +132,13 @@ def simulate_one_client(input_args, avg_response_time=0.1):
 
         url = 'http://'+HOSTNAME+'/api/experiment/getQuery'
         response,dt = timeit(requests.post)(url, json.dumps(getQuery_args_dict),headers={'content-type':'application/json'})
-        print "POST getQuery response = ", response.text, response.status_code
+        #print "POST getQuery response = ", response.text, response.status_code
         if assert_200: assert response.status_code is 200
-        print "POST getQuery duration = ", dt, "\n"
+        #print "POST getQuery duration = ", dt, "\n"
         getQuery_times.append(dt)
 
         query_dict = json.loads(response.text)
+        print query_dict['alg_label']
         if 'fail' in query_dict['meta']['status'].lower():
                 print 'getQuery failed... exiting'
                 sys.exit()
@@ -134,8 +146,11 @@ def simulate_one_client(input_args, avg_response_time=0.1):
         if t == 0:
             initial_indices = [query_dict['targets'][i]['index'] 
                                     for i in range(len(query_dict['targets']))]
-            i_hat = random.choice(initial_indices)
+            #i_hat = random.choice(initial_indices)
             #i_hat = i_star - 10
+            i_star = initial_indices[0]
+            print('Running for initial index %d'%i_star)
+            i_hat = i_star
             i_hats += [i_hat]
             answer = i_hat
             answer_key = 'initial_arm'
@@ -161,7 +176,8 @@ def simulate_one_client(input_args, avg_response_time=0.1):
         ts = time.time()
 
         # time.sleep(    avg_response_time*numpy.random.rand()    )
-        time.sleep( avg_response_time*numpy.log(1./numpy.random.rand()))
+        #time.sleep( avg_response_time*numpy.log(1./numpy.random.rand()))
+        time.sleep(max(0.1, avg_response_time*np.random.randn()))
         # target_reward = true_means[i_hat] + numpy.random.randn()*0.5
         # target_reward = 1.+sum(numpy.random.rand(2)<true_means[i_hat]) # in {1,2,3}
         # target_reward = numpy.random.choice(labels)['reward']
@@ -181,13 +197,13 @@ def simulate_one_client(input_args, avg_response_time=0.1):
         processAnswer_args_dict["args"]['response_time'] = response_time
 
         url = 'http://'+HOSTNAME+'/api/experiment/processAnswer'
-        print "POST processAnswer args = ", processAnswer_args_dict
+        #print "POST processAnswer args = ", processAnswer_args_dict
         response,dt = timeit(requests.post)(url, json.dumps(processAnswer_args_dict), headers={'content-type':'application/json'})
-        print "POST processAnswer response", response.text, response.status_code
+        #print "POST processAnswer response", response.text, response.status_code
         if assert_200: assert response.status_code is 200
-        print "POST processAnswer duration = ", dt
+        #print "POST processAnswer duration = ", dt
         processAnswer_times.append(dt)
-        print
+        #print
         processAnswer_json_response = eval(response.text)
 
     exp_params_to_save = {'i_hats': i_hats,
@@ -199,6 +215,7 @@ def simulate_one_client(input_args, avg_response_time=0.1):
     processAnswer_times.sort()
     getQuery_times.sort()
     return_str = '%s \n\t getQuery\t : %f (5),        %f (50),        %f (95)\n\t processAnswer\t : %f (5),        %f (50),        %f (95)\n' % (participant_uid,getQuery_times[int(.05*total_pulls)],getQuery_times[int(.50*total_pulls)],getQuery_times[int(.95*total_pulls)],processAnswer_times[int(.05*total_pulls)],processAnswer_times[int(.50*total_pulls)],processAnswer_times[int(.95*total_pulls)])
+    #return exp_params_to_save
     return return_str, exp_params_to_save
 
 
@@ -228,4 +245,4 @@ def timeit(f):
 
 if __name__ == '__main__':
     print HOSTNAME
-    run_all(False)
+    run_all(False, num_clients=10)

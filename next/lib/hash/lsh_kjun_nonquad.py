@@ -75,53 +75,27 @@ from datetime import datetime
 # (after quantization) and then reducing that integer vector
 # into a T1 and T2 hash.  Data can either be entered into a
 # table, or retrieved.
+#
 
-def from_v1_to_v3(index1):
-  index3 = index_quad(index1.w,index1.k,index1.l,index1.bits);
-  index3.myIDs = index1.myIDs;
-  l = index1.l;
-  k = index1.k;
-  d = index1.projections[0].projections_a.shape[1];
-  projections_all = np.zeros((l*k,d+d**2),np.float32);
-  assert projections_all.flags['C_CONTIGUOUS'] == True;
-  for (i,p) in enumerate(index1.projections): # of tables
-    assert(p.projections_b.flags['C_CONTIGUOUS'] == True);
-    projections_all[(k*i):(k*(i+1)),:] = np.hstack( [p.projections_a, 
-           p.projections_b.reshape(k,d**2)] );
-    index3.projections[i].projections = None;
-    index3.projections[i].buckets = p.buckets;
-    index3.projections[i].binsStat = p.binsStat;
-    index3.projections[i].rawProjs = p.rawProjs;
-  index3.projections_all = projections_all;
-  return index3;
-
-#- obsolete
-# def to_16bits(index): 
-#   index16 = index_quad(index.w,index.k,index.l,16);
-#   index16.myIDs = index.myIDs;
-#   index16.projections_all = index.projections_all.astype(np.float16);
-#   for (i,p) in enumerate(index.projections): # of tables
-#     index16.projections[i].projections = None;
-#     index16.projections[i].buckets = p.buckets;
-#     index16.projections[i].binsStat = p.binsStat;
-#     index16.projections[i].rawProjs = p.rawProjs;
-#   return index16;
-
+# kjun: this code is based on lsh_kjun_v3. I make lsh for d-dim, rather
+# than (d+d^2)-dim.
 
 def to_serializable(index3):
+  assert False, "not implemented"
 #def from_nonnext_to_next(index3):
   myDict = copy.copy(index3.__dict__);
   myDict['projections_all'] = myDict['projections_all'].tolist();
   myDict['projections'] = []; #copy.deepcopy(myDict['projections']);
   for p in index3.projections:
-    innerDict = copy.copy(p.__dict__);
-#    innerDict = p.__dict__;
+#    innerDict = copy.copy(p.__dict__);
+    innerDict = p.__dict__;
     innerDict['rawProjs'] = None;
     myDict['projections'].append(innerDict);
 
   return myDict;
 
 def from_serializable(serializedObj):
+  assert False, "not implemented"
   # prepare a new object
   newObj = copy.copy(serializedObj);
   projections = serializedObj['projections'];
@@ -142,7 +116,7 @@ def from_serializable(serializedObj):
 
 
 # FIXME what is T1/T2 hashing?
-class lsh_quad:
+class lsh_nonquad:
   '''This class implements one k-dimensional projection, the T1/T2 hashing
   and stores the results in a table for later retrieval.  Input parameters
   are the bin width (w, floating point, or float('inf') to get binary LSH), 
@@ -238,9 +212,12 @@ class lsh_quad:
     and quantize'''
 #    if self.projections_a is None:            # KJUNQUAD 
     assert(self.index.projections_all is not None);
+#     if self.projections is None:            # KJUNQUAD 
+#       assert(data.shape[0] > 1 or data.shape[1] > 2);
+#       self.CreateProjections(max(data.shape[0], data.shape[1]))
     rawProj = np.zeros((self.k,1), 'float');  # KJUNQUAD
     bins = np.zeros((self.k,1), 'int')
-    if self.w == lsh_quad.infinity:
+    if self.w == lsh_nonquad.infinity:
       # Binary LSH
       rawProj[:] = self.CalcRawProjection(data);
       bins[:] = (np.sign(rawProj)+1)/2.0;
@@ -286,7 +263,7 @@ class lsh_quad:
     rawProjMat = self.CalcRawProjectionBulk(dataMat);
     N = dataMat.shape[1];
     binsMat = np.zeros((self.k,N), 'int');
-    if self.w == lsh_quad.infinity:
+    if self.w == lsh_nonquad.infinity:
       binsMat[:,:] = (np.sign(rawProjMat) + 1)/2.0;
     else:
       binsMat[:,:] = np.floor(self.bias + rawProjMat/self.w);
@@ -323,13 +300,7 @@ class lsh_quad:
 
   def CalcRawProjectionBulk(self, dataMat):    
     if (self.bits == 32 and dataMat.dtype != np.float32): dataMat = dataMat.astype(np.float32); # in case of 32bit 
-    proj_a = self.index.projections_all[self.GetProjectionRange(),:self.dim];
-    proj_b = self.index.projections_all[self.GetProjectionRange(),self.dim:].reshape(self.k, self.dim, self.dim);
-    #- To test above, do 
-    #--- A = array([[1,2,3,4],[5,6,7,8],[9,10,11,12]]);
-    #--- A.reshape(3,2,2);
-    return np.dot(proj_a, dataMat) + \
-        np.sum(dataMat * np.dot(proj_b, dataMat), 1);
+    return np.dot(self.index.projections_all[self.GetProjectionRange(),:], dataMat);
     
   #- FIXME: this is hash for finding hash of the key.
   # Input: A Nx1 array (of integers)
@@ -387,7 +358,7 @@ class lsh_quad:
     bins = np.zeros((self.k,1), 'int')
     directVector = np.zeros((self.k,1), 'int')
     newProbe = np.zeros((self.k,1), 'int')
-    if self.w == lsh_quad.infinity: # binary hashing
+    if self.w == lsh_nonquad.infinity: # binary hashing
       if (queryRawProjection is not None): #- use the pre-computed raw projection
         points = queryRawProjection;
       else:
@@ -674,7 +645,7 @@ class lsh_quad:
 # Put together several LSH projections to form an index.  The only 
 # new parameter is the number of groups of projections (one LSH class
 # object per group.)
-class index_quad:
+class index_nonquad:
   def __init__(self, w, k, l,bits=64):
     self.k = k; 
     self.l = l
@@ -684,9 +655,8 @@ class index_quad:
     self.projections_all = None;
     self.myIDs = []
     self.bits = bits;
-    self.flags = dict();
     for i in range(0,l):  # Create all LSH buckets
-      self.projections.append(lsh_quad(self, i, w, k,bits=bits))
+      self.projections.append(lsh_nonquad(self, i, w, k,bits=bits))
 
 #   def set_w(self, w):
 #     self.w = w;
@@ -745,13 +715,10 @@ class index_quad:
   def InsertIntoTableBulk(self, dataMat):
     self.dim = dataMat.shape[0];
     if (self.projections_all == None):
-      # NOTE I am doing float16 so I could save space when pickling.
-      self.flags['float16_compatible'] = True;
-      p_all = ra.randn(self.k*self.l, self.dim + self.dim**2).astype(np.float16); 
+      self.projections_all = ra.randn(self.k*self.l, self.dim);
       if (self.bits == 32):
-        self.projections_all = p_all.astype(np.float32);
-      else:
-        self.projections_all = p_all.astype(np.float64);
+        self.projections_all = self.projections_all.astype(np.float32);
+#    intID = self.AddIDToIndex(idnum)   # KJUNQUAD this is not useful for our case.
     for p in self.projections:
       p.InsertIntoTableBulk(dataMat)
 

@@ -43,20 +43,5 @@ processAnswer:
 
 getModel:
   rets:
-    type: tuple
-    values:
-      0:
-        description: List of mean rewards for each target
-        type: list
-        values:
-          type: num
-      1:
-        description: List of precisions for each target
-        type: list
-        values:
-          type: num
-      2:
-        description: List of counts giving how many queries have been answered about each target
-        type: list
-        values:
-          type: num
+    type: any
+    description: The current state of the model
