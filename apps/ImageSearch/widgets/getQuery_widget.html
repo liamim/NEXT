@@ -73,6 +73,16 @@ div.option{
 	width:100%;
 }
 
+.option.inactive{
+    background-color:#ccc;
+    cursor: not-allowed;
+}
+
+.option.active{
+    background-color:#fff;
+    cursor: pointer;
+}
+
 .option .text, .option .text_container {
 	height:100%;
 }
@@ -144,8 +154,8 @@ div.option{
   {{query.instructions}}
   <br />
   {% for label in query.labels %}
-  <div class="option"
-	  id="{{loop.index}}"
+  <div class="option active"
+	  id="option{{loop.index}}"
 	  onclick="submit({{ label.reward }}, {{loop.index}})">
     <div class="text_container">
       <div class="text">{{ label.label }}</div>
@@ -157,13 +167,44 @@ div.option{
 
 
 <script>
+
+    {% if not query.initial_query  %}
+$(document).keydown(function(e) {
+    switch(e.which) {
+        case 37: // left
+        submit(-1, 1);
+        break;
+        case 39: // right
+        submit(1, 2)
+        break;
+        default: return; // exit this handler for other keys
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+});
+  {% endif %}
   var submit_initial = function(index) {
       next_widget.processAnswer({"initial_query": true,
           "answer":{"initial_arm":index}});
       $("#"+index).css({'outline': '2px solid #FF0000'});
   }
+
+  var clickable = true;
+
   var submit = function(reward, index) {
+    if(!clickable) return;
+    clickable = false;
+    var len=20000;
+    $(this).delay(len).queue(function(next){
+        clickable = true;
+        next();
+     });
+    {% for label in query.labels %}
+      $('#option{{loop.index}}').removeClass("active").addClass("inactive").delay(len).queue(function(next){
+        $(this).removeClass("inactive").addClass("active");
+        next();
+      });
+    {% endfor %}
+      $("#option"+index).css({'outline': '2px solid #FF0000'});
       next_widget.processAnswer({"initial_query": false, "answer": {"target_reward": reward}});
-      $("#"+index).css({'outline': '2px solid #FF0000'});
   }
 </script>

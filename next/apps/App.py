@@ -151,7 +151,7 @@ class App(object):
                     prop = [prop_item['proportion'] for prop_item in algorithm_management_settings['params']]
                     chosen_alg = numpy.random.choice(alg_list, p=prop)
                 elif algorithm_management_settings['mode'] == 'custom' :
-                    chosen_alg = getattr(self.myApp, 'chooseAlg')(self.butler, args['args'])
+                    chosen_alg = getattr(self.myApp, 'chooseAlg')(self.butler, args_dict['args'])
                 else:
                     chosen_alg = numpy.random.choice(alg_list)
                 alg_id = chosen_alg['alg_id']
@@ -173,7 +173,7 @@ class App(object):
                               'alg_label':alg_label,
                               'timestamp_query_generated':str(utils.datetimeNow()),
                               'query_uid':query_uid})
-            utils.debug_print('qweq',query_uid,query_doc)
+            # utils.debug_print('qweq',query_uid,query_doc)
             self.butler.queries.set(uid=query_uid, value=query_doc)
             return json.dumps({'args':query_doc,'meta':{'log_entry_durations':self.log_entry_durations}}), True,''
         except Exception, error:

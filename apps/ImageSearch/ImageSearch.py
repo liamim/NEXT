@@ -88,6 +88,10 @@ class ImageSearch(object):
         alg_data['ridge'] = args['ridge']
 
         init_algs(alg_data)
+
+        num_algs_pulled = {alg['alg_id']: 0 for alg in args['alg_list']}
+        args['num_algs_pulled'] = num_algs_pulled
+
         del args['targets']
         return args
 
@@ -135,10 +139,11 @@ class ImageSearch(object):
             # target_indices = [35828] # a super hard starting point
             # target_indices = [35793]
             butler.participants.set(uid=participant_uid, key='ntries', value=1)
-            target_indices = [2226, 35793, 36227, 1234]  # red boot, hard prewalker, asics and
+            possible_target_indices = [2226, 35793, 36227]#, 1234]  # red boot, hard prewalker, asics and
+            target_indices = [np.random.choice(possible_target_indices)]
             target_instructions = {2226: 'Pick red boots', 35793: 'Pick only shoes for small children',
-                                   36227: 'Pick only ASICS branded shoes',
-                                   1234: 'Pick dark colored short boots (ankle boots)'}
+                                   36227: 'Pick only ASICS branded shoes'}
+                                   #1234: 'Pick dark colored short boots (ankle boots)'}
             # target_indices = [2226]  # red boot, hard prewalker, asics and
             # target_instructions = {2226: 'Pick red boots'}  #, 35793: 'Pick only shoes for small children', 36227: 'Pick only ASICS branded shoes', 1234: 'Pick dark colored short boots (ankle boots)'}
             targets_list = [{'index': i, 'target': self.TargetManager.get_target_item(exp_uid, i),
@@ -147,7 +152,7 @@ class ImageSearch(object):
             # t6 = time.time()
             return_dict = {'initial_query': True, 'targets': targets_list,
                            # 'instructions': butler.experiment.get(key='args')['instructions']}
-                           'instructions': 'Please select an image and allow for 15-20 seconds after selecting initial image: '}
+                           'instructions': 'Please select the image and allow for 15-20 seconds after selecting initial image: '}
             # t7 = time.time()
 
             # utils.debug_print('time to get N: ', t5 - t3)
@@ -299,5 +304,19 @@ class ImageSearch(object):
 
     def chooseAlg(self, butler, args):
         experiment_dict = butler.experiment.get()
+        # utils.debug_print('keys() of exp_dict: ', experiment_dict.keys())
+        # utils.debug_print('exp_dict[args][num_algs_pulls]: ', experiment_dict['args']['num_algs_pulled'])
+        num_algs_pulled = experiment_dict['args']['num_algs_pulled']
+        next_alg = min(num_algs_pulled, key=num_algs_pulled.get)
+        num_algs_pulled[next_alg] += 1
+        experiment_dict['args']['num_algs_pulled'] = num_algs_pulled
+        # utils.debug_print('exp_dict[args][num_algs_pulls] after update: ', experiment_dict['args']['num_algs_pulled'])
+        butler.experiment.set(key='args', value=experiment_dict['args'])
         alg_list = experiment_dict['args']['alg_list']
-        return np.random.choice(alg_list)
+        val = np.random.choice(alg_list)
+        # utils.debug_print('args[alg_list]: ', experiment_dict['args']['alg_list'])
+        # utils.debug_print('random choice = ', val )
+        for val in experiment_dict['args']['alg_list']:
+            if val['alg_label'] == next_alg:
+                return val
+        # return next_alg

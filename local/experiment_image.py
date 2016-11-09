@@ -28,7 +28,8 @@ for algorithm in alg_list:
                 'proportion': 1.0 / len(alg_list)}]
 
 algorithm_management_settings = {}
-algorithm_management_settings['mode'] = 'fixed_proportions'
+# algorithm_management_settings['mode'] = 'fixed_proportions'
+algorithm_management_settings['mode'] = 'custom'
 algorithm_management_settings['params'] = params
 
 # Create experiment dictionary
@@ -44,6 +45,7 @@ with open(sys.argv[1], 'r') as f:
 
 filenames = [n.keys()[0] for i, n in enumerate(data)]
 
+initExp['args']['features'] = 'not needed'
 initExp['args']['feature_filenames'] = filenames
 initExp['args']['failure_probability'] = .1
 initExp['args']['participant_to_algorithm_management'] = 'one_to_one'
