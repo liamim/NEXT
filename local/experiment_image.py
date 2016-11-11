@@ -54,7 +54,7 @@ initExp['args']['alg_list'] = alg_list
 initExp['R'] = 0.001  # For OFUL 0.001
 initExp['ridge'] = 0.1
 initExp['args'][
-    'instructions'] = 'Test instructions: Please select an image and follow the instructions under the image you selected'
+    'instructions'] = ' '
 initExp['args']['debrief'] = 'Thanks for answering questions. You can close the window now.'
 initExp['app_id'] = 'ImageSearch'
 # initExp['site_id'] = 'replace this with working site id'
@@ -70,7 +70,7 @@ experiment_list.append(experiment)
 
 # Launch the experiment
 # host = "localhost:8000"
-host = 'ec2-35-163-106-97.us-west-2.compute.amazonaws.com:8000'
+host = 'ec2-35-163-179-18.us-west-2.compute.amazonaws.com:8000'
 print "It's happening"
 exp_uid_list = launch_experiment(host, experiment_list)
 print "Made experiments {}".format(exp_uid_list)

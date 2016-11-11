@@ -90,7 +90,13 @@ class ImageSearch(object):
         init_algs(alg_data)
 
         num_algs_pulled = {alg['alg_id']: 0 for alg in args['alg_list']}
+        possible_target_indices = ['2226', '35793', '36227']
+        num_arms_pulled = {arm: 0 for arm in possible_target_indices}
+        utils.debug_print('num_arms_pulled: ', num_arms_pulled)
         args['num_algs_pulled'] = num_algs_pulled
+        for alg in args['alg_list']:
+            args[alg['alg_id']] = {}
+            args[alg['alg_id']]['num_starting_points_pulled'] = num_arms_pulled.copy()
 
         del args['targets']
         return args
@@ -128,6 +134,9 @@ class ImageSearch(object):
         # utils.debug_print('time to get exp_uid: ', t1 - t0)
         # utils.debug_print('time to get p_uid: ', t2 - t1)
         # utils.debug_print('time to get p_doc: ', t3 - t2)
+        experiment_dict = butler.experiment.get(key='args')
+        alg_id = butler.participants.get(uid=participant_uid, key='alg_id')
+        utils.debug_print('starting_arms_pulls for ', alg_id, experiment_dict[alg_id]['num_starting_points_pulled'])
 
         if not num_tries or num_tries == 0:
             # utils.debug_print('came here 2')
@@ -139,8 +148,16 @@ class ImageSearch(object):
             # target_indices = [35828] # a super hard starting point
             # target_indices = [35793]
             butler.participants.set(uid=participant_uid, key='ntries', value=1)
-            possible_target_indices = [2226, 35793, 36227]#, 1234]  # red boot, hard prewalker, asics and
-            target_indices = [np.random.choice(possible_target_indices)]
+
+            num_starting_points_pulled = experiment_dict[alg_id]['num_starting_points_pulled']
+            next_arm = min(num_starting_points_pulled, key=num_starting_points_pulled.get)
+            num_starting_points_pulled[next_arm] += 1
+            experiment_dict[alg_id]['num_starting_points_pulled'] = num_starting_points_pulled
+            butler.experiment.set(key='args', value=experiment_dict)
+
+            # possible_target_indices = [2226, 35793, 36227]#, 1234]  # red boot, hard prewalker, asics and
+            # target_indices = [np.random.choice(possible_target_indices)]
+            target_indices = [int(next_arm)]
             target_instructions = {2226: 'Pick red boots', 35793: 'Pick only shoes for small children',
                                    36227: 'Pick only ASICS branded shoes'}
                                    #1234: 'Pick dark colored short boots (ankle boots)'}
@@ -152,7 +169,7 @@ class ImageSearch(object):
             # t6 = time.time()
             return_dict = {'initial_query': True, 'targets': targets_list,
                            # 'instructions': butler.experiment.get(key='args')['instructions']}
-                           'instructions': 'Please select the image and allow for 15-20 seconds after selecting initial image: '}
+                           'instructions': 'In this experiment, we will show you a total of 50 images. For each image, you will be asked if it is similar to the image currently shown. To make your judgement, please look at the image and read the description below. Click on the image when you are ready to proceed. Allow for 15-20 seconds after clicking the initial image. '}  # 'instructions': 'Please select the image and allow for 15-20 seconds after selecting initial image: '
             # t7 = time.time()
 
             # utils.debug_print('time to get N: ', t5 - t3)
@@ -177,7 +194,6 @@ class ImageSearch(object):
             # t14 = time.time()
             init_target = self.TargetManager.get_target_item(exp_uid, init_index)
             # t15 = time.time()
-            experiment_dict = butler.experiment.get(key='args')
             # t16 = time.time()
             # t = butler.participants.get(uid=participant_uid, key="num_tries")
             t = butler.participants.get(uid=participant_uid, key='ntries')

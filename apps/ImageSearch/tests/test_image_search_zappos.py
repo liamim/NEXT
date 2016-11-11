@@ -30,7 +30,7 @@ norm = np.linalg.norm
 from joblib import Parallel, delayed
 
 # HOSTNAME = os.environ.get('NEXT_BACKEND_GLOBAL_HOST', 'localhost')+':'+os.environ.get('NEXT_BACKEND_GLOBAL_PORT', '8000')
-HOSTNAME = 'ec2-35-162-233-217.us-west-2.compute.amazonaws.com:8000'
+HOSTNAME = 'ec2-35-163-179-18.us-west-2.compute.amazonaws.com:8000'
 PRINT = False
 
 def reward(x, theta, R=2):
@@ -47,7 +47,7 @@ def run_all(assert_200, home_dir='/Users/scott/', total_pulls_per_client=50,
     """
     ### BEGIN params to change
     # The experiment we have launched via the `NEXT/examples/zappos/` dir
-    exp_uid = '4642937c7c94421faaeb122867cd1e'
+    exp_uid = '44ab57cf05915c5a901b6b8facaf66'
 
     # We need X and i_star to decide what answer to give
     # the feature matrix
@@ -113,8 +113,6 @@ def run_all(assert_200, home_dir='/Users/scott/', total_pulls_per_client=50,
 def simulate_one_client(input_args, avg_response_time=0.2):
     exp_uid, participant_uid, total_pulls, i_star, assert_200 = input_args
     print "participant_uid"
-    with open('red_boots_label.pkl') as f:
-        labels = pickle.load(f)
     getQuery_times = []
     processAnswer_times = []
     i_hats = []
@@ -150,6 +148,16 @@ def simulate_one_client(input_args, avg_response_time=0.2):
             #i_hat = i_star - 10
             i_star = initial_indices[0]
             print('Running for initial index %d'%i_star)
+            if i_star == 2226:
+                with open('red_boots_label.pkl') as f:
+                    labels = pickle.load(f)
+            elif i_star == 36227:
+                with open('asics_label.pkl') as f:
+                    labels = pickle.load(f)
+            elif i_star == 35793:
+                with open('prewalker_label.pkl') as f:
+                    labels = pickle.load(f)
+
             i_hat = i_star
             i_hats += [i_hat]
             answer = i_hat
@@ -245,4 +253,4 @@ def timeit(f):
 
 if __name__ == '__main__':
     print HOSTNAME
-    run_all(False, num_clients=10)
+    run_all(False, num_clients=1)
