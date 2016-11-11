@@ -47,7 +47,7 @@ def run_all(assert_200, home_dir='/Users/scott/', total_pulls_per_client=50,
     """
     ### BEGIN params to change
     # The experiment we have launched via the `NEXT/examples/zappos/` dir
-    exp_uid = '44ab57cf05915c5a901b6b8facaf66'
+    exp_uid = '6b4d44170ee4e1711f27a4d3891579'
 
     # We need X and i_star to decide what answer to give
     # the feature matrix
@@ -253,4 +253,4 @@ def timeit(f):
 
 if __name__ == '__main__':
     print HOSTNAME
-    run_all(False, num_clients=1)
+    run_all(False, num_clients=11)
