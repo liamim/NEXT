@@ -134,15 +134,12 @@ div.option{
         {% if query.targets[0].target.primary_type == "image" or query.targets[0].target.primary_type == "img" %}
         <div class="image_container"> 
           <img class="image" src="{{ query.targets[0].target.primary_description }}"> </img>
-          <p></p><p> Clicks: <div id="clicks">0</div> </p>
+          <p></p>
         </div>
         <div id="init_query" style="float:right;">
           Starting image: <br /><img width="50%" height="50%" class="image" src="{{ query.main_target.primary_description }}"> </img>
         </div>
         {% elif query.targets[0].target.primary_type == "text"%}
-        <div class="text_container">
-          <div class="text"> Clicks: <div id="clicks">0</div> </div>
-        </div>
         {% endif %}
     {% endif %}
   </div>
@@ -183,8 +180,6 @@ $(document).keydown(function(e) {
 });
   {% endif %}
   var submit_initial = function(index) {
-      var clicks = 1;
-      localStorage.setItem("clicks",clicks);
       next_widget.processAnswer({"initial_query": true,
           "answer":{"initial_arm":index}});
       $("#"+index).css({'outline': '2px solid #FF0000'});
@@ -194,7 +189,6 @@ $(document).keydown(function(e) {
 
   var submit = function(reward, index) {
     if(!clickable) return;
-    increment_click()
     clickable = false;
     var len=20000;
     $(this).delay(len).queue(function(next){
@@ -211,24 +205,4 @@ $(document).keydown(function(e) {
       next_widget.processAnswer({"initial_query": false, "answer": {"target_reward": reward}});
 
   }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    var clicks = localStorage.getItem("clicks");
-    document.getElementById("clicks").innerHTML = clicks;
-    console.log("hi");
-  }, false);
-
-  <!--window.onload = function() {-->
-    <!--var clicks = localStorage.getItem("clicks");-->
-    <!--document.getElementById("clicks").innerHTML = clicks;-->
-    <!--console.log("hi");-->
-  <!--}-->
-
-  function increment_click() {
-      if (document.readyState === "complete") {
-          var clicks = localStorage.getItem("clicks");
-          ++clicks;
-          localStorage.setItem("clicks",clicks);
-      }
-  };
 </script>
