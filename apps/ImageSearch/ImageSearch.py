@@ -158,7 +158,7 @@ class ImageSearch(object):
             # possible_target_indices = [2226, 35793, 36227]#, 1234]  # red boot, hard prewalker, asics and
             # target_indices = [np.random.choice(possible_target_indices)]
             target_indices = [int(next_arm)]
-            target_instructions = {2226: 'Pick red boots', 35793: 'Pick only shoes for small children',
+            target_instructions = {2226: 'Pick red boots', 35793: 'Pick only shoes for babies/toddlers',
                                    36227: 'Pick only ASICS branded shoes'}
                                    #1234: 'Pick dark colored short boots (ankle boots)'}
             # target_indices = [2226]  # red boot, hard prewalker, asics and
