@@ -9,9 +9,6 @@ import traceback
 import numpy
 from next.constants import DEBUG_ON
 import hashlib
-import cPickle as pickle
-import StringIO
-import numpy as np
 
 # import next.logging_client.LoggerHTTP as ell
 from next.database_client.DatabaseAPI import DatabaseAPI

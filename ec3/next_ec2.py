@@ -620,8 +620,8 @@ def rsync_dir(local_src_dir, ec2_dest_dir, opts, host):
     command = [
         'rsync',
         '--exclude=*.pyc',
-        '--exclude=*.npy',
-        '--exclude=*.pkl',
+        # '--exclude=*.npy',
+        # '--exclude=*.pkl',
         '--exclude=.git', '--exclude=archive', '-rve',
         stringify_command(ssh_command(opts)),
         "%s" % local_src_dir,

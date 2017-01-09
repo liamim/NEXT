@@ -11,7 +11,8 @@ experiment_list = []
 # alg_ids = ['OFUL_lazy_lsh']
 # alg_ids = ['OFUL_lite']
 # alg_ids = ['TS']
-alg_ids = ['OFUL_Hashing', 'OFUL_lite', 'TS', 'OFUL_lazy_lsh']
+# alg_ids = ['OFUL_Hashing', 'OFUL_lite', 'TS', 'OFUL_lazy_lsh']
+alg_ids = ['NN']
 
 # Create common alg_list
 alg_list = []
@@ -70,7 +71,7 @@ experiment_list.append(experiment)
 
 # Launch the experiment
 # host = "localhost:8000"
-host = 'ec2-35-163-179-18.us-west-2.compute.amazonaws.com:8000'
+host = 'ec2-35-167-116-18.us-west-2.compute.amazonaws.com:8000'
 print "It's happening"
 exp_uid_list = launch_experiment(host, experiment_list)
 print "Made experiments {}".format(exp_uid_list)
