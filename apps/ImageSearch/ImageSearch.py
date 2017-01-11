@@ -1,7 +1,19 @@
 import numpy as np
 import time
+from decorator import decorator
+from line_profiler import LineProfiler
 
-today = '2016-11-08'
+@decorator
+def profile_each_line(func, *args, **kwargs):
+    profiler = LineProfiler()
+    profiled_func = profiler(func)
+    retval = None
+    try:
+        retval = profiled_func(*args, **kwargs)
+    finally:
+        profiler.print_stats()
+    return retval
+
 
 import next.apps.SimpleTargetManager
 import next.utils as utils
@@ -99,9 +111,11 @@ class ImageSearch(object):
             args[alg['alg_id']]['num_starting_points_pulled'] = num_arms_pulled.copy()
 
         del args['targets']
+        del args['feature_filenames']
         return args
 
-    @timeit(fn_name='myApp.py:getQuery')
+    # @timeit(fn_name='myApp.py:getQuery')
+    @profile_each_line
     def getQuery(self, butler, alg, args):
         """
         The function that gets the next query, given a query reguest and
@@ -122,6 +136,7 @@ class ImageSearch(object):
 
         TODO: Document this further
         """
+        utils.debug_print("hi mom")
         t0 = time.time()
         exp_uid = butler.exp_uid
         # t1 = time.time()
@@ -242,7 +257,8 @@ class ImageSearch(object):
         # utils.debug_print('Butler experiment bargs: ', bargs.keys())
         return return_dict
 
-    @timeit(fn_name='myApp:processAnswer')
+    # @timeit(fn_name='myApp:processAnswer')
+    @profile_each_line
     def processAnswer(self, butler, alg, args):
         """
         Parameters

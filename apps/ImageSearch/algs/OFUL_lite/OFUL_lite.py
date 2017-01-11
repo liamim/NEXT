@@ -104,16 +104,17 @@ class OFUL_lite:
         }
 
 
-        butler.job('modelUpdate', task_args, ignore_result=True)
+        butler.job('modelUpdateHash', task_args, ignore_result=True)
 
         return True
 
-    def modelUpdate(self, butler, task_args):
+    def modelUpdateHash(self, butler, task_args):
         target_id = task_args['target_id']
         target_reward = task_args['target_reward']
         participant_uid = task_args['participant_uid']
 
-        X = get_feature_vectors(butler)
+        # X = get_feature_vectors(butler)
+        X = butler.db.X
 
         participant_doc = butler.participants.get(uid=participant_uid)
         # plot_data = participant_doc['plot_data']
@@ -137,6 +138,7 @@ class OFUL_lite:
         # utils.debug_print('plot_data: ', bandit_context['plot_data'])
         bandit_context['t'] = t + 1
         participant_doc.update(bandit_context)
+        del participant_doc['_bo_do_not_ask']
         butler.participants.set_many(uid=participant_doc['participant_uid'],
                                      key_value_dict=participant_doc)
         return True

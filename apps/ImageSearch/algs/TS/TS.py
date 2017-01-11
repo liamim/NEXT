@@ -113,18 +113,22 @@ class TS:
             'participant_uid': participant_uid
         }
 
-        butler.job('modelUpdate', task_args, ignore_result=True)
+        butler.job('modelUpdateHash', task_args, ignore_result=True)
 
         return True
 
-    def modelUpdate(self, butler, task_args):
+    def modelUpdateHash(self, butler, task_args):
         target_id = task_args['target_id']
         target_reward = task_args['target_reward']
         participant_uid = task_args['participant_uid']
 
-        X = get_feature_vectors(butler)
-        lsh = np.load(butler.memory.get_file('lsh_non_quad')).tolist()
-        lsh.projections_all = np.load(butler.memory.get_file('projections_nonquad'))
+        # X = get_feature_vectors(butler)
+        # lsh = np.load(butler.memory.get_file('lsh_non_quad')).tolist()
+        # lsh.projections_all = np.load(butler.memory.get_file('projections_nonquad'))
+
+        X = butler.db.X
+        lsh = butler.db.lsh_nonquad
+        lsh.projections_all = butler.db.projections_nonquad
 
         participant_doc = butler.participants.get(uid=participant_uid)
         bandit_context = bc.bandit_extract_context(participant_doc)
@@ -144,12 +148,10 @@ class TS:
         # butler.log('plot_data', json.dumps(update_plot_data))
         bandit_context['t'] = t + 1
         participant_doc.update(bandit_context)
+        del participant_doc['_bo_do_not_ask']
         butler.participants.set_many(uid=participant_doc['participant_uid'],
                                      key_value_dict=participant_doc)
 
-        # plot_data = butler.algorithms.get(key='plot_data')
-        # plot_data = butler.dashboard.get(key='plot_data')
-        # utils.debug_print('butler.algs.plot_data in modelUpdate: ', plot_data)
         return True
 
     def logData(self, exp_uid, args):

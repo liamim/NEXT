@@ -163,6 +163,9 @@ class JobBroker:
         queue_number = (namespace_cnt % num_queues) + 1  
 
         queue_name = 'sync_queue_'+str(queue_number)+'@'+domain
+        if task_name == 'modelUpdateHash':
+            queue_name = 'Hash_Queue@'+domain
+            utils.debug_print('Queuing the Hashing function')
         job_uid = utils.getNewUID()
         if time_limit == 0:
             soft_time_limit = None

@@ -11,3 +11,4 @@ mpld3
 pyyaml
 ply
 pandas
+line_profiler

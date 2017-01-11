@@ -60,11 +60,11 @@ class OFUL_Hashing:
                                  load_lib=load_lib)
 
         self.load_and_save_numpy(butler, filename='projections_all.npy', property_name='projections_all',
-                                 load_lib=load_lib)
+                                load_lib=load_lib)
 
         load_lib = True
         self.load_and_save_numpy(butler, filename='hash_object.npy', property_name='lsh',
-                                 load_lib=load_lib)
+                                load_lib=load_lib)
 
         if butler.dashboard.set(key='plot_data', value=[]) is None:
             butler.dashboard.set(key='plot_data', value=[])
@@ -76,7 +76,7 @@ class OFUL_Hashing:
         utils.debug_print('Running OFUL X9 Hashing')
         expected_rewards = np.asarray(butler.participants.get(uid=participant_uid, key='_bo_expected_rewards'))
         do_not_ask = butler.participants.get(uid=participant_uid, key='_bo_do_not_ask')
-        # utils.debug_print('dna: ', do_not_ask)
+        utils.debug_print('dna in gQ: ', do_not_ask)
         expected_rewards[np.asarray(do_not_ask)] = -np.inf
         i_x = np.argmax(expected_rewards)
         # utils.debug_print('add %d to dna'%(i_x))
@@ -114,20 +114,22 @@ class OFUL_Hashing:
             'participant_uid': participant_uid
         }
 
-        butler.job('modelUpdate', task_args, ignore_result=True)
+        butler.job('modelUpdateHash', task_args, ignore_result=True)
 
         return True
 
-    def modelUpdate(self, butler, task_args):
+    def modelUpdateHash(self, butler, task_args):
         target_id = task_args['target_id']
         target_reward = task_args['target_reward']
         participant_uid = task_args['participant_uid']
 
 
-        X = get_feature_vectors(butler)
-        lsh = np.load(butler.memory.get_file('lsh')).tolist()
-        lsh.projections_all = np.load(butler.memory.get_file('projections_all'))
-
+        # X = get_feature_vectors(butler)
+        X = butler.db.X
+        # lsh = np.load(butler.memory.get_file('lsh')).tolist()
+        # lsh.projections_all = np.load(butler.memory.get_file('projections_all'))
+        lsh = butler.db.lsh
+        lsh.projections_all = butler.db.projections_all
         participant_doc = butler.participants.get(uid=participant_uid)
 
         bandit_context = bc.bandit_extract_context(participant_doc)
@@ -152,8 +154,10 @@ class OFUL_Hashing:
         # utils.debug_print('plot_data: ', bandit_context['plot_data'])
         bandit_context['t'] = t + 1
         participant_doc.update(bandit_context)
+        del participant_doc['_bo_do_not_ask']
         butler.participants.set_many(uid=participant_doc['participant_uid'],
                                      key_value_dict=participant_doc)
+
         return True
 
     def getModel(self, butler):

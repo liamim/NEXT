@@ -25,38 +25,25 @@ git_hash = next.constants.GIT_HASH
 #TODO: move __import__ to importlib
 class App(object):
     def __init__(self, app_id, exp_uid, db, ell):
-        # utils.debug_print('TTT2.3.1', time.time())
         self.app_id = app_id
         self.exp_uid = exp_uid
         self.helper = Helper()
-        # utils.debug_print('TTT2.3.2', time.time())
         self.myApp = __import__('apps.'+self.app_id, fromlist=[''])
-        # utils.debug_print('TTT2.3.3', time.time())
         self.myApp = getattr(self.myApp, app_id)
-        # utils.debug_print('TTT2.3.4', time.time())
         self.myApp = self.myApp(db)
-        # utils.debug_print('TTT2.3.5', time.time())
         self.butler = Butler(self.app_id, self.exp_uid, self.myApp.TargetManager, db, ell)
-        # utils.debug_print('TTT2.3.6', time.time())
         base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__),"../../apps"))
-        # utils.debug_print('TTT2.3.7', time.time())
         self.reference_dict,app_errs = verifier.load_doc("{}/{}.yaml".format(app_id, app_id), base_dir)
-        # utils.debug_print('TTT2.3.8', time.time())
         self.algs_reference_dict,alg_errs = verifier.load_doc("{}/algs/Algs.yaml".format(app_id, app_id), base_dir)
-        # utils.debug_print('TTT2.3.9', time.time())
         if len(app_errs) > 0 or len(alg_errs) > 0:
             raise Exception("App YAML formatting errors: \n{}\n\nAlg YAML formatting errors: \n{}".format(
                 str(app_errs),
                 str(alg_errs)
             ))
-        # utils.debug_print('TTT2.3.10', time.time())
         dashboard_string = 'apps.' + self.app_id + \
                            '.dashboard.Dashboard'
-        # utils.debug_print('TTT2.3.11', time.time())
-        dashboard_module = __import__(dashboard_string, fromlist=[''])
-        # utils.debug_print('TTT2.3.12', time.time())
-        self.dashboard = getattr(dashboard_module, app_id+'Dashboard')
-        # utils.debug_print('TTT2.3.13', time.time())
+        #dashboard_module = __import__(dashboard_string, fromlist=[''])
+        #self.dashboard = getattr(dashboard_module, app_id+'Dashboard')
         self.log_entry_durations = {}
 
     def run_alg(self, butler, alg_label, alg, func_name, alg_args):
@@ -129,7 +116,6 @@ class App(object):
             traceback.print_tb(exc_traceback)
             return '{}', False, str(error)
 
-
     def getQuery(self, exp_uid, args_json):
         try:
     	    args_dict = self.helper.convert_json(args_json)
@@ -141,10 +127,12 @@ class App(object):
             # Create the participant dictionary in participants bucket if needed. Also pull out label and id for this algorithm
             participant_uid = args_dict['args'].get('participant_uid', args_dict['exp_uid'])
             # Check to see if the first participant has come by and if not, save to db
-            participant_doc = self.butler.participants.get(uid=participant_uid)
-            first_participant_query = participant_doc==None
+            # participant_doc = self.butler.participants.get(uid=participant_uid)
+            # first_participant_query = participant_doc == None
+            first_participant_query = not (self.butler.participants.exists(uid=participant_uid))
+            utils.debug_print('fpq',first_participant_query,participant_uid)
             if first_participant_query:
-                participant_doc = {}
+                # participant_doc = {}
                 self.butler.participants.set(uid=participant_uid, value={'exp_uid':exp_uid, 'participant_uid':participant_uid})
             if (participant_uid == exp_uid) or (participant_to_algorithm_management == 'one_to_many') or (first_participant_query):
                 if algorithm_management_settings['mode'] == 'fixed_proportions':
@@ -152,6 +140,7 @@ class App(object):
                     chosen_alg = numpy.random.choice(alg_list, p=prop)
                 elif algorithm_management_settings['mode'] == 'custom' :
                     chosen_alg = getattr(self.myApp, 'chooseAlg')(self.butler, args_dict['args'])
+                    utils.debug_print('chosren asssddd',chosen_alg)
                 else:
                     chosen_alg = numpy.random.choice(alg_list)
                 alg_id = chosen_alg['alg_id']
@@ -160,11 +149,14 @@ class App(object):
                     self.butler.participants.set(uid=participant_uid, key='alg_id',value=alg_id)
                     self.butler.participants.set(uid=participant_uid, key='alg_label',value=alg_label)
             elif (participant_to_algorithm_management=='one_to_one'):
-                alg_id = participant_doc['alg_id']
-                alg_label = participant_doc['alg_label']
+                # alg_id = participant_doc['alg_id']
+                # alg_label = participant_doc['alg_label']
+                alg_id = self.butler.participants.get(uid=participant_uid, key='alg_id')
+                alg_label = self.butler.participants.get(uid=participant_uid, key='alg_label')
 
             query_uid = utils.getNewUID()
             args_dict['args'].update(query_uid=query_uid)
+            utils.debug_print('uwytefdasssddd',alg_id,alg_label)
             query_doc = self.call_app_fn(alg_label, alg_id, 'getQuery', args_dict)
             
             query_doc.update({'participant_uid':participant_uid,

@@ -21,6 +21,32 @@ import next.apps.Butler as Butler
 import next.lib.pijemont.verifier as verifier
 from billiard import current_process
 
+from celery.signals import celeryd_init
+
+@celeryd_init.connect
+def configure_workers(sender=None, conf=None, **kwargs):
+    next.utils.debug_print("AWWW",sender)
+    if sender.startswith('Hash_Worker'):
+        from next.lib.hash import kjunutils
+        from next.lib.hash import lsh_kjun_v3
+        from next.lib.hash import lsh_kjun_nonquad
+
+        next.utils.debug_print('loading stuff...')
+        filename = 'projections_all.npy'
+        db.projections_all = numpy.load(filename)
+        filename = 'lsh_index_array.npy'
+        db.lsh_index_array = numpy.load(filename)
+        filename = 'projections_nonquad.npy'
+        db.projections_nonquad = numpy.load(filename)
+        filename = 'hash_object.npy'
+        db.lsh = numpy.load(filename).tolist()
+        filename = 'hash_object_nonquad.npy'
+        db.lsh_nonquad = numpy.load(filename).tolist()
+        filename = 'features_d1000.npy'
+        db.X = numpy.load(filename)
+        next.utils.debug_print('loaded stuff...')
+
+
 #next.utils.debug_print('loading features in',os.getpid())
 #db.features = numpy.load('features_d1000.npy')
 # next.utils.debug_print('loading projections_all in',os.getpid())
@@ -37,6 +63,7 @@ from billiard import current_process
 
 Memory = Butler.Memory
 Butler = Butler.Butler
+process = current_process()
 
 # for i in range(len(sys.argv)):
 #     if sys.argv[i] == '-n':
@@ -98,6 +125,7 @@ class App_Wrapper:
 # Main application task
 def apply(app_id, exp_uid, task_name, args_in_json, enqueue_timestamp):
     # next.utils.debug_print('TTTasdasd', time.time())
+
     next.utils.debug_print('applying', task_name, os.getpid())
     enqueue_datetime = next.utils.str2datetime(enqueue_timestamp)
     dequeue_datetime = next.utils.datetimeNow()
@@ -116,7 +144,7 @@ def apply(app_id, exp_uid, task_name, args_in_json, enqueue_timestamp):
     # pass it to a method
     # next.utils.debug_print('TTT2.5', time.time())
     method = getattr(next_app, task_name)
-    # next.utils.debug_print('TTT3', time.time())
+    next.utils.debug_print('TTT3', time.time())
     response, dt = next.utils.timeit(method)(exp_uid, args_in_json)
     # next.utils.debug_print('TTT4', time.time())
     args_out_json,didSucceed,message = response
