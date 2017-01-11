@@ -21,16 +21,32 @@ class Memory(object):
             return size / self.max_entry_size
         else:
             return (size / self.max_entry_size) + 1
-        
+
     def set(self, key, value):
         self.ensure_connection()
         try:
             n = self.num_entries(len(value))
-            utils.debug_print("Setting ",len(value),"bytes in",n,"entries")
+            utils.debug_print("Setting ", len(value), "bytes in", n, "entries")
             for i in range(n):
                 k = key + ":" + str(i)
-                self.cache.set(k,value[i*self.max_entry_size:(i+1)*self.max_entry_size])
-            return self.cache.set(key,"{}:{}".format(str(n),str(len(value))))
+                self.cache.set(k, value[i * self.max_entry_size:(i + 1) * self.max_entry_size])
+            return self.cache.set(key, "{}:{}".format(str(n), str(len(value))))
+        except Exception as exc:
+            utils.debug_print("REDIS OOPS: ", exc)
+            return False
+
+    def erase(self, key, value):
+        self.ensure_connection()
+        try:
+            d =  self.cache.get(key)
+            n,l = d.split(":")
+            l = int(l)
+            n = int(n)
+            utils.debug_print("Erasing ",n,"entries")
+            for i in range(n):
+                k = key + ":" + str(i)
+                self.cache.delete(k)
+            return self.cache.delete(key)
         except Exception as exc:
             utils.debug_print("REDIS OOPS: ",exc)
             return False
