@@ -92,7 +92,8 @@ class OFUL_Hashing:
             target_id = butler.participants.get(uid=participant_uid, key='i_hat')
             # utils.debug_print('pargs in processAnswer:', participant_doc)
             X = get_feature_vectors(butler)
-            lsh = np.load(butler.memory.get_file('lsh')).tolist()
+            # lsh = np.load(butler.memory.get_file('lsh')).tolist()
+            lsh = np.load('hash_object.npy').tolist()
             lsh.projections_all = np.load(butler.memory.get_file('projections_all'))
 
             opts = bc.bandit_init_options()

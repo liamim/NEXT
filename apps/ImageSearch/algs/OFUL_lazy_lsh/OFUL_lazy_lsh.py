@@ -128,7 +128,8 @@ class OFUL_lazy_lsh:
         # lsh.projections_all = np.load(butler.memory.get_file('projections_nonquad'))
 
         X = butler.db.X
-        lsh = butler.db.lsh_nonquad
+        # lsh = butler.db.lsh_nonquad
+        lsh = np.load('hash_object_nonquad.npy').tolist()
         lsh.projections_all = butler.db.projections_nonquad
 
         participant_doc = butler.participants.get(uid=participant_uid)

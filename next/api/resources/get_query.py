@@ -73,10 +73,10 @@ class getQuery(Resource):
         if not didSucceed:
             return attach_meta({},meta_error['QueryGenerationError'], backend_error=message)
 
-        filename = 'imagesearch_logs-{}.pkl'.format(today)
-        if filename not in os.listdir('.'):
-            with open(filename, 'wb') as f:
-                pickle.dump({}, f)
+        # filename = 'imagesearch_logs-{}.pkl'.format(today)
+        # if filename not in os.listdir('.'):
+        #     with open(filename, 'wb') as f:
+        #         pickle.dump({}, f)
         # with open(filename, 'rb') as f:
         #     logging = pickle.load(f)
         #     log = {'response_dict': response_dict, 'time_getQuery': t2 - t1,

@@ -162,7 +162,7 @@ class ImageSearch(object):
             # target_indices = [4050, 2959, 2226]
             # target_indices = [35828] # a super hard starting point
             # target_indices = [35793]
-            butler.participants.set(uid=participant_uid, key='ntries', value=1)
+            # butler.participants.set(uid=participant_uid, key='ntries', value=1)
 
             num_starting_points_pulled = experiment_dict[alg_id]['num_starting_points_pulled']
             next_arm = min(num_starting_points_pulled, key=num_starting_points_pulled.get)
@@ -211,8 +211,8 @@ class ImageSearch(object):
             # t15 = time.time()
             # t16 = time.time()
             # t = butler.participants.get(uid=participant_uid, key="num_tries")
-            t = butler.participants.get(uid=participant_uid, key='ntries')
-            utils.debug_print('pargs.num_tries: ', t)
+            # t = butler.participants.get(uid=participant_uid, key='ntries')
+            # utils.debug_print('pargs.num_tries: ', t)
             # counterString = '{t}/50'.format(t=t)
             counterString = 'Query image'
             return_dict = {'initial_query': False, 'targets': targets_list, 'main_target': init_target,
@@ -220,7 +220,7 @@ class ImageSearch(object):
                            'instructions': 'Is this the kind of image you are looking for?',
                            'count': counterString
                            }
-            butler.participants.set(uid=participant_uid, key='ntries', value=t + 1)
+            # butler.participants.set(uid=participant_uid, key='ntries', value=t + 1)
 
             # t17 = time.time()
 
@@ -279,6 +279,7 @@ class ImageSearch(object):
         """
         t1 = time.time()
         participant_uid = butler.queries.get(uid=args['query_uid'], key='participant_uid')
+        utils.debug_print('keys in args in processAnswers: ', args.keys())
         butler.participants.increment(uid=participant_uid, key='num_tries')
         if args['initial_query']:
             # utils.debug_print('I should be starting here')

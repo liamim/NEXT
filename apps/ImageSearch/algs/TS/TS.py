@@ -93,7 +93,8 @@ class TS:
             target_id = butler.participants.get(uid=participant_uid, key='i_hat')
 
             X = get_feature_vectors(butler)
-            lsh = np.load(butler.memory.get_file('lsh_non_quad')).tolist()
+            # lsh = np.load(butler.memory.get_file('lsh_non_quad')).tolist()
+            lsh = np.load('hash_object_nonquad.npy').tolist()
             lsh.projections_all = np.load(butler.memory.get_file('projections_nonquad'))
             opts = bc.bandit_init_options()
             opts['lsh'] = lsh

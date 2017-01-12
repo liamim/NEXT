@@ -65,6 +65,7 @@ nextbackenddocker:
     - rabbitmq:RABBIT
     - rabbitmqredis:RABBITREDIS
     - mongodb:MONGODB
+    - minionredis:MINIONREDIS
     - minionworker:MINIONWORKER
   environment:
    - PYTHONUNBUFFERED=TRUE
@@ -73,7 +74,8 @@ nextbackenddocker:
    - NEXT_BACKEND_GLOBAL_HOST
    - NEXT_BACKEND_GLOBAL_PORT
    - TERM=xterm
-   - CELERY_ON=False
+   # - CELERY_ON=False
+   - CELERY_ON=True
 ####################################
 
 
