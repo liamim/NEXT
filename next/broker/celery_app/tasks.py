@@ -44,6 +44,8 @@ def configure_workers(sender=None, conf=None, **kwargs):
         db.lsh_nonquad = numpy.load(filename).tolist()
         filename = 'features_d1000.npy'
         db.X = numpy.load(filename)
+        filename = 'lsh_index_array.npy'
+        db.lsh_index_array = numpy.load(filename)
         next.utils.debug_print('loaded stuff...')
 
 

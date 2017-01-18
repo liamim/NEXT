@@ -53,18 +53,18 @@ class OFUL_Hashing:
 
     def initExp(self, butler, params=None, n=None, R=None, ridge=None,
                 failure_probability=None):
-        load_lib = False
-        self.load_and_save_numpy(butler, filename='features_d1000.npy', property_name='features', load_lib=load_lib)
+        # load_lib = False
+        # self.load_and_save_numpy(butler, filename='features_d1000.npy', property_name='features', load_lib=load_lib)
 
-        self.load_and_save_numpy(butler, filename='lsh_index_array.npy', property_name='lsh_index_array',
-                                 load_lib=load_lib)
+        # self.load_and_save_numpy(butler, filename='lsh_index_array.npy', property_name='lsh_index_array',
+        #                          load_lib=load_lib)
 
-        self.load_and_save_numpy(butler, filename='projections_all.npy', property_name='projections_all',
-                                load_lib=load_lib)
+        # self.load_and_save_numpy(butler, filename='projections_all.npy', property_name='projections_all',
+        #                         load_lib=load_lib)
 
-        load_lib = True
-        self.load_and_save_numpy(butler, filename='hash_object.npy', property_name='lsh',
-                                load_lib=load_lib)
+        # load_lib = True
+        # self.load_and_save_numpy(butler, filename='hash_object.npy', property_name='lsh',
+        #                         load_lib=load_lib)
 
         if butler.dashboard.set(key='plot_data', value=[]) is None:
             butler.dashboard.set(key='plot_data', value=[])
@@ -79,6 +79,7 @@ class OFUL_Hashing:
         utils.debug_print('dna in gQ: ', do_not_ask)
         expected_rewards[np.asarray(do_not_ask)] = -np.inf
         i_x = np.argmax(expected_rewards)
+        utils.debug_print('Arm pulled in gQ: ', i_x)
         # utils.debug_print('add %d to dna'%(i_x))
         butler.participants.append(uid=participant_uid,
                                    key='_bo_do_not_ask', value=i_x)
@@ -88,34 +89,76 @@ class OFUL_Hashing:
     def processAnswer(self, butler, target_id=None,
                       target_reward=None, participant_uid=None):
         if not target_id:
-            participant_doc = butler.participants.get(uid=participant_uid)
+            # participant_doc = butler.participants.get(uid=participant_uid)
             target_id = butler.participants.get(uid=participant_uid, key='i_hat')
-            # utils.debug_print('pargs in processAnswer:', participant_doc)
-            X = get_feature_vectors(butler)
-            # lsh = np.load(butler.memory.get_file('lsh')).tolist()
-            lsh = np.load('hash_object.npy').tolist()
-            lsh.projections_all = np.load(butler.memory.get_file('projections_all'))
+            # # utils.debug_print('pargs in processAnswer:', participant_doc)
+            # X = get_feature_vectors(butler)
+            # # lsh = np.load(butler.memory.get_file('lsh')).tolist()
+            # lsh = np.load('hash_object.npy').tolist()
+            # lsh.projections_all = np.load(butler.memory.get_file('projections_all'))
 
-            opts = bc.bandit_init_options()
-            opts['lsh'] = lsh
-            opts['lsh_index_array'] = np.load(butler.memory.get_file('lsh_index_array'))
-            opts['param2'] = 10.0 ** -4
-            opts['max_dist_comp'] = 500
-            # utils.debug_print('lsh index array: ', opts['lsh_index_array'])
-            bandit_context = bc.bandit_init('ofulx9_lsh', target_id, X, opts=opts)
-            bandit_context['t'] = 0
-            bandit_context['init_arm'] = target_id
+            # opts = bc.bandit_init_options()
+            # opts['lsh'] = lsh
+            # opts['lsh_index_array'] = np.load(butler.memory.get_file('lsh_index_array'))
+            # opts['param2'] = 10.0 ** -4
+            # opts['max_dist_comp'] = 500
+            # # utils.debug_print('lsh index array: ', opts['lsh_index_array'])
+            # bandit_context = bc.bandit_init('ofulx9_lsh', target_id, X, opts=opts)
+            # bandit_context['t'] = 0
+            # bandit_context['init_arm'] = target_id
+            # butler.participants.set_many(uid=participant_uid, key_value_dict=bandit_context)
+
+            n = 50025
+            expected_rewards = np.ones(n)*-np.inf
+            NN_order = np.load('NN_order.npy').tolist()
+            utils.debug_print('Order of NN in procA: ', NN_order[target_id])
+            expected_rewards[NN_order[target_id]] = range(0,50)[::-1]
+
+            bandit_context = {'_bo_expected_rewards': expected_rewards, '_bo_do_not_ask': [target_id]}
+            # butler.participants.set(uid=participant_uid, key='_bo_expected_rewards', value=expected_rewards)
             butler.participants.set_many(uid=participant_uid, key_value_dict=bandit_context)
+
+            task_args = {
+                'participant_uid': participant_uid,
+                'target_id': target_id
+            }
+
+            butler.job('modelInit', task_args, ignore_result=True)
 
             return True
 
         task_args = {
+            'participant_uid': participant_uid,
             'target_id': target_id,
-            'target_reward': target_reward,
-            'participant_uid': participant_uid
+            'target_reward': target_reward
         }
 
         butler.job('modelUpdateHash', task_args, ignore_result=True)
+
+        return True
+
+    def modelInit(self, butler, task_args):
+        participant_uid = task_args['participant_uid']
+        target_id = task_args['target_id']
+        # participant_doc = butler.participants.get(uid=participant_uid)
+        # target_id = butler.participants.get(uid=participant_uid, key='i_hat')
+        # utils.debug_print('pargs in processAnswer:', participant_doc)
+        X = butler.db.X
+        # lsh = np.load(butler.memory.get_file('lsh')).tolist()
+        lsh = butler.db.lsh
+        lsh.projections_all = butler.db.projections_all
+
+        opts = bc.bandit_init_options()
+        opts['lsh'] = lsh
+        opts['lsh_index_array'] = butler.db.lsh_index_array
+        opts['param2'] = 10.0 ** -4
+        opts['max_dist_comp'] = 500
+        # utils.debug_print('lsh index array: ', opts['lsh_index_array'])
+        bandit_context = bc.bandit_init('ofulx9_lsh', target_id, X, opts=opts)
+        bandit_context['t'] = 0
+        bandit_context['init_arm'] = target_id
+        del bandit_context['_bo_do_not_ask']
+        butler.participants.set_many(uid=participant_uid, key_value_dict=bandit_context)
 
         return True
 

@@ -3,8 +3,8 @@
 */
 
 var next_widget = (function($){
-//    var _url = "localhost";
-    var _url = "https://next.discovery.wisc.edu/";
+    var _url = "localhost";
+//    var _url = "https://next.discovery.wisc.edu/";
     var _args = null;
     var _callbacks = null;
     var _queryTime = 0;

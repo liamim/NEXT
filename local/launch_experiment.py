@@ -100,7 +100,7 @@ def generate_target_blob(prefix,
                            'primary_type': 'image',
                            'primary_description':  n.values()[0],
                            'alt_type': 'text',
-                           'alt_description': n.keys()[0]}
+                           'alt_description': ''}
             targets_next += [target_next]
         targets = targets_next
     else:
@@ -200,8 +200,8 @@ def launch_experiment(host, experiment_list):
     targets = experiment['initExp']['args']['targets']
     n = targets['n'] if 'n' in targets.keys() else len(targets)
 
-    url = 'https://{}/api/experiment'.format(host)
-    # url = 'http://{}/api/experiment'.format(host)
+    # url = 'https://{}/api/experiment'.format(host)
+    url = 'http://{}/api/experiment'.format(host)
     print 'Initializing experiment', experiment['initExp'].keys()
     print 'Length of the json dump: ', len(json.dumps(experiment['initExp']))
     response = requests.post(url,
@@ -218,8 +218,8 @@ def launch_experiment(host, experiment_list):
     #exp_key_list.append(str(exp_key))
     #widget_key_list.append(str(perm_key))
 
-    print "\nQuery Url is at: https://"+host+"/query/query_page/query_page/"+exp_uid + "\n"
-    # print "\nQuery Url is at: http://" + host + "/query/query_page/query_page/" + exp_uid + "\n"
+    # print "\nQuery Url is at: https://"+host+"/query/query_page/query_page/"+exp_uid + "\n"
+    print "\nQuery Url is at: http://" + host + "/query/query_page/query_page/" + exp_uid + "\n"
 
   print "exp_uid_list:", exp_uid_list
   #print "exp_key_list:", exp_key_list

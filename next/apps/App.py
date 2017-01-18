@@ -17,6 +17,21 @@ import next.lib.pijemont.verifier as verifier
 import next.constants
 import next.apps.Butler as Butler
 
+from decorator import decorator
+from line_profiler import LineProfiler
+
+
+@decorator
+def profile_each_line(func, *args, **kwargs):
+    profiler = LineProfiler()
+    profiled_func = profiler(func)
+    retval = None
+    try:
+        retval = profiled_func(*args, **kwargs)
+    finally:
+        profiler.print_stats()
+    return retval
+
 Butler = Butler.Butler
 git_hash = next.constants.GIT_HASH
 
@@ -177,6 +192,7 @@ class App(object):
             traceback.print_tb(exc_traceback)
             return '{}', False, str(error)
 
+    @profile_each_line
     def processAnswer(self, exp_uid, args_json):
         try:
             args_dict = self.helper.convert_json(args_json)

@@ -166,6 +166,9 @@ class JobBroker:
         if task_name == 'modelUpdateHash':
             queue_name = 'Hash_Queue@'+domain
             utils.debug_print('Queuing the Hashing function')
+        if task_name == 'modelInit':
+            queue_name = 'Hash_Queue@'+domain
+            utils.debug_print('Queuing the Init in Hashing')
         job_uid = utils.getNewUID()
         if time_limit == 0:
             soft_time_limit = None
