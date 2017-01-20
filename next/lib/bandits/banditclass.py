@@ -40,24 +40,24 @@ class LshNonquadWrap(object):
 ################################################################################
     def __init__(self, lsh, lsh_index_array):
         if (lsh is None):
-          return; 
+          return;
         self.lsh = lsh;
         self.index_array = lsh_index_array;
 
-        tmp = numpy.zeros(len(lsh_index_array),dtype=int);                      
-        tmp[self.index_array.tolist()] = range(len(lsh_index_array)); 
-        self.index_array_inv = tmp;                     
+        tmp = numpy.zeros(len(lsh_index_array),dtype=int);
+        tmp[self.index_array.tolist()] = range(len(lsh_index_array));
+        self.index_array_inv = tmp;
 
     def FindUpto(self, query, max_dist_comp, randomize, invalidList, maxLookup=5000):
         myQuery = np.zeros((len(query),1), dtype=float32);
         myQuery[:,0] = query;
         lshInvalidSet = set( [self.index_array_inv[x] for x in invalidList] );
-        foundSet, foundListTuple, dbgDict = self.lsh.FindUpto(myQuery, max_dist_comp, 
+        foundSet, foundListTuple, dbgDict = self.lsh.FindUpto(myQuery, max_dist_comp,
                                           randomize=randomize, invalidSet=lshInvalidSet, maxLookup=maxLookup)
         maxDepth = max([x[1] for x in foundListTuple])
         foundList = [self.index_array[x[0]] for x in foundListTuple]
 
-        #- when there is not enough things, fill it out with 
+        #- when there is not enough things, fill it out with
         nFound = len(foundList);
         dbgDict['nRetrievedFromLsh'] = nFound;
         N = len(self.index_array);
@@ -74,13 +74,13 @@ class LshQuadWrap(object):
 ################################################################################
     def __init__(self, lsh, lsh_index_array):
         if (lsh is None):
-          return; 
+          return;
         self.lsh = lsh;
         self.index_array = lsh_index_array;
 
-        tmp = numpy.zeros(len(lsh_index_array),dtype=int);                      
-        tmp[self.index_array.tolist()] = range(len(lsh_index_array)); 
-        self.index_array_inv = tmp;                     
+        tmp = numpy.zeros(len(lsh_index_array),dtype=int);
+        tmp[self.index_array.tolist()] = range(len(lsh_index_array));
+        self.index_array_inv = tmp;
 
     def FindUpto(self, query_1_vec, query_2_mat, max_dist_comp, randomize, invalidList, maxLookup=5000):
         d = len(query_1_vec);
@@ -88,12 +88,12 @@ class LshQuadWrap(object):
         myQuery[:d,0] = query_1_vec;
         myQuery[d:,0] = query_2_mat.ravel();
         lshInvalidSet = set( [self.index_array_inv[x] for x in invalidList] );
-        foundSet, foundListTuple, dbgDict = self.lsh.FindUpto(myQuery, max_dist_comp, 
+        foundSet, foundListTuple, dbgDict = self.lsh.FindUpto(myQuery, max_dist_comp,
                                           randomize=randomize, invalidSet=lshInvalidSet, maxLookup=maxLookup);
         maxDepth = max([x[1] for x in foundListTuple])
         foundList = [self.index_array[x[0]] for x in foundListTuple]
 
-        #- when there is not enough things, fill it out with 
+        #- when there is not enough things, fill it out with
         nFound = len(foundList);
         dbgDict['nRetrievedFromLsh'] = nFound;
         N = len(self.index_array);
@@ -134,13 +134,13 @@ class oful(banditclass):
         self.debugval = None
 
     def setparams(self, opts):
-        self.ridge = opts['param1'] 
+        self.ridge = opts['param1']
         self.scale = opts['param2'];
         self.delta = opts['delta']
         self.R = opts['R'];
         self.S_hat = opts['S_hat'];
-        self.shifted = opts['shifted'] 
-        self.sqrt_beta_ary = [] 
+        self.shifted = opts['shifted']
+        self.sqrt_beta_ary = []
         self.t = 1
 
         X = self.X
@@ -184,7 +184,7 @@ class oful(banditclass):
         tempval2 = numpy.dot(tempval1, xt)
 
         X_invVt_norm_sq = X_invVt_norm_sq - (numpy.dot(X, tempval1) ** 2) / (1 + tempval2) # efficient update
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)             # 
+        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)             #
         if self.shifted:
             thetahat = numpy.dot(invVt, b) + self.x0
         else:
@@ -228,12 +228,12 @@ class oful_light(banditclass):
 
     def setparams(self, opts):
         self.n, self.d = self.X.shape;
-        self.ridge = opts['param1'] 
+        self.ridge = opts['param1']
         self.scale = opts['param2'];
         self.delta = opts['delta']
         self.R = opts['R'];
         self.S_hat = opts['S_hat'];
-        self.shifted = opts['shifted'] 
+        self.shifted = opts['shifted']
         self.t = 1
         self.max_dist_comp = opts['max_dist_comp'];
 
@@ -293,7 +293,7 @@ class oful_light(banditclass):
 #        self.do_not_ask.append(next_index); # TODO is this done from NEXT side?
 
         self.t += 1
-        sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat); 
+        sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat);
         self.sqrt_beta = sqrt_beta
 #        self.sqrt_beta_ary.append(self.sqrt_beta)
         self.invVt = invVt
@@ -334,6 +334,7 @@ class oful_light(banditclass):
 
         return rewards, arms, self.sqrt_beta_ary, self.debugval
 
+
 ################################################################################
 class oful_lazy(banditclass):
 ################################################################################
@@ -351,12 +352,12 @@ class oful_lazy(banditclass):
         self.time_lsh_ary = [];
 
         self.n, self.d = self.X.shape;
-        self.ridge = opts['param1'] 
+        self.ridge = opts['param1']
         self.scale = opts['param2'];
         self.delta = opts['delta']
         self.R = opts['R'];
         self.S_hat = opts['S_hat'];
-        self.shifted = opts['shifted'] 
+        self.shifted = opts['shifted']
         self.t = 1
         self.max_dist_comp = opts['max_dist_comp']
         X = self.X
@@ -372,9 +373,9 @@ class oful_lazy(banditclass):
           self.nRetrievedFromLshList = [];
 #           self.lsh = opts['lsh'];
 #           self.index_array = opts["lsh_index_array"]
-#           tmp = numpy.zeros(self.n);                      
-#           tmp[self.index_array.tolist()] = range(self.n); 
-#           self.index_array_inv = tmp;                     
+#           tmp = numpy.zeros(self.n);
+#           tmp[self.index_array.tolist()] = range(self.n);
+#           self.index_array_inv = tmp;
 
         self.thetahat = self.x0
         self.invVt = numpy.eye(d) / self.ridge
@@ -385,7 +386,7 @@ class oful_lazy(banditclass):
         self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat);
 #        self.sqrt_beta_ary.append(self.sqrt_beta)
 
-        self.X_invVt_norm_sq = numpy.sum(X * X, axis=1) / self.ridge 
+        self.X_invVt_norm_sq = numpy.sum(X * X, axis=1) / self.ridge
 
         #- for lazy update.
         self.logdetV = self.d*log(self.ridge);
@@ -411,19 +412,19 @@ class oful_lazy(banditclass):
           expected_rewards[:] = numpy.dot(X, self.thetahat) + self.sqrt_beta * inv_Vt_norm;
           best_index = validinds[numpy.argmax(expected_rewards[validinds])];
           x = X[best_index,:];
-          thetatil = self.thetahat + (self.sqrt_beta / inv_Vt_norm[best_index]) * np.dot(self.invVt,x); 
+          thetatil = self.thetahat + (self.sqrt_beta / inv_Vt_norm[best_index]) * np.dot(self.invVt,x);
           written_inds = validinds.copy();
         elif (self.subsample_type == 'light' or self.subsample_type == 'lsh'):
           light_inds = ra.permutation(validinds)[0:self.max_dist_comp];
           subX = X[light_inds,:];
 
           sub_inv_Vt_norm = np.sqrt(np.sum(subX * np.dot(subX,self.invVt), 1));
-          expected_rewards[:] = -np.inf; 
+          expected_rewards[:] = -np.inf;
           expected_rewards[light_inds] = numpy.dot(subX, self.thetahat) + self.sqrt_beta * sub_inv_Vt_norm;
           best_index_inner = argmax(expected_rewards[light_inds])
           best_index = light_inds[best_index_inner];
           x = X[best_index,:];
-          thetatil = self.thetahat + (self.sqrt_beta / sub_inv_Vt_norm[best_index_inner]) * np.dot(self.invVt,x); 
+          thetatil = self.thetahat + (self.sqrt_beta / sub_inv_Vt_norm[best_index_inner]) * np.dot(self.invVt,x);
           written_inds = light_inds;
         else:
           assert False, 'unknown type'
@@ -434,7 +435,7 @@ class oful_lazy(banditclass):
         expected_rewards = self.expected_rewards;
         validinds = setdiff1d(range(self.n), self.do_not_ask);
         if (self.subsample_type == 'no'):
-          expected_rewards[:] = numpy.dot(X, self.thetatil_tau); 
+          expected_rewards[:] = numpy.dot(X, self.thetatil_tau);
           best_index = validinds[argmax(expected_rewards[validinds])];
           written_inds = validinds.copy();
         elif (self.subsample_type == 'light'):
@@ -452,8 +453,8 @@ class oful_lazy(banditclass):
           time_lsh = tic();
           foundList, maxDepth, debugDict = self.lsh_wrap.FindUpto(self.thetatil_tau, self.max_dist_comp, randomize=True, invalidList=invalidList, maxLookup=self.lsh_max_lookup);
           assert( len(numpy.intersect1d(foundList, validinds)) == len(foundList) );
-          self.time_lsh_ary.append(toc(time_lsh));  
-          self.maxDepthList.append(maxDepth);       
+          self.time_lsh_ary.append(toc(time_lsh));
+          self.maxDepthList.append(maxDepth);
           self.nRetrievedFromLshList.append(debugDict['nRetrievedFromLsh']);
 
           #--- compute the inner product
@@ -488,7 +489,7 @@ class oful_lazy(banditclass):
             self.thetahat = numpy.dot(invVt, self.XTy)
 
         self.t += 1
-        self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat); 
+        self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat);
 #        self.sqrt_beta_ary.append(self.sqrt_beta)
         self.invVt = invVt
 
@@ -533,15 +534,15 @@ class oful_lazy(banditclass):
 
         myDict = {};
         myDict['switch_time_ary'] = self.switch_time_ary;
-        printExpr("myDict['switch_time_ary']",bPretty=False);  
+        printExpr("myDict['switch_time_ary']",bPretty=False);
         if self.subsample_type == 'lsh':
             myDict['maxDepthList'] = self.maxDepthList;
             myDict['time_lsh_ary'] = self.time_lsh_ary;
             myDict['nRetrievedFromLshList'] = self.nRetrievedFromLshList;
             printExpr("myDict['nRetrievedFromLshList']",bPretty=False);
-#            printExpr("myDict['maxDepthList'])",bPretty=False); 
+#            printExpr("myDict['maxDepthList'])",bPretty=False);
 #            printExpr("myDict['nRetrievedList']",bPretty=False);
-#            printExpr("myDict['time_lsh_ary']",bPretty=False); 
+#            printExpr("myDict['time_lsh_ary']",bPretty=False);
         return rewards, arms, [], myDict;
 
 ################################################################################
@@ -582,13 +583,13 @@ class ofulx9(banditclass):
             print('debug; useSqrtBetaDet == True');
 
     def setparams(self, opts):
-        self.ridge = opts['param1'] 
+        self.ridge = opts['param1']
         self.scale = opts['param2'];
         self.delta = opts['delta']
         self.R = opts['R'];
         self.S_hat = opts['S_hat'];
-        self.shifted = opts['shifted'] 
-        self.sqrt_beta_ary = [] 
+        self.shifted = opts['shifted']
+        self.sqrt_beta_ary = []
         self.t = 1
         self.c1 = opts['c1']
 
@@ -608,9 +609,9 @@ class ofulx9(banditclass):
 
         self.X_invVt_norm_sq = numpy.sum(X * X, axis=1) / self.ridge
         if (self.useSqrtBetaDet):
-            self.sqrt_beta = CalcSqrtBetaDet(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat,self.logdetV);   
+            self.sqrt_beta = CalcSqrtBetaDet(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat,self.logdetV);
         else:
-            self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat);  
+            self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat);
         self.sqrt_beta_ary.append(self.sqrt_beta)
         self.term1 = self.X_invVt_norm_sq
         self.term2 = numpy.dot(X, thetahat)
@@ -632,7 +633,7 @@ class ofulx9(banditclass):
         self._process_reward(reward, next_index)
 
         return next_index, reward
-        
+
 
     def _process_reward(self, reward, next_index):
         X = self.X
@@ -648,7 +649,7 @@ class ofulx9(banditclass):
         self.logdetV += log(1 + tempval2);
 
         X_invVt_norm_sq = X_invVt_norm_sq - (numpy.dot(X, tempval1) ** 2) / (1 + tempval2) # efficient update
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)             # 
+        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)             #
         if self.shifted:
             thetahat = self.x0 + numpy.dot(invVt, b)
         else:
@@ -666,9 +667,9 @@ class ofulx9(banditclass):
         self.min_sqrt_eig = min_sqrt_eig
 
         if (self.useSqrtBetaDet):
-            self.sqrt_beta = CalcSqrtBetaDet(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat,self.logdetV);   
+            self.sqrt_beta = CalcSqrtBetaDet(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat,self.logdetV);
         else:
-            self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat);  
+            self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat);
         self.sqrt_beta_ary.append(self.sqrt_beta)
         self.term1 = X_invVt_norm_sq
         self.term2 = numpy.dot(X, thetahat)
@@ -729,13 +730,13 @@ class ofulx9_light(banditclass):
         self.doEigVal = None;
 
     def setparams(self, opts):
-        self.ridge = opts['param1'] 
+        self.ridge = opts['param1']
         self.scale = opts['param2'];
         self.delta = opts['delta']
         self.R = opts['R'];
         self.S_hat = opts['S_hat'];
-        self.shifted = opts['shifted'] 
-        self.sqrt_beta_ary = [] 
+        self.shifted = opts['shifted']
+        self.sqrt_beta_ary = []
         self.t = 1
         self.c1 = opts['c1']
         self.max_dist_comp = opts['max_dist_comp'];
@@ -787,7 +788,7 @@ class ofulx9_light(banditclass):
         tempval2 = numpy.dot(tempval1, xt)
 
         #X_invVt_norm_sq = X_invVt_norm_sq - (numpy.dot(X, tempval1) ** 2) / (1 + tempval2) # efficient update
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)             # 
+        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)             #
         if self.shifted:
             thetahat = self.x0 + numpy.dot(invVt, b)
         else:
@@ -804,7 +805,7 @@ class ofulx9_light(banditclass):
           min_sqrt_eig = 1/sqrt(self.ridge + self.t);
         self.min_sqrt_eig = min_sqrt_eig
 
-        sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat); 
+        sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat);
         self.sqrt_beta = sqrt_beta
         self.sqrt_beta_ary.append(sqrt_beta)
         #self.term1 = X_invVt_norm_sq
@@ -840,6 +841,114 @@ class ofulx9_light(banditclass):
 
         return rewards, arms, self.sqrt_beta_ary, self.debugval
 
+
+################################################################################
+class epsilon_greedy(banditclass):
+################################################################################
+    def __init__(self, x0, X, y):
+        self.x0 = x0
+        self.X = X
+        self.y = y
+
+
+    def setparams(self, opts):
+        self.n, self.d = self.X.shape
+        self.ridge = opts['param1']
+        self.epsilon = opts['param2']
+
+        self.shifted = opts['shifted']
+        self.vary_epsilon = opts['vary_epsilon']
+        self.t = 1
+
+        X = self.X
+        n = self.n
+        d = self.d
+
+        self.do_not_ask = opts['do_not_ask']
+
+        thetahat = self.x0
+        self.invVt = numpy.eye(d) / self.ridge
+        validinds = setdiff1d(range(n), self.do_not_ask)
+        self.validinds = validinds
+        self.XTy = numpy.zeros(len(thetahat))
+
+        self.expected_rewards = numpy.dot(X, thetahat)
+        self.thetahat = thetahat
+
+
+    def _next_arm(self):
+        epsilon = self.epsilon
+        if numpy.random.random() > epsilon:
+            next_index = self.validinds[np.argmax(self.expected_rewards[self.validinds])]
+        else:
+            next_index = numpy.random.choice(self.validinds, 1)[0]
+        # reward = self._get_reward(next_index)
+        #         self._process_reward(reward, next_index)
+        #         return next_index, reward
+        return next_index
+
+
+    def _process_reward(self, reward, next_index):
+        X = self.X
+        XTy = self.XTy
+        # X_invVt_norm_sq = self.X_invVt_norm_sq
+        invVt = self.invVt
+        #        validinds = self.validinds
+
+        xt = X[next_index, :]
+        XTy += reward * xt
+        tempval1 = numpy.dot(invVt, xt)
+        tempval2 = numpy.dot(tempval1, xt)
+
+        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)
+        if self.shifted:
+            thetahat = numpy.dot(invVt, XTy) + self.x0
+        else:
+            thetahat = numpy.dot(invVt, XTy)
+
+        self.t += 1
+        self.invVt = invVt
+        self.XTy = XTy
+        self.thetahat = thetahat
+
+        if self.vary_epsilon:
+            self.epsilon = self.epsilon/self.t
+
+        validinds = setdiff1d(range(self.n), self.do_not_ask)
+        self.validinds = validinds
+
+        expected_rewards = numpy.dot(X, thetahat)
+        self.expected_rewards = expected_rewards
+
+
+    def _get_reward(self, ind):
+        y = self.y
+        return 2 * float(y[ind]) - 1
+
+
+    def _update_do_not_ask(self, next_index):
+        self.do_not_ask.append(next_index)
+
+
+    def runbandit(self, T):
+        rewards = numpy.zeros(T)
+        arms = numpy.zeros(T)
+        for i in xrange(T):
+            #            next_index, reward = self._next_arm()
+            next_index = self._next_arm()
+
+            reward = self.y[next_index]
+            self._update_do_not_ask(next_index)
+
+            self._process_reward(reward, next_index)
+
+            rewards[i] = reward
+            arms[i] = next_index
+
+        return rewards, arms, self.debugval
+
+
+
 ################################################################################
 class ofulx9_lsh(banditclass):
 ################################################################################
@@ -853,15 +962,15 @@ class ofulx9_lsh(banditclass):
         self.maxDepthList = [];
         self.nRetrievedList = [];
         self.time_lsh_ary = [];
-      
+
         self.n, self.d = self.X.shape;
-        self.ridge = opts['param1'] 
+        self.ridge = opts['param1']
         self.scale = opts['param2'];
         self.delta = opts['delta']
         self.R = opts['R'];
         self.S_hat = opts['S_hat'];
-        self.shifted = opts['shifted'] 
-        self.sqrt_beta_ary = [] 
+        self.shifted = opts['shifted']
+        self.sqrt_beta_ary = []
         self.t = 1
         self.c1 = opts['c1']
         self.max_dist_comp = opts['max_dist_comp']
@@ -890,7 +999,7 @@ class ofulx9_lsh(banditclass):
         self.sqrt_beta = sqrt_beta
 #        self.sqrt_beta_ary.append(sqrt_beta)
 
-        #- 
+        #-
         self.expected_rewards = -inf*np.ones(self.n);
 
         #- initial update
@@ -900,8 +1009,8 @@ class ofulx9_lsh(banditclass):
         query_2_mat = self.invVt*(numpy.sqrt(self.sqrt_beta)/4 /self.c1 /self.min_sqrt_eig);
         foundList, maxDepth, debugDict = self.lsh_wrap.FindUpto(self.thetahat, query_2_mat, self.max_dist_comp, randomize=True, invalidList=invalidList, maxLookup=self.lsh_max_lookup);
         assert( len(numpy.intersect1d(foundList, validinds)) == len(foundList) );
-        self.time_lsh_ary.append(toc(time_lsh));  
-        self.maxDepthList.append(maxDepth);       
+        self.time_lsh_ary.append(toc(time_lsh));
+        self.maxDepthList.append(maxDepth);
         self.nRetrievedFromLshList.append(debugDict['nRetrievedFromLsh']);
 
         #--- compute the inner product
@@ -910,7 +1019,7 @@ class ofulx9_lsh(banditclass):
         term1 = numpy.sum(sub_X * dot(sub_X, self.invVt), axis=1)
         term2 = numpy.dot(sub_X, self.thetahat)
         self.expected_rewards[:] = -np.inf;
-        self.expected_rewards[foundList] = term2 + (numpy.sqrt(self.sqrt_beta) / 4 / self.c1 / self.min_sqrt_eig)* term1  
+        self.expected_rewards[foundList] = term2 + (numpy.sqrt(self.sqrt_beta) / 4 / self.c1 / self.min_sqrt_eig)* term1
         self.written_inds = foundList;
 
 #    @profile
@@ -943,7 +1052,7 @@ class ofulx9_lsh(banditclass):
           min_sqrt_eig = 1/sqrt(self.ridge + self.t);
         self.min_sqrt_eig = min_sqrt_eig
 
-        sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat); 
+        sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat);
         self.sqrt_beta = sqrt_beta
 
         self.invVt = invVt
@@ -957,8 +1066,8 @@ class ofulx9_lsh(banditclass):
         query_2_mat = self.invVt*(numpy.sqrt(self.sqrt_beta)/4 /self.c1 /self.min_sqrt_eig);
         foundList, maxDepth, debugDict = self.lsh_wrap.FindUpto(self.thetahat, query_2_mat, self.max_dist_comp, randomize=True, invalidList=invalidList, maxLookup=self.lsh_max_lookup);
         assert( len(numpy.intersect1d(foundList, validinds)) == len(foundList) );
-        self.time_lsh_ary.append(toc(time_lsh));  
-        self.maxDepthList.append(maxDepth);       
+        self.time_lsh_ary.append(toc(time_lsh));
+        self.maxDepthList.append(maxDepth);
         self.nRetrievedFromLshList.append(debugDict['nRetrievedFromLsh']);
 
         #- compute the expected rewards
@@ -966,7 +1075,7 @@ class ofulx9_lsh(banditclass):
         term1 = numpy.sum(sub_X * dot(sub_X, self.invVt), axis=1)
         term2 = numpy.dot(sub_X, self.thetahat)
         self.expected_rewards[:] = -np.inf;
-        self.expected_rewards[foundList] = term2 + (numpy.sqrt(self.sqrt_beta) / 4 / self.c1 / self.min_sqrt_eig)* term1  
+        self.expected_rewards[foundList] = term2 + (numpy.sqrt(self.sqrt_beta) / 4 / self.c1 / self.min_sqrt_eig)* term1
         self.written_inds = foundList;
 
     def _get_reward(self, ind):
@@ -990,7 +1099,7 @@ class ofulx9_lsh(banditclass):
             rewards[i] = reward
             arms[i] = next_index
 
-        
+
         myDict = {};
         myDict['maxDepthList'] = self.maxDepthList;
         myDict['time_lsh_ary'] = self.time_lsh_ary;
@@ -1032,16 +1141,16 @@ class thompson(banditclass):
         self.scale = opts['param2']
         self.delta = opts['delta']
         self.shifted = opts['shifted']
-        self.sqrt_beta_ary = [] 
+        self.sqrt_beta_ary = []
         self.t = 1
 
         X = self.X
         n = self.n
         d = self.d
 
-        # if you look closer, the paper claims that the confidence bound can be 
+        # if you look closer, the paper claims that the confidence bound can be
         # tightened by replacing T with t
-        self.v = self.scale * numpy.sqrt( 9 * self.d * numpy.log(1/self.delta) ) 
+        self.v = self.scale * numpy.sqrt( 9 * self.d * numpy.log(1/self.delta) )
 #         theta_til = self.x0
 #         self.theta_til = theta_til
         self.theta_hat = self.x0
@@ -1057,7 +1166,7 @@ class thompson(banditclass):
     def _next_arm(self):
         tmp = ra.normal(size=(self.d,));
         theta_til = dot(tmp,self.v*self.matR) + self.theta_hat;
-      
+
         validinds = self.validinds
 #        est_rewards = self.est_rewards
         est_rewards = np.dot(self.X, theta_til);
@@ -1087,8 +1196,8 @@ class thompson(banditclass):
         else:
             theta_hat = numpy.dot(invVt, b)
 
-        # update matR; this is call by reference.  
-        choldowndate(self.matR, tempval1 / np.sqrt(1 + tempval2)) 
+        # update matR; this is call by reference.
+        choldowndate(self.matR, tempval1 / np.sqrt(1 + tempval2))
 #         matR = linalg.cholesky(invVt).T;
 
         validinds = numpy.setdiff1d(validinds, next_index)
@@ -1194,13 +1303,13 @@ class ofulx9_l1(banditclass):
 
 
     def setparams(self, opts):
-        self.ridge = opts['param1'] 
+        self.ridge = opts['param1']
         self.scale = opts['param2'];
         self.delta = opts['delta']
         self.R = opts['R'];
         self.S_hat = opts['S_hat'];
-        self.shifted = opts['shifted'] 
-        self.sqrt_beta_ary = [] 
+        self.shifted = opts['shifted']
+        self.sqrt_beta_ary = []
         self.t = 1
         self.c1 = opts['c1']
 
@@ -1223,9 +1332,9 @@ class ofulx9_l1(banditclass):
 
         self.X_invVt_norm_sq = numpy.sum(X * X, axis=1) / self.ridge
         if (self.useSqrtBetaDet):
-            self.sqrt_beta = CalcSqrtBetaDet(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat,self.logdetV);   
+            self.sqrt_beta = CalcSqrtBetaDet(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat,self.logdetV);
         else:
-            self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat);  
+            self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat);
         self.sqrt_beta_ary.append(self.sqrt_beta)
         self.thetahat = thetahat;
 
@@ -1257,7 +1366,7 @@ class ofulx9_l1(banditclass):
         self.logdetV += log(1 + tempval2);
 
         X_invVt_norm_sq = X_invVt_norm_sq - (numpy.dot(X, tempval1) ** 2) / (1 + tempval2) # efficient update
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)             # 
+        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)             #
         if self.shifted:
             thetahat = self.x0 + numpy.dot(invVt, XTy)
         else:
@@ -1273,9 +1382,9 @@ class ofulx9_l1(banditclass):
         self.min_sqrt_eig = min_sqrt_eig
 
         if (self.useSqrtBetaDet):
-            self.sqrt_beta = CalcSqrtBetaDet(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat,self.logdetV);   
+            self.sqrt_beta = CalcSqrtBetaDet(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat,self.logdetV);
         else:
-            self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat);  
+            self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat);
         self.sqrt_beta_ary.append(self.sqrt_beta)
 
         self.X_invVt_norm_sq = X_invVt_norm_sq
@@ -1333,7 +1442,7 @@ class thompson_light(banditclass):
         self.scale = opts['param2']
         self.delta = opts['delta']
         self.shifted = opts['shifted']
-        self.sqrt_beta_ary = [] 
+        self.sqrt_beta_ary = []
         self.t = 1
         self.max_dist_comp = opts['max_dist_comp'];
 
@@ -1341,9 +1450,9 @@ class thompson_light(banditclass):
         n = self.n
         d = self.d
 
-        # if you look closer, the paper claims that the confidence bound can be 
+        # if you look closer, the paper claims that the confidence bound can be
         # tightened by replacing T with t
-        self.v = self.scale * numpy.sqrt( 9 * self.d * numpy.log(1/self.delta) ) 
+        self.v = self.scale * numpy.sqrt( 9 * self.d * numpy.log(1/self.delta) )
 #         theta_til = self.x0
 #         self.theta_til = theta_til
         self.theta_hat = self.x0
@@ -1360,7 +1469,7 @@ class thompson_light(banditclass):
     def _next_arm(self):
         tmp = ra.normal(size=(self.d,));
         theta_til = dot(tmp,self.v*self.matR) + self.theta_hat;
-      
+
         light_inds = self.light_inds
         self.est_rewards[light_inds] = dot(self.X[light_inds,:], theta_til);
 
@@ -1389,8 +1498,8 @@ class thompson_light(banditclass):
         else:
             theta_hat = numpy.dot(invVt, b)
 
-        # update matR; this is call by reference.  
-        choldowndate(self.matR, tempval1 / np.sqrt(1 + tempval2)) 
+        # update matR; this is call by reference.
+        choldowndate(self.matR, tempval1 / np.sqrt(1 + tempval2))
 #         tmp = ra.normal(size=(self.d,));
 #         theta_til = dot(tmp,v*self.matR) + theta_hat;
 
@@ -1466,7 +1575,7 @@ class thompson_lsh(banditclass):
 
         self.do_not_ask = opts['do_not_ask'];
 
-        self.v = self.scale * numpy.sqrt( 9 * self.d * numpy.log(1/self.delta) ) 
+        self.v = self.scale * numpy.sqrt( 9 * self.d * numpy.log(1/self.delta) )
         self.thetahat = self.x0
         self.invVt = numpy.eye(d); # I guess ridge parameter is 1 for TS
 #        if (self.do_chol_onestep):
@@ -1474,7 +1583,7 @@ class thompson_lsh(banditclass):
 #           matR = self.matR;
 #         else:
 #           matR = np.eye(d);
-        matR = np.eye(d); 
+        matR = np.eye(d);
 
         self.XTy = numpy.zeros(self.d)
         self.expected_rewards = -np.inf*np.ones(self.n);
@@ -1490,8 +1599,8 @@ class thompson_lsh(banditclass):
         time_lsh = tic();
         foundList, maxDepth, debugDict = self.lsh_wrap.FindUpto(theta_til, self.max_dist_comp, randomize=True, invalidList=invalidList, maxLookup=self.lsh_max_lookup);
         assert( len(numpy.intersect1d(foundList, validinds)) == len(foundList) );
-        self.time_lsh_ary.append(toc(time_lsh));  
-        self.maxDepthList.append(maxDepth);       
+        self.time_lsh_ary.append(toc(time_lsh));
+        self.maxDepthList.append(maxDepth);
         self.nRetrievedFromLshList.append(debugDict['nRetrievedFromLsh']);
         self.expected_rewards[:] = -np.inf;
         self.expected_rewards[foundList] = np.dot(self.X[foundList,:], theta_til);
@@ -1518,10 +1627,10 @@ class thompson_lsh(banditclass):
         else:
             thetahat = numpy.dot(invVt, XTy)
 
-        #- update matR; this is call by reference.  
-        #- note that the second argument will be corrupted, so be sure to do .copy() 
+        #- update matR; this is call by reference.
+        #- note that the second argument will be corrupted, so be sure to do .copy()
 #         if self.do_chol_onestep:
-#           choldowndate(self.matR, tempval1 / np.sqrt(1 + tempval2)) 
+#           choldowndate(self.matR, tempval1 / np.sqrt(1 + tempval2))
 #           matR = self.matR;
 #         else:
 #           #         matR = linalg.cholesky(invVt).T;
@@ -1541,13 +1650,13 @@ class thompson_lsh(banditclass):
         theta_til = dot(tmp,self.v*matR) + self.thetahat;
 
         #- call lsh
-        validinds = setdiff1d(range(self.n), self.do_not_ask); 
+        validinds = setdiff1d(range(self.n), self.do_not_ask);
         invalidList = self.do_not_ask;
         time_lsh = tic();
         foundList, maxDepth, debugDict = self.lsh_wrap.FindUpto(theta_til, self.max_dist_comp, randomize=True, invalidList=invalidList, maxLookup=self.lsh_max_lookup);
         assert( len(numpy.intersect1d(foundList, validinds)) == len(foundList) );
-        self.time_lsh_ary.append(toc(time_lsh));  
-        self.maxDepthList.append(maxDepth);       
+        self.time_lsh_ary.append(toc(time_lsh));
+        self.maxDepthList.append(maxDepth);
         self.nRetrievedFromLshList.append(debugDict['nRetrievedFromLsh']);
         self.expected_rewards[:] = -np.inf;
         self.expected_rewards[foundList] = np.dot(self.X[foundList,:], theta_til);
@@ -1677,13 +1786,15 @@ def bandit_init(algo_name, x0Idx, X, opts):
   elif algo_name == 'ts_lsh':
     banditObj = thompson_lsh(X[x0Idx,:], X, None);
   elif algo_name == 'oful_lazy_lsh':
-    banditObj = oful_lazy(X[x0Idx,:], X, None, 'lsh', opts['lazy_C']); 
+    banditObj = oful_lazy(X[x0Idx,:], X, None, 'lsh', opts['lazy_C']);
+  elif algo_name == 'epsilon_greedy':
+    banditObj = epsilon_greedy(X[x0Idx,:], X, None)
   else:
     assert False, 'algo_name not recognized: %s' % algo_name;
 
   banditObj.setparams(opts);
 
-  context = banditObj.__dict__; 
+  context = banditObj.__dict__;
   context['algo_name'] = algo_name;
   # do not save exptRewards
   del(context['X']);
@@ -1728,13 +1839,15 @@ def bandit_update(context, X, pulled_arm, reward, argDict={}):
     banditObj = oful_light(None, None, None);
   elif (algo_name == 'ofulx9_lsh'):
     banditObj = ofulx9_lsh(None,None,None);
-    lsh_wrap_obj = LshQuadWrap(None,None);  
+    lsh_wrap_obj = LshQuadWrap(None,None);
   elif algo_name == 'ts_lsh':
     banditObj = thompson_lsh(None,None,None);
-    lsh_wrap_obj = LshNonquadWrap(None,None);  
+    lsh_wrap_obj = LshNonquadWrap(None,None);
   elif algo_name == 'oful_lazy_lsh':
     banditObj = oful_lazy(None,None,None,None,None);
-    lsh_wrap_obj = LshNonquadWrap(None,None);  
+    lsh_wrap_obj = LshNonquadWrap(None,None);
+  elif algo_name == 'epsilon_greedy':
+      banditObj = epsilon_greedy(None,None,None)
   else:
     assert False, 'algo_name not recognized: %s' % algo_name;
 

@@ -65,7 +65,7 @@ class TS:
 
         # butler.algorithms.set(key='plot_data', value=[])
 
-        if butler.dashboard.set(key='plot_data', value=[]) is None:
+        if butler.dashboard.get(key='plot_data') is None:
             butler.dashboard.set(key='plot_data', value=[])
 
         return True
