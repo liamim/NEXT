@@ -11,7 +11,7 @@ import os
 import sys
 import numpy
 import json
-import traceback, time
+import traceback
 import next.utils as utils
 import next.lib.pijemont.verifier as verifier
 import next.constants
@@ -98,7 +98,6 @@ class App(object):
         self.butler.log('ALG-DURATION', log_entry)
                 
     def init_app(self, exp_uid, alg_list, args):
-        #utils.debug_print(str(args))
         def init_algs_wrapper(alg_args={}):
             for algorithm in alg_list:
                 # Set doc in algorithms bucket. These objects are used by the algorithms to store data.

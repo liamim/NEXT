@@ -58,8 +58,6 @@ initExp['args'][
     'instructions'] = ' '
 initExp['args']['debrief'] = 'Thanks for answering questions. You can close the window now.'
 initExp['app_id'] = 'ImageSearch'
-# initExp['site_id'] = 'replace this with working site id'
-# initExp['site_key'] = 'replace this with working site key'
 
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
@@ -76,13 +74,3 @@ host = 'ec2-35-167-181-81.us-west-2.compute.amazonaws.com:8000'
 print "It's happening"
 exp_uid_list = launch_experiment(host, experiment_list)
 print "Made experiments {}".format(exp_uid_list)
-# Update the cartoon_dueling.html file wit the exp_uid_list and widget_key_list
-# with open('strange_fruit_triplet.html','r') as page:
-#   print "opended file"
-#   page_string = page.read()
-#   page_string = page_string.replace("{{exp_uid_list}}", str(exp_uid_list))
-#   page_string = page_string.replace("{{widget_key_list}}", str(widget_key_list))
-#   with open('../../next_frontend_base/next_frontend_base/templates/strange_fruit_triplet.html','w') as out:
-#     out.write(page_string)
-#     out.flush()
-#     out.close()
