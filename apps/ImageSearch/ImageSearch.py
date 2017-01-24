@@ -22,18 +22,6 @@ class ImageSearch(object):
         self.app_id = 'ImageSearch'
         self.TargetManager = next.apps.SimpleTargetManager.SimpleTargetManager(db)
 
-    # def load_and_save_numpy(self, butler, filename, property_name):
-    #     utils.debug_print('loading file: %s'%(filename))
-    #     data = numpy.load(filename)
-    #
-    #     utils.debug_print('serialising %s'%property_name)
-    #     s = StringIO.StringIO()
-    #     np.save(s, data)
-    #     utils.debug_print('storing %s'%property_name)
-    #     butler.memory.set_file(property_name, s)
-    #     data = ""
-    #     s = ""
-
     def initExp(self, butler, init_algs, args):
         """
         This function is meant to store any additional components in the
