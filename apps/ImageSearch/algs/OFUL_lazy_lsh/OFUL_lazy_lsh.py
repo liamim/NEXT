@@ -68,7 +68,7 @@ class OFUL_lazy_lsh:
             'participant_uid': participant_uid
         }
 
-        butler.job('modelUpdateHash', task_args, ignore_result=True)
+        butler.job('modelUpdateHash', task_args, ignore_result=True, time_limit=300)
 
         return True
 

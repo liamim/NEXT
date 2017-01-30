@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     python-matplotlib \ 
     python-ply \
     git \
+    awscli \
     numactl 
 
 # Install MongoDB and its tools
@@ -23,6 +24,8 @@ RUN \
   rm -rf /var/lib/apt/lists/*
 
 # Install python dependencies for next_backend
+RUN pip install ipdb==0.10.2
+RUN pip install line_profiler==2.0
 RUN pip install celery==3.1.25
 RUN pip install cython
 RUN pip install git+git://github.com/jcrudy/choldate.git

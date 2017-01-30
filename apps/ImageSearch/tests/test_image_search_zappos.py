@@ -253,4 +253,4 @@ def timeit(f):
 
 if __name__ == '__main__':
     print HOSTNAME
-    run_all(False, num_clients=11)
+    run_all(False, num_clients=1)

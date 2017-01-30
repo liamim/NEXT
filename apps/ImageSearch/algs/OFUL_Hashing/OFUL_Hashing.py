@@ -28,10 +28,9 @@ class OFUL_Hashing:
         utils.debug_print('Running OFUL X9 Hashing')
         expected_rewards = np.asarray(butler.participants.get(uid=participant_uid, key='_bo_expected_rewards'))
         do_not_ask = butler.participants.get(uid=participant_uid, key='_bo_do_not_ask')
-        utils.debug_print('dna in gQ: ', do_not_ask)
+        utils.debug_print('dna', do_not_ask)
         expected_rewards[np.asarray(do_not_ask)] = -np.inf
         i_x = np.argmax(expected_rewards)
-        utils.debug_print('Arm pulled in gQ: ', i_x)
         butler.participants.append(uid=participant_uid,
                                    key='_bo_do_not_ask', value=i_x)
         return i_x
@@ -67,7 +66,7 @@ class OFUL_Hashing:
             'target_reward': target_reward
         }
 
-        butler.job('modelUpdateHash', task_args, ignore_result=True)
+        butler.job('modelUpdateHash', task_args, ignore_result=True, time_limit=300)
 
         return True
 

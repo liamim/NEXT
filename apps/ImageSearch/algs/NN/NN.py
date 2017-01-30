@@ -6,6 +6,7 @@ from __future__ import division
 import numpy as np
 import next.utils as utils
 
+
 class NN:
     def __init__(self):
         self.alg_id = 'NN'
@@ -27,6 +28,7 @@ class NN:
         utils.debug_print('Running NN')
         expected_rewards = np.asarray(butler.participants.get(uid=participant_uid, key='_bo_expected_rewards'))
         do_not_ask = butler.participants.get(uid=participant_uid, key='_bo_do_not_ask')
+        utils.debug_print('dna', do_not_ask)
         expected_rewards[np.asarray(do_not_ask)] = -np.inf
         i_x = np.argmax(expected_rewards)
         butler.participants.append(uid=participant_uid,
@@ -47,7 +49,11 @@ class NN:
             expected_rewards = np.ones(n) * -np.inf
             NN_order = np.load('NN_order.npy').tolist()
             expected_rewards[NN_order[target_id]] = range(0, 50)[::-1]
-            butler.participants.set(uid=participant_uid, key='_bo_expected_rewards', value=expected_rewards)
+            store_dictionary = {
+                                '_bo_do_not_ask': [target_id],
+                                '_bo_expected_rewards': expected_rewards
+                               }
+            butler.participants.set_many(uid=participant_uid, key_value_dict=store_dictionary)
 
             return True
         return True

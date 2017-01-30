@@ -2,7 +2,6 @@ Flask
 Flask-Restful
 Flask-Login
 gunicorn
-ipdb
 pymongo
 redis
 boto
@@ -11,5 +10,4 @@ mpld3
 pyyaml
 ply
 pandas
-line_profiler
 joblib

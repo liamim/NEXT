@@ -3,11 +3,11 @@ import sys
 prefix = 'OptimalLSH/'
 sys.path.insert(0, prefix)
 from kjunutils import *
-import numpy, time, numpy as np
-from numpy import * from numpy.linalg import *
-import numpy.random as ra, ipdb, cPickle as pickle, time, scipy.io as sio, numpy.linalg as la
-import warnings,sys,os,copy
-from choldate import cholupdate, choldowndate
+import numpy, numpy as np
+from numpy import *
+import numpy.random as ra, numpy.linalg as la
+import copy
+from choldate import choldowndate
 
 def CalcSqrtBeta(d,t,scale,R,ridge,delta,S_hat):
   return scale*(R * sqrt(d * log((1 + t / (ridge * d)) / delta)) + sqrt(ridge) * S_hat)
