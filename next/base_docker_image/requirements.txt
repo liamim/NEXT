@@ -4,10 +4,11 @@ Flask-Login
 gunicorn
 pymongo
 redis
+celery==3.1.25
 boto
 greenlet
 mpld3
 pyyaml
 ply
-pandas
 joblib
+pandas

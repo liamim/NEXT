@@ -1,1 +1,1 @@
-from .ImageSearch import *
+from .myApp import *

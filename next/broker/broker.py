@@ -37,13 +37,9 @@ class JobBroker:
             task_name(app_id, exp_id, args)
 
         """
-        # utils.debug_print('TTT123', time.time())
         submit_timestamp = utils.datetimeNow('string')
         domain = self.__get_domain_for_job(app_id+"_"+exp_uid)
-        utils.debug_print('Line 42 in broker.py, nc_on=', next.constants.CELERY_ON)
-        utils.debug_print(app_id, exp_uid, task_name)#, args)
         if next.constants.CELERY_ON:
-            # utils.debug_print('TTTqwe', time.time())
             result = tasks.apply.apply_async(args=[app_id,
                                                    exp_uid,
                                                    task_name,
@@ -94,30 +90,6 @@ class JobBroker:
             else:
                 return result
 
-    # def HashSync(self, app_id, exp_uid):
-    #     domain = self.__get_domain_for_job(app_id + "_" + exp_uid)
-    #     if next.constants.CELERY_ON:
-    #         result = tasks.Hash.apply_async(args=[],
-    #                                                    exchange='Hash@' + domain,
-    #                                                    routing_key='Hash@' + domain)
-    #         return result.get(interval=0.001)
-    #     else:
-    #         result = tasks.Hash()
-    #         #return result.run()
-    #         return result
-
-    # def FeatureSync(self, app_id, exp_uid):
-    #     domain = self.__get_domain_for_job(app_id + "_" + exp_uid)
-    #     if next.constants.CELERY_ON:
-    #         result = tasks.Features.apply_async(args=[],
-    #                                                    exchange='Features@' + domain,
-    #                                                    routing_key='Features@' + domain)
-    #         return result.get(interval=0.001)
-    #     else:
-    #         result = tasks.Features()
-    #         #return result.run()
-    #         return  result
-
             
     def applySyncByNamespace(self, app_id, exp_uid, alg_id, alg_label, task_name, args, namespace=None, ignore_result=False,time_limit=0):
         """
@@ -163,12 +135,14 @@ class JobBroker:
         queue_number = (namespace_cnt % num_queues) + 1  
 
         queue_name = 'sync_queue_'+str(queue_number)+'@'+domain
+
         if task_name == 'modelUpdateHash':
-            queue_name = 'Hash_Queue@'+domain
+            queue_name = 'Hash_Queue@' + domain
             utils.debug_print('Queuing the Hashing function')
         if task_name == 'modelInit':
-            queue_name = 'Hash_Queue@'+domain
+            queue_name = 'Hash_Queue@' + domain
             utils.debug_print('Queuing the Init in Hashing')
+
         job_uid = utils.getNewUID()
         if time_limit == 0:
             soft_time_limit = None

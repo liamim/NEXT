@@ -1,9 +1,9 @@
-from next.utils import utils
+import next.utils as utils
 from next.apps.AppDashboard import AppDashboard
 import pandas as pd
 import numpy as np
 
-class ImageSearchDashboard(AppDashboard):
+class MyAppDashboard(AppDashboard):
     def __init__(self,db,ell):
         AppDashboard.__init__(self,db,ell)
         self.app_id = 'ImageSearch'

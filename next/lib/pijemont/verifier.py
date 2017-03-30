@@ -60,7 +60,6 @@ def check_format_helper(doc,name):
     if not 'type' in doc:
         errs += ['{}: "type" key missing'.format(name)]
     
-    # print(doc, name)
     diff = set(doc.keys()) - {'type','description','values','optional','default'}
     if len(diff) > 0:
         errs += ["{}: extra keys in spec: {}".format(name,", ".join(list(diff)))]
@@ -77,7 +76,6 @@ def check_format_helper(doc,name):
     if len(errs) > 0:
         return errs
     
-    # print(doc, name)
     if doc['type'] in DICT:
         for x in doc['values']:
             errs += check_format_helper(doc['values'][x],'{}/{}'.format(name,x))
@@ -229,9 +227,10 @@ def compare_dict_keys(d1, d2):
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         r,e = load_doc(sys.argv[1])
-        # print('doc',r)
-        # print('errs',e)
+        print('doc',r)
+        print('errs',e)
         if len(sys.argv) > 2:
             i,e = verify(sys.argv[2],r)
-            # print("Errors",e)
-            # print("Verified input",i)
+            print("Errors",e)
+            print("Verified input",i)
+    

@@ -17,6 +17,7 @@ import next.constants as constants
 import next.database_client.PermStore as PermStore
 from next.api.resource_manager import ResourceManager
 import next.api.api_util as api_util
+import next.utils as utils
 
 # Declare this as the dashboard blueprint
 dashboard = Blueprint('dashboard',
@@ -58,13 +59,11 @@ def experiment_list():
                 print e
                 pass
 
-    host_url = 'http://{}:{}'.format(constants.NEXT_BACKEND_GLOBAL_HOST,
-                                     constants.NEXT_BACKEND_GLOBAL_PORT)
     if constants.SITE_KEY:
-        dashboard_url='{}/dashboard/{}'.format(host_url, constants.SITE_KEY)
+        dashboard_url='/dashboard/{}'.format(constants.SITE_KEY)
     else:
-        dashboard_url='{}/dashboard'.format(host_url)
-        
+        dashboard_url='/dashboard'
+
     return render_template('experiment_list.html',
                            dashboard_url=dashboard_url,
                            experiments = reversed(experiments))
@@ -74,7 +73,7 @@ def get_stats():
     args_dict = request.json
     exp_uid = args_dict['exp_uid']
     app_id = rm.get_app_id(exp_uid)
-    
+
     response_json,didSucceed,message = broker.dashboardAsync(app_id,exp_uid,args_dict)
     response_dict = json.loads(response_json,parse_float=lambda o:round(float(o),4))
     response_json = json.dumps(response_dict)
@@ -89,9 +88,9 @@ def system_monitor():
     host_url = 'http://{}:{}'.format(constants.NEXT_BACKEND_GLOBAL_HOST,
                                      constants.NEXT_BACKEND_GLOBAL_PORT)
     if constants.SITE_KEY:
-        dashboard_url='{}/dashboard/{}'.format(host_url, constants.SITE_KEY)
+        dashboard_url='/dashboard/{}'.format(constants.SITE_KEY)
     else:
-        dashboard_url='{}/dashboard'.format(host_url)
+        dashboard_url='/dashboard'
 
     rabbit_url = 'http://{}:{}'.format(constants.NEXT_BACKEND_GLOBAL_HOST,
                                        15672)
@@ -123,31 +122,30 @@ def experiment_dashboard(exp_uid, app_id):
                  'alg_label_clean':'_'.join(alg['alg_label'].split())}
                 for alg in alg_label_list]
 
-    host_url = 'http://{}:{}'.format(constants.NEXT_BACKEND_GLOBAL_HOST,
-                                     constants.NEXT_BACKEND_GLOBAL_PORT)
+    host_url = ''# 'http://{}:{}'.format(constants.NEXT_BACKEND_GLOBAL_HOST,
+    #                       constants.NEXT_BACKEND_GLOBAL_PORT)
     if constants.SITE_KEY:
-        dashboard_url='{}/dashboard/{}'.format(host_url, constants.SITE_KEY)
+        dashboard_url='/dashboard/{}'.format(constants.SITE_KEY)
     else:
-        dashboard_url='{}/dashboard'.format(host_url)
-        
+        dashboard_url='/dashboard'
+
     env = Environment(loader=ChoiceLoader([PackageLoader('apps.{}'.format(app_id),
                                                          'dashboard'),
                                            PackageLoader('next.dashboard',
                                                          'templates')]))
-    template = env.get_template('{}.html'.format(app_id)) # looks for /next/apps/{{ app_id }}/dashboard/{{ app_id }}.html
+    template = env.get_template('myAppDashboard.html'.format(app_id)) # looks for /next/apps/{{ app_id }}/dashboard/{{ app_id }}.html
     return template.render(app_id=app_id,
                            exp_uid=exp_uid,
                            alg_list=alg_list,
-                           host_url=host_url,
                            dashboard_url=dashboard_url,
-                           exceptions_present=exceptions_present(exp_uid, host_url),
+                           exceptions_present=False,#exceptions_present(exp_uid),
                            url_for=url_for,
                            simple_flag=int(simple_flag),
                            force_recompute=int(force_recompute))
 
 
-def exceptions_present(exp_uid, host_url):
-    url = '{}/api/experiment/{}/logs/APP-EXCEPTION'.format(host_url, exp_uid)
+def exceptions_present(exp_uid):
+    url = '/api/experiment/{}/logs/APP-EXCEPTION'.format(exp_uid)
     r = requests.get(url)
     logs = yaml.load(r.content)['log_data']
     return True if len(logs) > 0 else False

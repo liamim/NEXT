@@ -4,16 +4,18 @@ MAINTAINER Lalit Jain, lalitkumarj@gmail.com
 RUN apt-get update && apt-get install -y \
     python \
     python-dev \
-    python-distribute \ 
+    python-distribute \
     python-pip \
     python-numpy \
     python-scipy \
     python-gevent \
-    python-matplotlib \ 
+    python-pandas \
+    python-matplotlib \
     python-ply \
-    git \
-    awscli \
-    numactl 
+    numactl
+
+# Put in place because ran into bug with pip (!)
+RUN python -m pip install -U pip
 
 # Install MongoDB and its tools
 RUN \
@@ -24,11 +26,12 @@ RUN \
   rm -rf /var/lib/apt/lists/*
 
 # Install python dependencies for next_backend
+RUN pip install -U setuptools
 RUN pip install ipdb==0.10.2
 RUN pip install line_profiler==2.0
 RUN pip install celery==3.1.25
-RUN pip install cython
-RUN pip install git+git://github.com/jcrudy/choldate.git
+
+# Install python dependencies for next_backend
 ADD requirements.txt /requirements.txt
 RUN pip install -U -r requirements.txt
 

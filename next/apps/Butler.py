@@ -1,6 +1,5 @@
-from next.utils import utils
+import next.utils as utils
 import numpy as np
-import cPickle as pickle
 import os
 import next.constants as constants
 import redis
@@ -21,32 +20,16 @@ class Memory(object):
             return size / self.max_entry_size
         else:
             return (size / self.max_entry_size) + 1
-
+        
     def set(self, key, value):
         self.ensure_connection()
         try:
             n = self.num_entries(len(value))
-            utils.debug_print("Setting ", len(value), "bytes in", n, "entries")
+            utils.debug_print("Setting ",len(value),"bytes in",n,"entries")
             for i in range(n):
                 k = key + ":" + str(i)
-                self.cache.set(k, value[i * self.max_entry_size:(i + 1) * self.max_entry_size])
-            return self.cache.set(key, "{}:{}".format(str(n), str(len(value))))
-        except Exception as exc:
-            utils.debug_print("REDIS OOPS: ", exc)
-            return False
-
-    def erase(self, key, value):
-        self.ensure_connection()
-        try:
-            d =  self.cache.get(key)
-            n,l = d.split(":")
-            l = int(l)
-            n = int(n)
-            utils.debug_print("Erasing ",n,"entries")
-            for i in range(n):
-                k = key + ":" + str(i)
-                self.cache.delete(k)
-            return self.cache.delete(key)
+                self.cache.set(k,value[i*self.max_entry_size:(i+1)*self.max_entry_size])
+            return self.cache.set(key,"{}:{}".format(str(n),str(len(value))))
         except Exception as exc:
             utils.debug_print("REDIS OOPS: ",exc)
             return False
@@ -96,10 +79,15 @@ class Memory(object):
             f.write(self.cache.get(k))
         f.seek(0, 0)
         return f
+
+    def lock(self, name, **kwargs):
+        self.ensure_connection()
+        return self.cache.lock(name, **kwargs)
     
     def exists(self, key):
         self.ensure_connection()
         return self.cache.exists(key)
+
 
 class Collection(object):
     def __init__(self, collection, uid_prefix, exp_uid, db, timing=True):
@@ -224,19 +212,7 @@ class Butler(object):
         self.ell = ell
         self.targets = targets
         self.memory = Memory()
-
-        # if self.db.lsh==None:
-        #     utils.debug_print('Loading LSH in Butler for Worker: ', os.getpid())
-        #     self.db.lsh = self.get_hashing_function()
-        # else:
-        #     utils.debug_print('LSH already loaded!')
-        #
-        # if self.db.X == None:
-        #     utils.debug_print('Loading X in Butler for Worker: ', os.getpid())
-        #     self.db.X = self.get_feature_vectors()
-        # else:
-        #     utils.debug_print('X already loaded!')
-
+        
         if self.targets.db==None:
             self.targets.db = self.db
         self.queries = Collection(self.app_id+":queries", "", self.exp_uid, db)
@@ -250,26 +226,6 @@ class Butler(object):
         self.dashboard = Collection(self.app_id+":dashboard", "", self.exp_uid, db)
         self.other = Collection(self.app_id+":other", "{exp_uid}_", self.exp_uid, db)
 
-    # def get_hashing_function(self):
-    #     # try:
-    #     #    with open('hashing_functions.pkl') as f:
-    #     #        data = pickle.load(f)
-    #     # except:
-    #     #    raise ValueError('Current path:', os.getcwd())
-    #     from next.lib.hash import kjunutils, lsh_kjun_v3
-    #     with open('hashing_functions.pkl') as f:
-    #         index = pickle.load(f)
-    #     # with open('hashing_functions_d1000.pkl') as f:
-    #     #     index = pickle.load(f)
-
-    #     #index = hash.to_serializable(index)
-    #     return index
-
-    # def get_feature_vectors(self):
-    #     # features = np.load('features_10x10.npy')
-    #     features = np.load('features_d1000.npy')
-    #     return features
-
     def log(self, log_name, log_value):
         self.ell.log(self.app_id+":"+log_name, log_value)
 
@@ -281,5 +237,5 @@ class Butler(object):
                                ignore_result, time_limit,
                                alg_id=self.alg_id, alg_label=self.alg_label)  
         else:
-            self.db.submit_job(self.app_id, self.exp_uid, task, task_args_json, None, ignore_result, time_limit)
+            self.db.submit_job(self.app_id, self.exp_uid, task, task_args_json, None, ignore_result, time_limit)  
 

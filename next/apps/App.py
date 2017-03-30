@@ -17,21 +17,6 @@ import next.lib.pijemont.verifier as verifier
 import next.constants
 import next.apps.Butler as Butler
 
-from decorator import decorator
-from line_profiler import LineProfiler
-
-
-@decorator
-def profile_each_line(func, *args, **kwargs):
-    profiler = LineProfiler()
-    profiled_func = profiler(func)
-    retval = None
-    try:
-        retval = profiled_func(*args, **kwargs)
-    finally:
-        profiler.print_stats()
-    return retval
-
 Butler = Butler.Butler
 git_hash = next.constants.GIT_HASH
 
@@ -44,11 +29,11 @@ class App(object):
         self.exp_uid = exp_uid
         self.helper = Helper()
         self.myApp = __import__('apps.'+self.app_id, fromlist=[''])
-        self.myApp = getattr(self.myApp, app_id)
+        self.myApp = getattr(self.myApp, 'MyApp')
         self.myApp = self.myApp(db)
         self.butler = Butler(self.app_id, self.exp_uid, self.myApp.TargetManager, db, ell)
         base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__),"../../apps"))
-        self.reference_dict,app_errs = verifier.load_doc("{}/{}.yaml".format(app_id, app_id), base_dir)
+        self.reference_dict, app_errs = verifier.load_doc("{}/myApp.yaml".format(app_id), base_dir)
         self.algs_reference_dict,alg_errs = verifier.load_doc("{}/algs/Algs.yaml".format(app_id, app_id), base_dir)
         if len(app_errs) > 0 or len(alg_errs) > 0:
             raise Exception("App YAML formatting errors: \n{}\n\nAlg YAML formatting errors: \n{}".format(
@@ -57,9 +42,8 @@ class App(object):
             ))
         dashboard_string = 'apps.' + self.app_id + \
                            '.dashboard.Dashboard'
-        #dashboard_module = __import__(dashboard_string, fromlist=[''])
-        #self.dashboard = getattr(dashboard_module, app_id+'Dashboard')
-        self.log_entry_durations = {}
+        dashboard_module = __import__(dashboard_string, fromlist=[''])
+        self.dashboard = getattr(dashboard_module, 'MyAppDashboard')
 
     def run_alg(self, butler, alg_label, alg, func_name, alg_args):
         if 'args' in self.algs_reference_dict[func_name]:
@@ -98,6 +82,7 @@ class App(object):
         self.butler.log('ALG-DURATION', log_entry)
                 
     def init_app(self, exp_uid, alg_list, args):
+        # utils.debug_print(str(args))
         def init_algs_wrapper(alg_args={}):
             for algorithm in alg_list:
                 # Set doc in algorithms bucket. These objects are used by the algorithms to store data.
@@ -116,7 +101,7 @@ class App(object):
             args_dict['exp_uid'] = exp_uid # to get doc from db
             args_dict['start_date'] = utils.datetime2str(utils.datetimeNow())
             self.butler.admin.set(uid=exp_uid,value={'exp_uid': exp_uid, 'app_id':self.app_id, 'start_date':str(utils.datetimeNow())})            
-            #utils.debug_print("ASD "+str(args_dict))
+            utils.debug_print("ASD "+str(args_dict.keys()))
             args_dict['args'] = self.init_app(exp_uid, args_dict['args']['alg_list'], args_dict['args'])
             args_dict['git_hash'] = git_hash
             self.butler.experiment.set(value=args_dict)
@@ -130,6 +115,7 @@ class App(object):
             traceback.print_tb(exc_traceback)
             return '{}', False, str(error)
 
+
     def getQuery(self, exp_uid, args_json):
         try:
     	    args_dict = self.helper.convert_json(args_json)
@@ -141,36 +127,45 @@ class App(object):
             # Create the participant dictionary in participants bucket if needed. Also pull out label and id for this algorithm
             participant_uid = args_dict['args'].get('participant_uid', args_dict['exp_uid'])
             # Check to see if the first participant has come by and if not, save to db
-            # participant_doc = self.butler.participants.get(uid=participant_uid)
-            # first_participant_query = participant_doc == None
-            first_participant_query = not (self.butler.participants.exists(uid=participant_uid))
-            utils.debug_print('fpq',first_participant_query,participant_uid)
+            participant_doc = self.butler.participants.get(uid=participant_uid)
+            first_participant_query = participant_doc==None
             if first_participant_query:
-                # participant_doc = {}
+                participant_doc = {}
                 self.butler.participants.set(uid=participant_uid, value={'exp_uid':exp_uid, 'participant_uid':participant_uid})
             if (participant_uid == exp_uid) or (participant_to_algorithm_management == 'one_to_many') or (first_participant_query):
+
                 if algorithm_management_settings['mode'] == 'fixed_proportions':
+                    labels = [alg['alg_label'] for alg in algorithm_management_settings['params']]
                     prop = [prop_item['proportion'] for prop_item in algorithm_management_settings['params']]
-                    chosen_alg = numpy.random.choice(alg_list, p=prop)
+                    # reorder prop and alg_list to have same order
+                    new_alg_list = []
+                    broken = False
+                    for label in labels:
+                        broken = False
+                        for alg in alg_list:
+                            if label == alg['alg_label']:
+                                new_alg_list += [alg]
+                                broken = True
+                                break
+                        if not broken:
+                            raise Exception('alg_label not present for both porportions and labels')
+                    chosen_alg = numpy.random.choice(new_alg_list, p=prop)
                 elif algorithm_management_settings['mode'] == 'custom' :
-                    chosen_alg = getattr(self.myApp, 'chooseAlg')(self.butler, args_dict['args'])
-                    utils.debug_print('chosren asssddd',chosen_alg)
+                    chosen_alg = self.myApp.chooseAlg(self.butler, alg_list, args_dict['args'])
                 else:
                     chosen_alg = numpy.random.choice(alg_list)
+
                 alg_id = chosen_alg['alg_id']
                 alg_label = chosen_alg['alg_label']
                 if (first_participant_query) and (participant_to_algorithm_management=='one_to_one'):
                     self.butler.participants.set(uid=participant_uid, key='alg_id',value=alg_id)
                     self.butler.participants.set(uid=participant_uid, key='alg_label',value=alg_label)
             elif (participant_to_algorithm_management=='one_to_one'):
-                # alg_id = participant_doc['alg_id']
-                # alg_label = participant_doc['alg_label']
-                alg_id = self.butler.participants.get(uid=participant_uid, key='alg_id')
-                alg_label = self.butler.participants.get(uid=participant_uid, key='alg_label')
+                alg_id = participant_doc['alg_id']
+                alg_label = participant_doc['alg_label']
 
             query_uid = utils.getNewUID()
             args_dict['args'].update(query_uid=query_uid)
-            utils.debug_print('uwytefdasssddd',alg_id,alg_label)
             query_doc = self.call_app_fn(alg_label, alg_id, 'getQuery', args_dict)
             
             query_doc.update({'participant_uid':participant_uid,
@@ -179,8 +174,8 @@ class App(object):
                               'alg_label':alg_label,
                               'timestamp_query_generated':str(utils.datetimeNow()),
                               'query_uid':query_uid})
-            # utils.debug_print('qweq',query_uid,query_doc)
             self.butler.queries.set(uid=query_uid, value=query_doc)
+            utils.debug_print('log_entry_durations: ', self.log_entry_durations)
             return json.dumps({'args':query_doc,'meta':{'log_entry_durations':self.log_entry_durations}}), True,''
         except Exception, error:
             exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -191,22 +186,23 @@ class App(object):
             traceback.print_tb(exc_traceback)
             return '{}', False, str(error)
 
-    @profile_each_line
     def processAnswer(self, exp_uid, args_json):
         try:
             args_dict = self.helper.convert_json(args_json)
             args_dict = verifier.verify(args_dict, self.reference_dict['processAnswer']['args'])
             # Update timing info in query
             query = self.butler.queries.get(uid=args_dict['args']['query_uid'])
-            # utils.debug_print('asd',query,args_dict['args']['query_uid'])
-            delta_datetime = (utils.str2datetime(args_dict['args'].get('timestamp_answer_received',None)) -
-                              utils.str2datetime(query['timestamp_query_generated']))
-            round_trip_time = delta_datetime.seconds + delta_datetime.microseconds/1000000.
+            timestamp_answer_received = args_dict['args'].get('timestamp_answer_received', None)
+            delta_datetime = utils.str2datetime(timestamp_answer_received) - \
+                             utils.str2datetime(query['timestamp_query_generated'])
+            round_trip_time = delta_datetime.total_seconds()
             response_time = float(args_dict['args'].get('response_time',0.))
 
             query_update = self.call_app_fn(query['alg_label'], query['alg_id'], 'processAnswer', args_dict)
-            # utils.debug_print("ASD",query_update)
-            query_update.update({'response_time':response_time,'network_delay':round_trip_time - response_time})
+            query_update.update({'response_time':response_time,
+                                 'network_delay':round_trip_time - response_time,
+                                 'timestamp_answer_received': timestamp_answer_received
+                                 })
             self.butler.queries.set_many(uid=args_dict['args']['query_uid'],key_value_dict=query_update)
 
             return json.dumps({'args': {}, 'meta': {'log_entry_durations':self.log_entry_durations}}), True, ''

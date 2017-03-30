@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# TEMORARY FIX TO MAKE AMI WORK
+#HOST=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
 HOST=$1
 [[ -z "$1" ]] && HOST=localhost;  # by default HOST=localhost
 
@@ -42,11 +44,14 @@ function abspath() {
     fi
 }
 
+echo "Changing next_worker_startup.sh permissions..."
 if [ "$#" -lt 2 ]; then 
     dir=$(abspath ..);
+    chmod +x ../next/broker/next_worker_startup.sh
     echo "No path to NEXT provided.  Assuming ../";
 else
     dir=$(abspath $2);
+    echo "ERROR: could not change permissions! Run 'chmod +x /path/to/.../next/broker/next_worker_startup.sh' yourself"
     echo "Using $1 as path to NEXT.";
 fi
 

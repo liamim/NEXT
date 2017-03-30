@@ -618,7 +618,7 @@ def setup_cluster(conn, master_nodes, slave_nodes, opts, deploy_ssh_key):
 
 def rsync_dir(local_src_dir, ec2_dest_dir, opts, host):
     command = [
-        'rsync', '--exclude=.git', '--exclude=archive', '--exclude=*.pyc', '-Warve',
+        'rsync', '--exclude=.git', '--exclude=archive', '-rve',
         stringify_command(ssh_command(opts)),
         "%s" % local_src_dir,
         "%s@%s:%s/" % (opts.user, host, ec2_dest_dir)
@@ -641,7 +641,7 @@ def setup_next_cluster(master, opts):
     ssh(master, opts, "sudo mkdir " + EC2_NEXT_PATH)
     ssh(master, opts, "sudo chmod 777 " + EC2_NEXT_PATH)
     command = [
-        'rsync', '-Warv',
+        'rsync', '-rv',
         '-e', stringify_command(ssh_command(opts)),
         "%s/" % tmp_dir,
         "%s@%s:%s/" % (opts.user, master, EC2_NEXT_PATH)
@@ -672,8 +672,8 @@ def docker_login(opts, master_nodes, slave_nodes):
         # signal handler SIG_IGN.
         signal.signal(signal.SIGINT, signal.SIG_IGN)
 
-    ssh(master, opts, "sudo chmod 777 " + EC2_NEXT_PATH + '/local/' + 'docker_login.sh')
-    ssh(master, opts, 'sudo ' + EC2_NEXT_PATH + '/local/' + 'docker_login.sh')
+    ssh(master, opts, "sudo chmod 777 " + EC2_NEXT_PATH + '/' + 'docker_login.sh')
+    ssh(master, opts, 'sudo ' + EC2_NEXT_PATH + '/' + 'docker_login.sh')
 
 
 def list_bucket(opts):
@@ -798,7 +798,7 @@ def rsync_docker_config(opts, master_nodes, slave_nodes):
 
     # rsync the whole directory over to the master machine
     command = [
-        'rsync', '-Warv',
+        'rsync', '-rv',
         '-e', stringify_command(ssh_command(opts)),
         "%s/" % tmp_dir,
         "%s@%s:%s/" % (opts.user, master, EC2_NEXT_PATH)
@@ -1155,14 +1155,9 @@ def real_main():
         else:
             (master_nodes, slave_nodes) = get_existing_cluster(conn, opts, cluster_name)
             master = master_nodes[0].public_dns_name
-            try:
-                rsync_dir(LOCAL_NEXT_PATH, EC2_NEXT_PATH, opts, master)
-            except:
-                print("ONO")
-            try:
-                rsync_docker_config(opts, master_nodes, slave_nodes)
-            except:
-                print("ONHO")
+            rsync_dir(LOCAL_NEXT_PATH, EC2_NEXT_PATH, opts, master)
+            rsync_docker_config(opts, master_nodes, slave_nodes)
+
     elif action == "docker_up":
         (master_nodes, slave_nodes) = get_existing_cluster(conn, opts, cluster_name)
         docker_up(opts, master_nodes, slave_nodes)

@@ -201,9 +201,6 @@ class DatabaseAPI(object):
         self.cacheStore = CacheStore()
         self.permStore = PermStore()
 
-        self.lsh = None
-        self.loaded = False
-
         self.broker = None
 
     def submit_job(self,app_id,exp_uid,task,task_args_json,namespace=None,ignore_result=True,time_limit=0, alg_id=None, alg_label=None):
@@ -519,16 +516,6 @@ class DatabaseAPI(object):
 
         except:
             return None,False,'DatabaseAPI.get Failed with unknown exception'
-
-    def get_hash(self, app_id, exp_uid):
-        if self.broker == None:
-            self.broker = next.broker.broker.JobBroker()
-        return self.broker.HashSync(app_id, exp_uid)
-
-    def get_features(self, app_id, exp_uid):
-        if self.broker == None:
-            self.broker = next.broker.broker.JobBroker()
-        return self.broker.FeatureSync(app_id, exp_uid)
 
     def append_list(self,bucket_id,doc_uid,key,value):
         """

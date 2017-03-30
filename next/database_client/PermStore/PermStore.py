@@ -312,12 +312,10 @@ class PermStore(object):
                 return None,False,message
 
         try:
-            if key != '_id' :
-                key_exists = self.client[database_id][bucket_id].find({"_id":doc_uid,key: { '$exists': True }}).count() > 0
-            else:
-                cur = self.client[database_id][bucket_id].find({"_id": doc_uid})
-                print("KEY",key,doc_uid,cur.count())
-                key_exists = cur.count() > 0
+            doc = self.client[database_id][bucket_id].find_one({"_id":doc_uid,key: { '$exists': True }},{})
+
+            key_exists = (doc!=None)
+
             return key_exists,True,''
         except:
             error = "MongoDB.exists Failed with unknown exception"
@@ -705,7 +703,7 @@ class PermStore(object):
                 doc['_id'] = doc_uid
 
             doc = self.makeProperDatabaseFormat(doc)
-            write_id = self.client[database_id][bucket_id].insert_one(doc)
+            write_id = self.client[database_id][bucket_id].insert(doc)
                 
             return True,''
         except:

@@ -1,13 +1,13 @@
 import sys 
 #prefix = '../OptimalLSH/'
-prefix = 'OptimalLSH/'
-sys.path.insert(0, prefix)
-from kjunutils import *
+# prefix = 'OptimalLSH/'
+# sys.path.insert(0, prefix)
+from next.lib.hash.kjunutils import *
 import numpy, numpy as np
 from numpy import *
 import numpy.random as ra, numpy.linalg as la
 import copy
-from choldate import choldowndate
+# from choldate import choldowndate
 
 def CalcSqrtBeta(d,t,scale,R,ridge,delta,S_hat):
   return scale*(R * sqrt(d * log((1 + t / (ridge * d)) / delta)) + sqrt(ridge) * S_hat)

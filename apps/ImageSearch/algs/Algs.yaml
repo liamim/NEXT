@@ -23,14 +23,14 @@ getQuery:
   rets:
     description: The index of the target to ask about
     type: num
-    
+
 processAnswer:
     args:
       target_id:
         description: The ID of the target given in the query
         type: num
         optional: true
-      target_reward: 
+      target_reward:
         description: The reward value to assign to the target
         type: num
         optional: true

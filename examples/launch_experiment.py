@@ -26,6 +26,7 @@ import getopt
 import zipfile
 import requests
 import datetime
+import numpy as np
 import time
 from StringIO import StringIO
 from joblib import Parallel, delayed
@@ -50,6 +51,29 @@ def upload_target_to_S3(target_name_dict, key, bucket, prefix, primary_file,
     target.update(extra_target_info)
     return target
 
+
+def generate_target_blob_json(primary_file):
+    with open(primary_file, 'r') as f:
+        targets_dict = json.load(f)
+    targets_next = []
+    try:
+        for i, (name, url) in enumerate(targets_dict.iteritems()):
+            target_next = {'target_id': str(i),
+                           'primary_type': 'image',
+                           'primary_description': url,
+                           'alt_type': 'text',
+                           'alt_description': name}
+            targets_next += [target_next]
+    except:
+        for i, val in enumerate(targets_dict):
+            target_next = {'target_id': str(i),
+                           'primary_type': 'image',
+                           'primary_description': val[val.keys()[0]],
+                           'alt_type': 'text',
+                           'alt_description': val.keys()[0]}
+            targets_next += [target_next]
+        targets = targets_next
+    return targets
 
 def generate_target_blob(AWS_BUCKET_NAME,
                          AWS_ID,
@@ -121,10 +145,13 @@ def generate_target_blob(AWS_BUCKET_NAME,
                                    for k, v in target_features.items()}
             if type(parallel_upload) == bool and not parallel_upload:
                 # happens only for parallel_upload == False
+                target_files = list(target_file_dict.iteritems())
+                i = np.array([int(x) for x in target_file_dict.keys()])
+                i = np.argsort(i)
+                target_files = [target_files[ii] for ii in i]
                 targets = [upload_target_to_S3(target_name_dict, key, bucket,
                                            prefix, primary_file, primary_type)
-                       for i, (key, primary_file) in
-                                    enumerate(target_file_dict.iteritems())]
+                       for i, (key, primary_file) in enumerate(target_files)]
             else:
                 # happens only for parallel_upload == True
 
@@ -133,6 +160,10 @@ def generate_target_blob(AWS_BUCKET_NAME,
                 elif type(parallel_upload) in {int, float}:
                     n_jobs = int(parallel_upload)
 
+                target_files = list(target_file_dict.iteritems())
+                i = np.array([int(x) for x in target_file_dict.keys()])
+                i = np.argsort(i)
+                target_files = [target_files[ii] for ii in i]
                 targets = Parallel(n_jobs=n_jobs)(delayed(upload_target_to_S3)
                             (target_name_dict, key, bucket, prefix,
                                 primary_file, primary_type,
@@ -140,7 +171,7 @@ def generate_target_blob(AWS_BUCKET_NAME,
                                 else {'feature_vector':
                                     target_features[key]})
                            for i, (key, primary_file) in
-                                        enumerate(target_file_dict.iteritems()))
+                                        enumerate(target_files))
     else:
         if experiment.get('image-urls', False) or experiment.get('image-url', False):
             # This is the section where 
@@ -241,6 +272,67 @@ def import_experiment_list(file):
     experiment_list = mod.experiment_list
     return experiment_list
 
+
+def launch_experiment_noS3(host, experiment_list):
+    """
+    Initialize experiment from an array in an experiment file.
+
+    Inputs: ::\n
+        host: hostname of server running next_frontend_base
+        experiment_file: Fully qualified system name of file containing experiment info. Should contain an array called experiment_list, whose elements are dictionaries containing all the info needed to launch an experiment. The dictionary must contain the key initExp, a qualified experiment initialization dictionary. It can also contain an optional target_file key that should be the fully qualified name of a target_file on the system. The target_file can be either text (must end in .txt) or a zipfile containing images (which must end in .zip). Can also add additional context_type and context keys. If the context_type is an image, the context must be a fully qualified file name.
+    """
+    exp_uid_list = []
+
+    # Initialize experiment
+    for experiment in experiment_list:
+        # Upload the context if there is one.
+        # This is a bit sloppy. Try to think of a better way to do this.
+        if 'context' in experiment.keys() and experiment['context_type'] == 'image':
+            print experiment['context'].split("/")[-1], experiment['context']
+            experiment['initExp']['args']['context_type'] = "image"
+        elif 'context' in experiment.keys() and experiment['context_type'] == 'video':
+            print experiment['context'].split("/")[-1], experiment['context']
+            experiment['initExp']['args']['context_type'] = "video"
+        elif 'context' in experiment.keys():
+            experiment['initExp']['args']['context'] = experiment['context']
+            experiment['initExp']['args']['context_type'] = experiment['context_type']
+
+        print 'launch:211', experiment['initExp']['args'].keys()
+
+        # Upload targets
+        if 'primary_target_file' in experiment.keys():
+            targets = generate_target_blob_json(primary_file=experiment['primary_target_file'])
+            experiment['initExp']['args']['targets'] = {'targetset': targets}
+        else:
+            experiment['initExp']['args']['targets']['n'] = n
+
+        targets = experiment['initExp']['args']['targets']
+        n = targets['n'] if 'n' in targets.keys() else len(targets)
+
+        url = 'http://{}/api/experiment'.format(host)
+        print 'Initializing experiment', experiment['initExp'].keys()
+        response = requests.post(url,
+                                 json.dumps(experiment['initExp']),
+                                 headers={'content-type': 'application/json'})
+
+        initExp_response_dict = json.loads(response.text)
+        print "initExp_response_dict", initExp_response_dict
+        exp_uid = initExp_response_dict['exp_uid']
+        # exp_key = initExp_response_dict['exp_key']
+        # perm_key = initExp_response_dict['perm_key']
+
+        exp_uid_list.append(str(exp_uid))
+        # exp_key_list.append(str(exp_key))
+        # widget_key_list.append(str(perm_key))
+
+        print "\nQuery Url is at: http://" + host + "/query/query_page/query_page/" + exp_uid + "\n"
+
+    print "exp_uid_list:", exp_uid_list
+    # print "exp_key_list:", exp_key_list
+    # print "widget_key_list:", widget_key_list
+
+    return exp_uid_list  # , exp_key_list, widget_key_list
+
 def launch_experiment(host, experiment_list, AWS_ID, AWS_KEY, AWS_BUCKET_NAME,
                       parallel_upload=True):
   """
@@ -293,6 +385,8 @@ def launch_experiment(host, experiment_list, AWS_ID, AWS_KEY, AWS_BUCKET_NAME,
                                        parallel_upload=parallel_upload)
 
         experiment['initExp']['args']['targets'] = {'targetset': targets}
+        experiment['initExp']['args']['targets']['n'] = len(targets['targetset'])
+
     else:
         experiment['initExp']['args']['targets']['n'] = n
 
