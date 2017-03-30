@@ -20,6 +20,8 @@ getQuery:
   args:
     participant_uid:
       type: str
+    first_query_flag:
+      type: bool
   rets:
     description: The index of the target to ask about
     type: num

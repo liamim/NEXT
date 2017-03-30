@@ -25,16 +25,19 @@ class MyAlg:
     #   - take the argmax of the rewards
     #   - update the _bo_do_no_ask list
     # Only getQuery should update do not ask as processAnswer is asynchronous and therefor not reliable
-    def getQuery(self, butler, participant_uid):
+    def getQuery(self, butler, participant_uid, first_query_flag=False):
         utils.debug_print('Running NN')
-        expected_rewards = np.asarray(butler.participants.get(uid=participant_uid, key='_bo_expected_rewards'))
-        do_not_ask = butler.participants.get(uid=participant_uid, key='_bo_do_not_ask')
-        utils.debug_print('dna', do_not_ask)
-        expected_rewards[np.asarray(do_not_ask)] = -np.inf
-        i_x = np.argmax(expected_rewards)
-        butler.participants.append(uid=participant_uid,
-                                   key='_bo_do_not_ask', value=i_x)
-        return i_x
+        if first_query_flag:
+            return 0
+        else:
+            expected_rewards = np.asarray(butler.participants.get(uid=participant_uid, key='_bo_expected_rewards'))
+            do_not_ask = butler.participants.get(uid=participant_uid, key='_bo_do_not_ask')
+            utils.debug_print('dna', do_not_ask)
+            expected_rewards[np.asarray(do_not_ask)] = -np.inf
+            i_x = np.argmax(expected_rewards)
+            butler.participants.append(uid=participant_uid,
+                                       key='_bo_do_not_ask', value=i_x)
+            return i_x
 
     # Process answer has two parts:
     # Init: this is when the user clicks the initial target image. In this case, we pull precomputed order of arms and

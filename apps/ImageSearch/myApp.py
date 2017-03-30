@@ -82,7 +82,7 @@ class MyApp(object):
         del args['feature_filenames']
         return args
 
-    @profile_each_line
+    # @profile_each_line
     def getQuery(self, butler, alg, args):
         """
         The function that gets the next query, given a query reguest and
@@ -125,8 +125,10 @@ class MyApp(object):
 
             return_dict = {'initial_query': True, 'targets': targets_list,
                            'instructions': 'In this experiment, we will show you a total of 50 images. For each image, you will be asked if it is similar to the image currently shown. To make your judgement, please look at the image and read the description below. Click on the image when you are ready to proceed. Allow for 15-20 seconds after clicking the initial image.'}
+
+            i_x = alg({'participant_uid': participant_uid, 'first_query_flag': True})
         else:
-            i_x = alg({'participant_uid': participant_uid})
+            i_x = alg({'participant_uid': participant_uid, 'first_query_flag': False})
             target = self.TargetManager.get_target_item(exp_uid, i_x)
             targets_list = [{'index': i_x, 'target': target}]
             init_index = butler.participants.get(uid=participant_uid, key="i_hat")

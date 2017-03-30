@@ -50,8 +50,8 @@ experiment['initExp'] = initExp
 
 # The user chooses between two images. This could be text or video as well.
 experiment['primary_type'] = 'image'
-# experiment['primary_target_file'] = 'zappos_50k_dropbox.json'
-experiment['primary_target_file'] = 'zappos_10_dropbox.json'
+experiment['primary_target_file'] = 'zappos_50k_dropbox.json'
+# experiment['primary_target_file'] = 'zappos_10_dropbox.json'
 experiment_list.append(experiment)
 
 # Launch the experiment.
