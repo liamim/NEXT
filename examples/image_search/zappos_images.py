@@ -12,11 +12,15 @@ from launch_experiment import *
 
 experiment_list = []
 
-alg_list = [{'alg_id': 'TS', 'alg_label': 'TS'},
-            {'alg_id': 'NN', 'alg_label': 'NN'}]
+# alg_list = [{'alg_id': 'TS', 'alg_label': 'TS'},
+#             {'alg_id': 'NN', 'alg_label': 'NN'}]
 
-params = [{'alg_label': 'TS', 'proportion':.1},
-          {'alg_label': 'NN', 'proportion':.9}]
+alg_list = [{'alg_id': 'Epsilon_Greedy', 'alg_label': 'Epsilon_Greedy'}]
+
+
+# params = [{'alg_label': 'TS', 'proportion':.1},
+#           {'alg_label': 'NN', 'proportion':.9}]
+params = [{'alg_label': 'Epsilon_Greedy', 'proportion':1.}]
 
 initExp = {}
 initExp['args'] = {}

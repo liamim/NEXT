@@ -3,8 +3,7 @@ import sys
 # prefix = 'OptimalLSH/'
 # sys.path.insert(0, prefix)
 from next.lib.hash.kjunutils import *
-import numpy, numpy as np
-from numpy import *
+import numpy as np
 import numpy.random as ra, numpy.linalg as la
 import copy
 # from choldate import choldowndate
@@ -44,7 +43,7 @@ class LshNonquadWrap(object):
         self.lsh = lsh
         self.index_array = lsh_index_array
 
-        tmp = numpy.zeros(len(lsh_index_array),dtype=int)
+        tmp = np.zeros(len(lsh_index_array),dtype=int)
         tmp[self.index_array.tolist()] = range(len(lsh_index_array))
         self.index_array_inv = tmp
 
@@ -78,7 +77,7 @@ class LshQuadWrap(object):
         self.lsh = lsh
         self.index_array = lsh_index_array
 
-        tmp = numpy.zeros(len(lsh_index_array),dtype=int)
+        tmp = np.zeros(len(lsh_index_array),dtype=int)
         tmp[self.index_array.tolist()] = range(len(lsh_index_array))
         self.index_array_inv = tmp
 
@@ -148,25 +147,25 @@ class oful(banditclass):
         d = self.d
 
         thetahat = self.x0
-        self.invVt = numpy.eye(d) / self.ridge
+        self.invVt = np.eye(d) / self.ridge
         self.validinds = opts['validinds']
 
-        self.b = numpy.zeros(len(thetahat))
+        self.b = np.zeros(len(thetahat))
         sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat)
 
         self.sqrt_beta = sqrt_beta
         self.sqrt_beta_ary.append(self.sqrt_beta)
 
-        X_invVt_norm_sq = numpy.sum(X * X, axis=1) / self.ridge
+        X_invVt_norm_sq = np.sum(X * X, axis=1) / self.ridge
         self.X_invVt_norm_sq = X_invVt_norm_sq
-        self.est_rewards = numpy.dot(X, thetahat) + sqrt_beta * numpy.sqrt(X_invVt_norm_sq)
+        self.est_rewards = np.dot(X, thetahat) + sqrt_beta * np.sqrt(X_invVt_norm_sq)
 
     def _next_arm(self):
         validinds = self.validinds
         est_rewards = self.est_rewards
 
-        next_index = validinds[numpy.argmax(est_rewards[validinds])]
-        self.debugval[self.t-1] = self.sqrt_beta*numpy.sqrt(self.X_invVt_norm_sq[next_index])
+        next_index = validinds[np.argmax(est_rewards[validinds])]
+        self.debugval[self.t-1] = self.sqrt_beta*np.sqrt(self.X_invVt_norm_sq[next_index])
         reward = self._get_reward(next_index)
         self._process_reward(reward, next_index)
 
@@ -180,19 +179,19 @@ class oful(banditclass):
         validinds = self.validinds
         xt = X[next_index, :]
         b += reward * xt
-        tempval1 = numpy.dot(invVt, xt)
-        tempval2 = numpy.dot(tempval1, xt)
+        tempval1 = np.dot(invVt, xt)
+        tempval2 = np.dot(tempval1, xt)
 
-        X_invVt_norm_sq = X_invVt_norm_sq - (numpy.dot(X, tempval1) ** 2) / (1 + tempval2) # efficient update
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)             #
+        X_invVt_norm_sq = X_invVt_norm_sq - (np.dot(X, tempval1) ** 2) / (1 + tempval2) # efficient update
+        invVt = invVt - np.outer(tempval1, tempval1) / (1 + tempval2)             #
         if self.shifted:
-            thetahat = numpy.dot(invVt, b) + self.x0
+            thetahat = np.dot(invVt, b) + self.x0
         else:
-            thetahat = numpy.dot(invVt, b)
-        validinds = numpy.setdiff1d(validinds, next_index)
+            thetahat = np.dot(invVt, b)
+        validinds = np.setdiff1d(validinds, next_index)
 
         self.t += 1
-        sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat) #  self.R * numpy.sqrt(self.d * numpy.log((1 + t / self.ridge) / self.delta)) + numpy.sqrt(self.ridge) * S_hat
+        sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat) #  self.R * np.sqrt(self.d * np.log((1 + t / self.ridge) / self.delta)) + np.sqrt(self.ridge) * S_hat
 
         self.sqrt_beta = sqrt_beta
         self.sqrt_beta_ary.append(self.sqrt_beta)
@@ -201,16 +200,16 @@ class oful(banditclass):
         self.b = b
         self.thetahat = thetahat
         self.validinds = validinds
-        self.est_rewards = numpy.dot(X, thetahat) + sqrt_beta * numpy.sqrt(X_invVt_norm_sq)
+        self.est_rewards = np.dot(X, thetahat) + sqrt_beta * np.sqrt(X_invVt_norm_sq)
 
     def _get_reward(self, ind):
         y = self.y
         return 2*float(y[ind])-1
 
     def runbandit(self, T):
-        rewards = numpy.zeros(T)
-        arms = numpy.zeros(T)
-        self.debugval = numpy.zeros(T)
+        rewards = np.zeros(T)
+        arms = np.zeros(T)
+        self.debugval = np.zeros(T)
         for i in xrange(T):
             next_index, reward = self._next_arm()
             rewards[i] = reward
@@ -244,10 +243,10 @@ class oful_light(banditclass):
         self.do_not_ask = opts['do_not_ask']
 
         thetahat = self.x0
-        self.invVt = numpy.eye(d) / self.ridge
+        self.invVt = np.eye(d) / self.ridge
         validinds = setdiff1d(range(n), self.do_not_ask)
 #        self.validinds = opts['validinds']
-        self.XTy = numpy.zeros(len(thetahat))
+        self.XTy = np.zeros(len(thetahat))
         sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat)
 
         self.sqrt_beta = sqrt_beta
@@ -257,9 +256,9 @@ class oful_light(banditclass):
         self.light_inds = light_inds
 
         subX = X[light_inds,:]
-        X_invVt_norm_sq = numpy.sum(subX * subX, axis=1) / self.ridge
+        X_invVt_norm_sq = np.sum(subX * subX, axis=1) / self.ridge
         self.expected_rewards = -np.inf*np.ones(n)
-        self.expected_rewards[light_inds] = numpy.dot(subX, thetahat) + sqrt_beta * numpy.sqrt(X_invVt_norm_sq)
+        self.expected_rewards[light_inds] = np.dot(subX, thetahat) + sqrt_beta * np.sqrt(X_invVt_norm_sq)
         self.thetahat = thetahat
 
     def _next_arm(self):
@@ -279,15 +278,15 @@ class oful_light(banditclass):
 
         xt = X[next_index, :]
         XTy += reward * xt
-        tempval1 = numpy.dot(invVt, xt)
-        tempval2 = numpy.dot(tempval1, xt)
+        tempval1 = np.dot(invVt, xt)
+        tempval2 = np.dot(tempval1, xt)
 
-        #X_invVt_norm_sq = X_invVt_norm_sq - (numpy.dot(X, tempval1) ** 2) / (1 + tempval2)
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)
+        #X_invVt_norm_sq = X_invVt_norm_sq - (np.dot(X, tempval1) ** 2) / (1 + tempval2)
+        invVt = invVt - np.outer(tempval1, tempval1) / (1 + tempval2)
         if self.shifted:
-            thetahat = numpy.dot(invVt, XTy) + self.x0
+            thetahat = np.dot(invVt, XTy) + self.x0
         else:
-            thetahat = numpy.dot(invVt, XTy)
+            thetahat = np.dot(invVt, XTy)
 
         # NOTE updating do_not_ask is updated somewhere else
 #        self.do_not_ask.append(next_index) # TODO is this done from NEXT side?
@@ -318,8 +317,8 @@ class oful_light(banditclass):
         self.do_not_ask.append(next_index)
 
     def runbandit(self, T):
-        rewards = numpy.zeros(T)
-        arms = numpy.zeros(T)
+        rewards = np.zeros(T)
+        arms = np.zeros(T)
         for i in xrange(T):
 #            next_index, reward = self._next_arm()
             next_index = self._next_arm()
@@ -373,20 +372,20 @@ class oful_lazy(banditclass):
           self.nRetrievedFromLshList = []
 #           self.lsh = opts['lsh']
 #           self.index_array = opts["lsh_index_array"]
-#           tmp = numpy.zeros(self.n)
+#           tmp = np.zeros(self.n)
 #           tmp[self.index_array.tolist()] = range(self.n)
 #           self.index_array_inv = tmp
 
         self.thetahat = self.x0
-        self.invVt = numpy.eye(d) / self.ridge
+        self.invVt = np.eye(d) / self.ridge
         validinds = setdiff1d(range(n), self.do_not_ask)
 #        self.validinds = opts['validinds']
 
-        self.XTy = numpy.zeros(len(self.thetahat))
+        self.XTy = np.zeros(len(self.thetahat))
         self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat)
 #        self.sqrt_beta_ary.append(self.sqrt_beta)
 
-        self.X_invVt_norm_sq = numpy.sum(X * X, axis=1) / self.ridge
+        self.X_invVt_norm_sq = np.sum(X * X, axis=1) / self.ridge
 
         #- for lazy update.
         self.logdetV = self.d*log(self.ridge)
@@ -409,8 +408,8 @@ class oful_lazy(banditclass):
         validinds = setdiff1d(range(self.n), self.do_not_ask)
         if (self.subsample_type == 'no'):
           inv_Vt_norm = np.sqrt(np.sum(X * np.dot(X,self.invVt), 1))
-          expected_rewards[:] = numpy.dot(X, self.thetahat) + self.sqrt_beta * inv_Vt_norm
-          best_index = validinds[numpy.argmax(expected_rewards[validinds])]
+          expected_rewards[:] = np.dot(X, self.thetahat) + self.sqrt_beta * inv_Vt_norm
+          best_index = validinds[np.argmax(expected_rewards[validinds])]
           x = X[best_index,:]
           thetatil = self.thetahat + (self.sqrt_beta / inv_Vt_norm[best_index]) * np.dot(self.invVt,x)
           written_inds = validinds.copy()
@@ -420,7 +419,7 @@ class oful_lazy(banditclass):
 
           sub_inv_Vt_norm = np.sqrt(np.sum(subX * np.dot(subX,self.invVt), 1))
           expected_rewards[:] = -np.inf
-          expected_rewards[light_inds] = numpy.dot(subX, self.thetahat) + self.sqrt_beta * sub_inv_Vt_norm
+          expected_rewards[light_inds] = np.dot(subX, self.thetahat) + self.sqrt_beta * sub_inv_Vt_norm
           best_index_inner = argmax(expected_rewards[light_inds])
           best_index = light_inds[best_index_inner]
           x = X[best_index,:]
@@ -435,7 +434,7 @@ class oful_lazy(banditclass):
         expected_rewards = self.expected_rewards
         validinds = setdiff1d(range(self.n), self.do_not_ask)
         if (self.subsample_type == 'no'):
-          expected_rewards[:] = numpy.dot(X, self.thetatil_tau)
+          expected_rewards[:] = np.dot(X, self.thetatil_tau)
           best_index = validinds[argmax(expected_rewards[validinds])]
           written_inds = validinds.copy()
         elif (self.subsample_type == 'light'):
@@ -447,12 +446,12 @@ class oful_lazy(banditclass):
           best_index = light_inds[ argmax(expected_rewards[light_inds]) ]
           written_inds = light_inds
         elif (self.subsample_type == 'lsh'):
-          invalidList = numpy.setdiff1d(range(self.n), validinds)
+          invalidList = np.setdiff1d(range(self.n), validinds)
 
           #- call lsh
           time_lsh = tic()
           foundList, maxDepth, debugDict = self.lsh_wrap.FindUpto(self.thetatil_tau, self.max_dist_comp, randomize=True, invalidList=invalidList, maxLookup=self.lsh_max_lookup)
-          assert( len(numpy.intersect1d(foundList, validinds)) == len(foundList) )
+          assert( len(np.intersect1d(foundList, validinds)) == len(foundList) )
           self.time_lsh_ary.append(toc(time_lsh))
           self.maxDepthList.append(maxDepth)
           self.nRetrievedFromLshList.append(debugDict['nRetrievedFromLsh'])
@@ -461,7 +460,7 @@ class oful_lazy(banditclass):
           #- Note that sorting the list improves speed, but I am not doing it currently.
           expected_rewards[:] = -np.inf
           expected_rewards[foundList] = np.dot(self.X[foundList,:], self.thetatil_tau)
-          best_index = foundList[numpy.argmax(expected_rewards[foundList])]
+          best_index = foundList[np.argmax(expected_rewards[foundList])]
           written_inds = foundList
         else:
           assert False, 'unknown type'
@@ -478,15 +477,15 @@ class oful_lazy(banditclass):
 
         #- update variables
         self.XTy += reward * xt
-        tempval1 = numpy.dot(invVt, xt)
-        tempval2 = numpy.dot(tempval1, xt)
+        tempval1 = np.dot(invVt, xt)
+        tempval2 = np.dot(tempval1, xt)
 
         self.logdetV += log(1 + tempval2)
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)
+        invVt = invVt - np.outer(tempval1, tempval1) / (1 + tempval2)
         if self.shifted:
-            self.thetahat = numpy.dot(invVt, self.XTy) + self.x0
+            self.thetahat = np.dot(invVt, self.XTy) + self.x0
         else:
-            self.thetahat = numpy.dot(invVt, self.XTy)
+            self.thetahat = np.dot(invVt, self.XTy)
 
         self.t += 1
         self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat)
@@ -519,8 +518,8 @@ class oful_lazy(banditclass):
         self.do_not_ask.append(next_index)
 
     def runbandit(self, T):
-        rewards = numpy.zeros(T)
-        arms = numpy.zeros(T)
+        rewards = np.zeros(T)
+        arms = np.zeros(T)
         for i in xrange(T):
             next_index = self._next_arm()
 
@@ -599,22 +598,22 @@ class ofulx9(banditclass):
         self.doEigVal = False
 
         thetahat = self.x0
-        self.invVt = numpy.eye(d) / self.ridge
+        self.invVt = np.eye(d) / self.ridge
         self.validinds = opts['validinds']
-        self.min_sqrt_eig = 1/numpy.sqrt(self.ridge)
+        self.min_sqrt_eig = 1/np.sqrt(self.ridge)
 
-        self.b = numpy.zeros(self.d)
+        self.b = np.zeros(self.d)
 
         self.logdetV = self.d*log(self.ridge)
 
-        self.X_invVt_norm_sq = numpy.sum(X * X, axis=1) / self.ridge
+        self.X_invVt_norm_sq = np.sum(X * X, axis=1) / self.ridge
         if (self.useSqrtBetaDet):
             self.sqrt_beta = CalcSqrtBetaDet(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat,self.logdetV)
         else:
             self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat)
         self.sqrt_beta_ary.append(self.sqrt_beta)
         self.term1 = self.X_invVt_norm_sq
-        self.term2 = numpy.dot(X, thetahat)
+        self.term2 = np.dot(X, thetahat)
 
 
     def _next_arm(self):
@@ -623,11 +622,11 @@ class ofulx9(banditclass):
         sqrt_beta = self.sqrt_beta
         term1 = self.term1
         term2 = self.term2
-        # greedy_index = validinds[numpy.argmax(term2[validinds])]
-        # greedy_value = numpy.sqrt(term1[greedy_index])
-        total = term2 + (numpy.sqrt(sqrt_beta) / 4 / c1 /self.min_sqrt_eig) * term1
-        next_index = validinds[numpy.argmax(total[validinds])]
-        #self.debugval[self.t-1] = numpy.sqrt(sqrt_beta) / 4 / c1 * term1[next_index] / self.min_sqrt_eig
+        # greedy_index = validinds[np.argmax(term2[validinds])]
+        # greedy_value = np.sqrt(term1[greedy_index])
+        total = term2 + (np.sqrt(sqrt_beta) / 4 / c1 /self.min_sqrt_eig) * term1
+        next_index = validinds[np.argmax(total[validinds])]
+        #self.debugval[self.t-1] = np.sqrt(sqrt_beta) / 4 / c1 * term1[next_index] / self.min_sqrt_eig
 
         reward = self._get_reward(next_index)
         self._process_reward(reward, next_index)
@@ -643,25 +642,25 @@ class ofulx9(banditclass):
         validinds = self.validinds
         xt = X[next_index, :]
         b += reward * xt
-        tempval1 = numpy.dot(invVt, xt)
-        tempval2 = numpy.dot(tempval1, xt)
+        tempval1 = np.dot(invVt, xt)
+        tempval2 = np.dot(tempval1, xt)
 
         self.logdetV += log(1 + tempval2)
 
-        X_invVt_norm_sq = X_invVt_norm_sq - (numpy.dot(X, tempval1) ** 2) / (1 + tempval2) # efficient update
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)             #
+        X_invVt_norm_sq = X_invVt_norm_sq - (np.dot(X, tempval1) ** 2) / (1 + tempval2) # efficient update
+        invVt = invVt - np.outer(tempval1, tempval1) / (1 + tempval2)             #
         if self.shifted:
-            thetahat = self.x0 + numpy.dot(invVt, b)
+            thetahat = self.x0 + np.dot(invVt, b)
         else:
-            thetahat = numpy.dot(invVt, b)
-        validinds = numpy.setdiff1d(validinds, next_index)
+            thetahat = np.dot(invVt, b)
+        validinds = np.setdiff1d(validinds, next_index)
 
         self.t += 1
-#        eig_values = numpy.linalg.eigvalsh(invVt)
-#        min_sqrt_eig = numpy.sqrt(numpy.min(eig_values))
+#        eig_values = np.linalg.eigvalsh(invVt)
+#        min_sqrt_eig = np.sqrt(np.min(eig_values))
         if (self.doEigVal):
-          eig_values = numpy.linalg.eigvalsh(invVt)
-          min_sqrt_eig = numpy.sqrt(numpy.min(eig_values))
+          eig_values = np.linalg.eigvalsh(invVt)
+          min_sqrt_eig = np.sqrt(np.min(eig_values))
         else:
           min_sqrt_eig = 1/sqrt(self.ridge + self.t)
         self.min_sqrt_eig = min_sqrt_eig
@@ -672,7 +671,7 @@ class ofulx9(banditclass):
             self.sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat)
         self.sqrt_beta_ary.append(self.sqrt_beta)
         self.term1 = X_invVt_norm_sq
-        self.term2 = numpy.dot(X, thetahat)
+        self.term2 = np.dot(X, thetahat)
 
         self.X_invVt_norm_sq = X_invVt_norm_sq
         self.b = b
@@ -686,9 +685,9 @@ class ofulx9(banditclass):
         return 2*float(y[ind])-1
 
     def runbandit(self, T):
-        rewards = numpy.zeros(T)
-        arms = numpy.zeros(T)
-        self.debugval = numpy.zeros(T)
+        rewards = np.zeros(T)
+        arms = np.zeros(T)
+        self.debugval = np.zeros(T)
         for i in xrange(T):
             next_index, reward = self._next_arm()
             rewards[i] = reward
@@ -747,29 +746,29 @@ class ofulx9_light(banditclass):
         self.doEigVal = False
 
         thetahat = self.x0
-        self.invVt = numpy.eye(d) / self.ridge
+        self.invVt = np.eye(d) / self.ridge
         self.validinds = opts['validinds']
-        self.min_sqrt_eig = 1/numpy.sqrt(self.ridge)
+        self.min_sqrt_eig = 1/np.sqrt(self.ridge)
 
-        self.b = numpy.zeros(self.d)
+        self.b = np.zeros(self.d)
 
-        X_invVt_norm_sq = numpy.sum(X * X, axis=1) / self.ridge
+        X_invVt_norm_sq = np.sum(X * X, axis=1) / self.ridge
         sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat)
         self.sqrt_beta = sqrt_beta
         self.sqrt_beta_ary.append(sqrt_beta)
 #         self.term1 = self.X_invVt_norm_sq
-#         self.term2 = numpy.dot(X, thetahat)
-        self.est_rewards = numpy.dot(X, thetahat) + \
+#         self.term2 = np.dot(X, thetahat)
+        self.est_rewards = np.dot(X, thetahat) + \
             (sqrt(sqrt_beta)/4/self.c1/self.min_sqrt_eig) * X_invVt_norm_sq
 
         self.light_inds = copy.copy(self.validinds)
 
     def _next_arm(self):
 #        validinds = self.validinds
-#        total = term2 + (numpy.sqrt(sqrt_beta) / 4 / c1 /self.min_sqrt_eig) * term1
+#        total = term2 + (np.sqrt(sqrt_beta) / 4 / c1 /self.min_sqrt_eig) * term1
         light_inds = self.light_inds
-        next_index = light_inds[numpy.argmax(self.est_rewards[light_inds])]
-        #self.debugval[self.t-1] = numpy.sqrt(sqrt_beta) / 4 / c1 * term1[next_index] / self.min_sqrt_eig
+        next_index = light_inds[np.argmax(self.est_rewards[light_inds])]
+        #self.debugval[self.t-1] = np.sqrt(sqrt_beta) / 4 / c1 * term1[next_index] / self.min_sqrt_eig
 
         reward = self._get_reward(next_index)
         self._process_reward(reward, next_index)
@@ -784,23 +783,23 @@ class ofulx9_light(banditclass):
         validinds = self.validinds
         xt = X[next_index, :]
         b += reward * xt
-        tempval1 = numpy.dot(invVt, xt)
-        tempval2 = numpy.dot(tempval1, xt)
+        tempval1 = np.dot(invVt, xt)
+        tempval2 = np.dot(tempval1, xt)
 
-        #X_invVt_norm_sq = X_invVt_norm_sq - (numpy.dot(X, tempval1) ** 2) / (1 + tempval2) # efficient update
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)             #
+        #X_invVt_norm_sq = X_invVt_norm_sq - (np.dot(X, tempval1) ** 2) / (1 + tempval2) # efficient update
+        invVt = invVt - np.outer(tempval1, tempval1) / (1 + tempval2)             #
         if self.shifted:
-            thetahat = self.x0 + numpy.dot(invVt, b)
+            thetahat = self.x0 + np.dot(invVt, b)
         else:
-            thetahat = numpy.dot(invVt, b)
-        validinds = numpy.setdiff1d(validinds, next_index)
+            thetahat = np.dot(invVt, b)
+        validinds = np.setdiff1d(validinds, next_index)
 
         self.t += 1
-#         eig_values = numpy.linalg.eigvalsh(invVt)
-#         min_sqrt_eig = numpy.sqrt(numpy.min(eig_values))
+#         eig_values = np.linalg.eigvalsh(invVt)
+#         min_sqrt_eig = np.sqrt(np.min(eig_values))
         if (self.doEigVal):
-          eig_values = numpy.linalg.eigvalsh(invVt)
-          min_sqrt_eig = numpy.sqrt(numpy.min(eig_values))
+          eig_values = np.linalg.eigvalsh(invVt)
+          min_sqrt_eig = np.sqrt(np.min(eig_values))
         else:
           min_sqrt_eig = 1/sqrt(self.ridge + self.t)
         self.min_sqrt_eig = min_sqrt_eig
@@ -809,7 +808,7 @@ class ofulx9_light(banditclass):
         self.sqrt_beta = sqrt_beta
         self.sqrt_beta_ary.append(sqrt_beta)
         #self.term1 = X_invVt_norm_sq
-        #self.term2 = numpy.dot(X, thetahat)
+        #self.term2 = np.dot(X, thetahat)
 
         #self.X_invVt_norm_sq = X_invVt_norm_sq
         self.invVt = invVt
@@ -818,7 +817,7 @@ class ofulx9_light(banditclass):
         self.validinds = validinds
 
         est_rewards = self.est_rewards
-        rand_inds = numpy.random.permutation(validinds)[0:self.max_dist_comp]
+        rand_inds = np.random.permutation(validinds)[0:self.max_dist_comp]
         est_rewards[rand_inds] = dot(X[rand_inds,:], self.thetahat) + \
             (sqrt(self.sqrt_beta)/4/self.c1/self.min_sqrt_eig) * \
             np.sum(X[rand_inds,:] * dot(X[rand_inds,:], self.invVt),1)
@@ -831,9 +830,9 @@ class ofulx9_light(banditclass):
         return 2*float(y[ind])-1
 
     def runbandit(self, T):
-        rewards = numpy.zeros(T)
-        arms = numpy.zeros(T)
-        self.debugval = numpy.zeros(T)
+        rewards = np.zeros(T)
+        arms = np.zeros(T)
+        self.debugval = np.zeros(T)
         for i in xrange(T):
             next_index, reward = self._next_arm()
             rewards[i] = reward
@@ -867,21 +866,21 @@ class epsilon_greedy(banditclass):
         self.do_not_ask = opts['do_not_ask']
 
         thetahat = self.x0
-        self.invVt = numpy.eye(d) / self.ridge
+        self.invVt = np.eye(d) / self.ridge
         validinds = setdiff1d(range(n), self.do_not_ask)
         self.validinds = validinds
-        self.XTy = numpy.zeros(len(thetahat))
+        self.XTy = np.zeros(len(thetahat))
 
-        self.expected_rewards = numpy.dot(X, thetahat)
+        self.expected_rewards = np.dot(X, thetahat)
         self.thetahat = thetahat
 
 
     def _next_arm(self):
         epsilon = self.epsilon
-        if numpy.random.random() > epsilon:
+        if np.random.random() > epsilon:
             next_index = self.validinds[np.argmax(self.expected_rewards[self.validinds])]
         else:
-            next_index = numpy.random.choice(self.validinds, 1)[0]
+            next_index = np.random.choice(self.validinds, 1)[0]
         # reward = self._get_reward(next_index)
         #         self._process_reward(reward, next_index)
         #         return next_index, reward
@@ -897,14 +896,14 @@ class epsilon_greedy(banditclass):
 
         xt = X[next_index, :]
         XTy += reward * xt
-        tempval1 = numpy.dot(invVt, xt)
-        tempval2 = numpy.dot(tempval1, xt)
+        tempval1 = np.dot(invVt, xt)
+        tempval2 = np.dot(tempval1, xt)
 
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)
+        invVt = invVt - np.outer(tempval1, tempval1) / (1 + tempval2)
         if self.shifted:
-            thetahat = numpy.dot(invVt, XTy) + self.x0
+            thetahat = np.dot(invVt, XTy) + self.x0
         else:
-            thetahat = numpy.dot(invVt, XTy)
+            thetahat = np.dot(invVt, XTy)
 
         self.t += 1
         self.invVt = invVt
@@ -917,7 +916,7 @@ class epsilon_greedy(banditclass):
         validinds = setdiff1d(range(self.n), self.do_not_ask)
         self.validinds = validinds
 
-        expected_rewards = numpy.dot(X, thetahat)
+        expected_rewards = np.dot(X, thetahat)
         self.expected_rewards = expected_rewards
 
 
@@ -931,8 +930,8 @@ class epsilon_greedy(banditclass):
 
 
     def runbandit(self, T):
-        rewards = numpy.zeros(T)
-        arms = numpy.zeros(T)
+        rewards = np.zeros(T)
+        arms = np.zeros(T)
         for i in xrange(T):
             #            next_index, reward = self._next_arm()
             next_index = self._next_arm()
@@ -990,10 +989,10 @@ class ofulx9_lsh(banditclass):
 
         thetahat = self.x0
         self.thetahat = thetahat
-        self.invVt = numpy.eye(d) / self.ridge
+        self.invVt = np.eye(d) / self.ridge
 #        self.validinds = opts['validinds']
-        self.min_sqrt_eig = 1/numpy.sqrt(self.ridge)
-        self.XTy = numpy.zeros(self.d)
+        self.min_sqrt_eig = 1/np.sqrt(self.ridge)
+        self.XTy = np.zeros(self.d)
 
         sqrt_beta = CalcSqrtBeta(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat)
         self.sqrt_beta = sqrt_beta
@@ -1005,10 +1004,10 @@ class ofulx9_lsh(banditclass):
         #- initial update
         time_lsh = tic()
         validinds = setdiff1d(range(self.n), self.do_not_ask)
-        invalidList = self.do_not_ask #numpy.setdiff1d(range(self.n), validinds)
-        query_2_mat = self.invVt*(numpy.sqrt(self.sqrt_beta)/4 /self.c1 /self.min_sqrt_eig)
+        invalidList = self.do_not_ask #np.setdiff1d(range(self.n), validinds)
+        query_2_mat = self.invVt*(np.sqrt(self.sqrt_beta)/4 /self.c1 /self.min_sqrt_eig)
         foundList, maxDepth, debugDict = self.lsh_wrap.FindUpto(self.thetahat, query_2_mat, self.max_dist_comp, randomize=True, invalidList=invalidList, maxLookup=self.lsh_max_lookup)
-        assert( len(numpy.intersect1d(foundList, validinds)) == len(foundList) )
+        assert( len(np.intersect1d(foundList, validinds)) == len(foundList) )
         self.time_lsh_ary.append(toc(time_lsh))
         self.maxDepthList.append(maxDepth)
         self.nRetrievedFromLshList.append(debugDict['nRetrievedFromLsh'])
@@ -1016,10 +1015,10 @@ class ofulx9_lsh(banditclass):
         #--- compute the inner product
         #- Note that sorting the list improves speed, but I am not doing it currently.
         sub_X = self.X[foundList,:]
-        term1 = numpy.sum(sub_X * dot(sub_X, self.invVt), axis=1)
-        term2 = numpy.dot(sub_X, self.thetahat)
+        term1 = np.sum(sub_X * dot(sub_X, self.invVt), axis=1)
+        term2 = np.dot(sub_X, self.thetahat)
         self.expected_rewards[:] = -np.inf
-        self.expected_rewards[foundList] = term2 + (numpy.sqrt(self.sqrt_beta) / 4 / self.c1 / self.min_sqrt_eig)* term1
+        self.expected_rewards[foundList] = term2 + (np.sqrt(self.sqrt_beta) / 4 / self.c1 / self.min_sqrt_eig)* term1
         self.written_inds = foundList
 
 #    @profile
@@ -1035,19 +1034,19 @@ class ofulx9_lsh(banditclass):
         invVt = self.invVt
         xt = X[next_index, :]
         XTy += reward * xt
-        tempval1 = numpy.dot(invVt, xt)
-        tempval2 = numpy.dot(tempval1, xt)
+        tempval1 = np.dot(invVt, xt)
+        tempval2 = np.dot(tempval1, xt)
 
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)
+        invVt = invVt - np.outer(tempval1, tempval1) / (1 + tempval2)
         if self.shifted:
-            thetahat = self.x0 + numpy.dot(invVt, XTy)
+            thetahat = self.x0 + np.dot(invVt, XTy)
         else:
-            thetahat = numpy.dot(invVt, XTy)
+            thetahat = np.dot(invVt, XTy)
         self.t += 1
 
         if (self.doEigVal):
-          eig_values = numpy.linalg.eigvalsh(invVt)
-          min_sqrt_eig = numpy.sqrt(numpy.min(eig_values))
+          eig_values = np.linalg.eigvalsh(invVt)
+          min_sqrt_eig = np.sqrt(np.min(eig_values))
         else:
           min_sqrt_eig = 1/sqrt(self.ridge + self.t)
         self.min_sqrt_eig = min_sqrt_eig
@@ -1062,20 +1061,20 @@ class ofulx9_lsh(banditclass):
         #- update for the nxt: call lsh
         time_lsh = tic()
         validinds = setdiff1d(range(self.n), self.do_not_ask)
-        invalidList = self.do_not_ask #numpy.setdiff1d(range(self.n), validinds)
-        query_2_mat = self.invVt*(numpy.sqrt(self.sqrt_beta)/4 /self.c1 /self.min_sqrt_eig)
+        invalidList = self.do_not_ask #np.setdiff1d(range(self.n), validinds)
+        query_2_mat = self.invVt*(np.sqrt(self.sqrt_beta)/4 /self.c1 /self.min_sqrt_eig)
         foundList, maxDepth, debugDict = self.lsh_wrap.FindUpto(self.thetahat, query_2_mat, self.max_dist_comp, randomize=True, invalidList=invalidList, maxLookup=self.lsh_max_lookup)
-        assert( len(numpy.intersect1d(foundList, validinds)) == len(foundList) )
+        assert( len(np.intersect1d(foundList, validinds)) == len(foundList) )
         self.time_lsh_ary.append(toc(time_lsh))
         self.maxDepthList.append(maxDepth)
         self.nRetrievedFromLshList.append(debugDict['nRetrievedFromLsh'])
 
         #- compute the expected rewards
         sub_X = self.X[foundList,:]
-        term1 = numpy.sum(sub_X * dot(sub_X, self.invVt), axis=1)
-        term2 = numpy.dot(sub_X, self.thetahat)
+        term1 = np.sum(sub_X * dot(sub_X, self.invVt), axis=1)
+        term2 = np.dot(sub_X, self.thetahat)
         self.expected_rewards[:] = -np.inf
-        self.expected_rewards[foundList] = term2 + (numpy.sqrt(self.sqrt_beta) / 4 / self.c1 / self.min_sqrt_eig)* term1
+        self.expected_rewards[foundList] = term2 + (np.sqrt(self.sqrt_beta) / 4 / self.c1 / self.min_sqrt_eig)* term1
         self.written_inds = foundList
 
     def _get_reward(self, ind):
@@ -1086,8 +1085,8 @@ class ofulx9_lsh(banditclass):
         self.do_not_ask.append(next_index)
 
     def runbandit(self, T):
-        rewards = numpy.zeros(T)
-        arms = numpy.zeros(T)
+        rewards = np.zeros(T)
+        arms = np.zeros(T)
         for i in xrange(T):
             next_index = self._next_arm()
 
@@ -1150,18 +1149,18 @@ class thompson(banditclass):
 
         # if you look closer, the paper claims that the confidence bound can be
         # tightened by replacing T with t
-        self.v = self.scale * numpy.sqrt( 9 * self.d * numpy.log(1/self.delta) )
+        self.v = self.scale * np.sqrt( 9 * self.d * np.log(1/self.delta) )
 #         theta_til = self.x0
 #         self.theta_til = theta_til
         self.theta_hat = self.x0
-#        self.invVt = numpy.eye(d) / self.ridge
-        self.invVt = numpy.eye(d)
-        self.matR = numpy.eye(d)
+#        self.invVt = np.eye(d) / self.ridge
+        self.invVt = np.eye(d)
+        self.matR = np.eye(d)
         self.validinds = opts['validinds']
 
-        self.b = numpy.zeros(self.d)
+        self.b = np.zeros(self.d)
 
-#        self.est_rewards = numpy.dot(X, theta_til)
+#        self.est_rewards = np.dot(X, theta_til)
 
     def _next_arm(self):
         tmp = ra.normal(size=(self.d,))
@@ -1171,7 +1170,7 @@ class thompson(banditclass):
 #        est_rewards = self.est_rewards
         est_rewards = np.dot(self.X, theta_til)
 
-        next_index = validinds[numpy.argmax(est_rewards[validinds])]
+        next_index = validinds[np.argmax(est_rewards[validinds])]
 
         reward = self._get_reward(next_index)
         self._process_reward(reward, next_index)
@@ -1187,37 +1186,37 @@ class thompson(banditclass):
 
         xt = X[next_index, :]
         b += reward * xt
-        tempval1 = numpy.dot(invVt, xt)
-        tempval2 = numpy.dot(tempval1, xt)
+        tempval1 = np.dot(invVt, xt)
+        tempval2 = np.dot(tempval1, xt)
 
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)
+        invVt = invVt - np.outer(tempval1, tempval1) / (1 + tempval2)
         if self.shifted:
-            theta_hat = numpy.dot(invVt, b) + self.x0
+            theta_hat = np.dot(invVt, b) + self.x0
         else:
-            theta_hat = numpy.dot(invVt, b)
+            theta_hat = np.dot(invVt, b)
 
         # update matR this is call by reference.
-        choldowndate(self.matR, tempval1 / np.sqrt(1 + tempval2))
-#         matR = linalg.cholesky(invVt).T
+        # choldowndate(self.matR, tempval1 / np.sqrt(1 + tempval2))
+        matR = linalg.cholesky(invVt).T
 
-        validinds = numpy.setdiff1d(validinds, next_index)
+        validinds = np.setdiff1d(validinds, next_index)
         self.t += 1
 
-        self.v = self.scale * numpy.sqrt( 9 * self.d * numpy.log((self.t)/self.delta) )
+        self.v = self.scale * np.sqrt( 9 * self.d * np.log((self.t)/self.delta) )
         self.invVt = invVt
         self.b = b
 #        self.theta_til = theta_til
         self.theta_hat = theta_hat
         self.validinds = validinds
-#        self.est_rewards = numpy.dot(X, theta_til)
+#        self.est_rewards = np.dot(X, theta_til)
 
     def _get_reward(self, ind):
         y = self.y
         return 2*float(y[ind])-1
 
     def runbandit(self, T):
-        rewards = numpy.zeros(T)
-        arms = numpy.zeros(T)
+        rewards = np.zeros(T)
+        arms = np.zeros(T)
         for i in xrange(T):
             next_index, reward = self._next_arm()
             rewards[i] = reward
@@ -1322,15 +1321,15 @@ class ofulx9_l1(banditclass):
         self.doEigVal = False
 
         thetahat = self.x0
-        self.invVt = numpy.eye(d) / self.ridge
+        self.invVt = np.eye(d) / self.ridge
         self.validinds = opts['validinds']
-        self.min_sqrt_eig = 1/numpy.sqrt(self.ridge)
+        self.min_sqrt_eig = 1/np.sqrt(self.ridge)
 
-        self.XTy = numpy.zeros(self.d)
+        self.XTy = np.zeros(self.d)
 
         self.logdetV = self.d*log(self.ridge)
 
-        self.X_invVt_norm_sq = numpy.sum(X * X, axis=1) / self.ridge
+        self.X_invVt_norm_sq = np.sum(X * X, axis=1) / self.ridge
         if (self.useSqrtBetaDet):
             self.sqrt_beta = CalcSqrtBetaDet(self.d,self.t,self.scale,self.R,self.ridge,self.delta,self.S_hat,self.logdetV)
         else:
@@ -1360,23 +1359,23 @@ class ofulx9_l1(banditclass):
         validinds = self.validinds
         xt = X[next_index, :]
         XTy += reward * xt
-        tempval1 = numpy.dot(invVt, xt)
-        tempval2 = numpy.dot(tempval1, xt)
+        tempval1 = np.dot(invVt, xt)
+        tempval2 = np.dot(tempval1, xt)
 
         self.logdetV += log(1 + tempval2)
 
-        X_invVt_norm_sq = X_invVt_norm_sq - (numpy.dot(X, tempval1) ** 2) / (1 + tempval2) # efficient update
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)             #
+        X_invVt_norm_sq = X_invVt_norm_sq - (np.dot(X, tempval1) ** 2) / (1 + tempval2) # efficient update
+        invVt = invVt - np.outer(tempval1, tempval1) / (1 + tempval2)             #
         if self.shifted:
-            thetahat = self.x0 + numpy.dot(invVt, XTy)
+            thetahat = self.x0 + np.dot(invVt, XTy)
         else:
-            thetahat = numpy.dot(invVt, XTy)
-        validinds = numpy.setdiff1d(validinds, next_index)
+            thetahat = np.dot(invVt, XTy)
+        validinds = np.setdiff1d(validinds, next_index)
 
         self.t += 1
         if (self.doEigVal):
-          eig_values = numpy.linalg.eigvalsh(invVt)
-          min_sqrt_eig = numpy.sqrt(numpy.min(eig_values))
+          eig_values = np.linalg.eigvalsh(invVt)
+          min_sqrt_eig = np.sqrt(np.min(eig_values))
         else:
           min_sqrt_eig = 1/sqrt(self.ridge + self.t)
         self.min_sqrt_eig = min_sqrt_eig
@@ -1398,9 +1397,9 @@ class ofulx9_l1(banditclass):
         return 2*float(y[ind])-1
 
     def runbandit(self, T):
-        rewards = numpy.zeros(T)
-        arms = numpy.zeros(T)
-        self.debugval = numpy.zeros(T)
+        rewards = np.zeros(T)
+        arms = np.zeros(T)
+        self.debugval = np.zeros(T)
         for i in xrange(T):
             next_index, reward = self._next_arm()
             rewards[i] = reward
@@ -1452,16 +1451,16 @@ class thompson_light(banditclass):
 
         # if you look closer, the paper claims that the confidence bound can be
         # tightened by replacing T with t
-        self.v = self.scale * numpy.sqrt( 9 * self.d * numpy.log(1/self.delta) )
+        self.v = self.scale * np.sqrt( 9 * self.d * np.log(1/self.delta) )
 #         theta_til = self.x0
 #         self.theta_til = theta_til
         self.theta_hat = self.x0
-#        self.invVt = numpy.eye(d) / self.ridge
-        self.invVt = numpy.eye(d)
-        self.matR = numpy.eye(d)
+#        self.invVt = np.eye(d) / self.ridge
+        self.invVt = np.eye(d)
+        self.matR = np.eye(d)
         self.validinds = opts['validinds']
 
-        self.b = numpy.zeros(self.d)
+        self.b = np.zeros(self.d)
         self.light_inds = self.validinds
 
         self.est_rewards = np.zeros(self.n)
@@ -1473,7 +1472,7 @@ class thompson_light(banditclass):
         light_inds = self.light_inds
         self.est_rewards[light_inds] = dot(self.X[light_inds,:], theta_til)
 
-        next_index = light_inds[numpy.argmax(self.est_rewards[light_inds])]
+        next_index = light_inds[np.argmax(self.est_rewards[light_inds])]
 
         reward = self._get_reward(next_index)
         self._process_reward(reward, next_index)
@@ -1489,14 +1488,14 @@ class thompson_light(banditclass):
 
         xt = X[next_index, :]
         b += reward * xt
-        tempval1 = numpy.dot(invVt, xt)
-        tempval2 = numpy.dot(tempval1, xt)
+        tempval1 = np.dot(invVt, xt)
+        tempval2 = np.dot(tempval1, xt)
 
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)
+        invVt = invVt - np.outer(tempval1, tempval1) / (1 + tempval2)
         if self.shifted:
-            theta_hat = numpy.dot(invVt, b) + self.x0
+            theta_hat = np.dot(invVt, b) + self.x0
         else:
-            theta_hat = numpy.dot(invVt, b)
+            theta_hat = np.dot(invVt, b)
 
         # update matR this is call by reference.
         choldowndate(self.matR, tempval1 / np.sqrt(1 + tempval2))
@@ -1507,18 +1506,18 @@ class thompson_light(banditclass):
 #         tmp = ra.normal(size=(self.d,))
 #         theta_til = dot(tmp,v*matR) + theta_hat
 
-        validinds = numpy.setdiff1d(validinds, next_index)
+        validinds = np.setdiff1d(validinds, next_index)
         self.t += 1
 
-        self.v = self.scale * numpy.sqrt( 9 * self.d * numpy.log((self.t)/self.delta) )
+        self.v = self.scale * np.sqrt( 9 * self.d * np.log((self.t)/self.delta) )
         self.invVt = invVt
         self.b = b
 #        self.theta_til = theta_til
         self.theta_hat = theta_hat
         self.validinds = validinds
-#        self.est_rewards = numpy.dot(X, theta_til)
+#        self.est_rewards = np.dot(X, theta_til)
 
-        light_inds = numpy.random.permutation(validinds)[0:self.max_dist_comp]
+        light_inds = np.random.permutation(validinds)[0:self.max_dist_comp]
 #        self.est_rewards[light_inds] = dot(X[light_inds,:], theta_til)
        # dot(X[light_inds,:], self.thetahat) + \
        #     self.sqrt_beta * sqrt(np.sum(X[light_inds,:] * dot(X[light_inds,:], self.invVt),1))
@@ -1530,8 +1529,8 @@ class thompson_light(banditclass):
         return 2*float(y[ind])-1
 
     def runbandit(self, T):
-        rewards = numpy.zeros(T)
-        arms = numpy.zeros(T)
+        rewards = np.zeros(T)
+        arms = np.zeros(T)
         for i in xrange(T):
             next_index, reward = self._next_arm()
             rewards[i] = reward
@@ -1575,17 +1574,17 @@ class thompson_lsh(banditclass):
 
         self.do_not_ask = opts['do_not_ask']
 
-        self.v = self.scale * numpy.sqrt( 9 * self.d * numpy.log(1/self.delta) )
+        self.v = self.scale * np.sqrt( 9 * self.d * np.log(1/self.delta) )
         self.thetahat = self.x0
-        self.invVt = numpy.eye(d) # I guess ridge parameter is 1 for TS
+        self.invVt = np.eye(d) # I guess ridge parameter is 1 for TS
 #        if (self.do_chol_onestep):
-#           self.matR = numpy.eye(d)
+#           self.matR = np.eye(d)
 #           matR = self.matR
 #         else:
 #           matR = np.eye(d)
         matR = np.eye(d)
 
-        self.XTy = numpy.zeros(self.d)
+        self.XTy = np.zeros(self.d)
         self.expected_rewards = -np.inf*np.ones(self.n)
 
         #--- prepare for the next arm
@@ -1595,10 +1594,10 @@ class thompson_lsh(banditclass):
 
         #- call lsh
         validinds = setdiff1d(range(self.n), self.do_not_ask)
-        invalidList = self.do_not_ask #numpy.setdiff1d(range(self.n), validinds)
+        invalidList = self.do_not_ask #np.setdiff1d(range(self.n), validinds)
         time_lsh = tic()
         foundList, maxDepth, debugDict = self.lsh_wrap.FindUpto(theta_til, self.max_dist_comp, randomize=True, invalidList=invalidList, maxLookup=self.lsh_max_lookup)
-        assert( len(numpy.intersect1d(foundList, validinds)) == len(foundList) )
+        assert( len(np.intersect1d(foundList, validinds)) == len(foundList) )
         self.time_lsh_ary.append(toc(time_lsh))
         self.maxDepthList.append(maxDepth)
         self.nRetrievedFromLshList.append(debugDict['nRetrievedFromLsh'])
@@ -1618,14 +1617,14 @@ class thompson_lsh(banditclass):
 
         xt = X[next_index, :]
         XTy += reward * xt
-        tempval1 = numpy.dot(invVt, xt)
-        tempval2 = numpy.dot(tempval1, xt)
+        tempval1 = np.dot(invVt, xt)
+        tempval2 = np.dot(tempval1, xt)
 
-        invVt = invVt - numpy.outer(tempval1, tempval1) / (1 + tempval2)
+        invVt = invVt - np.outer(tempval1, tempval1) / (1 + tempval2)
         if self.shifted:
-            thetahat = numpy.dot(invVt, XTy) + self.x0
+            thetahat = np.dot(invVt, XTy) + self.x0
         else:
-            thetahat = numpy.dot(invVt, XTy)
+            thetahat = np.dot(invVt, XTy)
 
         #- update matR this is call by reference.
         #- note that the second argument will be corrupted, so be sure to do .copy()
@@ -1639,7 +1638,7 @@ class thompson_lsh(banditclass):
 
         self.t += 1
 
-        self.v = self.scale * numpy.sqrt( 9 * self.d * numpy.log((self.t)/self.delta) )
+        self.v = self.scale * np.sqrt( 9 * self.d * np.log((self.t)/self.delta) )
         self.invVt = invVt
         self.XTy = XTy
         self.thetahat = thetahat
@@ -1654,7 +1653,7 @@ class thompson_lsh(banditclass):
         invalidList = self.do_not_ask
         time_lsh = tic()
         foundList, maxDepth, debugDict = self.lsh_wrap.FindUpto(theta_til, self.max_dist_comp, randomize=True, invalidList=invalidList, maxLookup=self.lsh_max_lookup)
-        assert( len(numpy.intersect1d(foundList, validinds)) == len(foundList) )
+        assert( len(np.intersect1d(foundList, validinds)) == len(foundList) )
         self.time_lsh_ary.append(toc(time_lsh))
         self.maxDepthList.append(maxDepth)
         self.nRetrievedFromLshList.append(debugDict['nRetrievedFromLsh'])
@@ -1670,8 +1669,8 @@ class thompson_lsh(banditclass):
         self.do_not_ask.append(next_index)
 
     def runbandit(self, T):
-        rewards = numpy.zeros(T)
-        arms = numpy.zeros(T, dtype=int)
+        rewards = np.zeros(T)
+        arms = np.zeros(T, dtype=int)
         for i in xrange(T):
             next_index = self._next_arm()
 
@@ -1707,14 +1706,14 @@ class nearest_neighbor(banditclass):
 
     def setparams(self, opts):
         self.t = 1
-        self.est_rewards = numpy.dot(self.X, self.x0)
+        self.est_rewards = np.dot(self.X, self.x0)
         self.validinds = opts['validinds']
 
     def _next_arm(self):
         validinds = self.validinds
         est_rewards = self.est_rewards
 
-        next_index = validinds[numpy.argmax(est_rewards[validinds])]
+        next_index = validinds[np.argmax(est_rewards[validinds])]
 
         reward = self._get_reward(next_index)
         self._process_reward(reward, next_index)
@@ -1723,7 +1722,7 @@ class nearest_neighbor(banditclass):
 
     def _process_reward(self, reward, next_index):
         validinds = self.validinds
-        validinds = numpy.setdiff1d(validinds, next_index)
+        validinds = np.setdiff1d(validinds, next_index)
         t = self.t
         t += 1
         self.t = t
@@ -1734,8 +1733,8 @@ class nearest_neighbor(banditclass):
         return 2*float(y[ind])-1
 
     def runbandit(self, T):
-        rewards = numpy.zeros(T)
-        arms = numpy.zeros(T)
+        rewards = np.zeros(T)
+        arms = np.zeros(T)
         for i in xrange(T):
             next_index, reward = self._next_arm()
             rewards[i] = reward

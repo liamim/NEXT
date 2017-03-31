@@ -11,7 +11,7 @@ from next.lib.bandits import banditclass as bc
 class MyAlg:
     app_id = 'ImageSearch'
     def __init__(self):
-        self.alg_id = 'TS'
+        self.alg_id = 'TS_Hashing'
 
     # InitExp only needs to initialize the dashboard if it hasn't already been done
     def initExp(self, butler, params=None, n=None, R=None, ridge=None,
@@ -80,33 +80,18 @@ class MyAlg:
         target_id = task_args['target_id']
 
         X = butler.db.X
+        lsh = np.load('hash_object_nonquad.npy').tolist()
+        lsh.projections_all = butler.db.projections_nonquad
 
-        n = X.shape[0]
-        d = X.shape[1]
-        ridge = 1.
-        scale = 0.1
-        delta = 0.1
-        t = 1
-        shifted = False
-
-        invVt = np.eye(d) / ridge
-        thetahat = X[target_id, :]
-        b = np.zeros(len(thetahat))
-
-        est_rewards = np.dot(X, thetahat)
-
-        bandit_context = {
-            'ridge': ridge,
-            'scale': scale,
-            'delta': delta,
-            'invVt': invVt,
-            't': t,
-            '_bo_expected_rewards': est_rewards,
-            'shifted': shifted,
-            'init_arm': target_id,
-            'b': b
-        }
-
+        opts = bc.bandit_init_options()
+        opts['lsh'] = lsh
+        opts['lsh_index_array'] = butler.db.lsh_index_array
+        opts['param2'] = 10.0 ** -6
+        opts['max_dist_comp'] = 2501
+        bandit_context = bc.bandit_init('ts_lsh', target_id, X, opts=opts)
+        bandit_context['t'] = 0
+        bandit_context['init_arm'] = target_id
+        del bandit_context['_bo_do_not_ask']
         butler.participants.set_many(uid=participant_uid, key_value_dict=bandit_context)
 
         return True
@@ -117,52 +102,16 @@ class MyAlg:
         participant_uid = task_args['participant_uid']
 
         X = butler.db.X
+        lsh = butler.db.lsh_nonquad
+        lsh.projections_all = butler.db.projections_nonquad
 
         participant_doc = butler.participants.get(uid=participant_uid)
-
-        scale = participant_doc['scale']
-        delta = participant_doc['delta']
-        invVt = participant_doc['invVt']
-        t = participant_doc['t']
-        shifted = participant_doc['shifted']
-        init_arm = participant_doc['init_arm']
-        b = participant_doc['b']
-        d = participant_doc['d']
-
-        xt = X[target_id, :]
-        b += target_reward * xt
-        tempval1 = np.dot(invVt, xt)
-        tempval2 = np.dot(tempval1, xt)
-
-        invVt = invVt - np.outer(tempval1, tempval1) / (1 + tempval2)
-        if shifted:
-            thetahat = np.dot(invVt, b) + X[init_arm, :]
-        else:
-            thetahat = np.dot(invVt, b)
-
-        # update matR this is call by reference.
-        matR = np.linalg.cholesky(invVt).T
-
-        t += 1
-        v = scale * np.sqrt(9 * d * np.log(1 / delta))
-
-        tmp = np.random.normal(size=(d,))
-        theta_til = np.dot(tmp, v * matR) + thetahat
-
-        est_rewards = np.dot(X, theta_til)
-
-        bandit_context = {
-            'invVt': invVt,
-            't': t,
-            '_bo_expected_rewards': est_rewards,
-            'b': b
-        }
-
-        butler.participants.set_many(uid=participant_uid, key_value_dict=bandit_context)
-
+        bandit_context = bc.bandit_extract_context(participant_doc)
+        i_hat = butler.participants.get(uid=participant_uid, key='i_hat')
+        bc.bandit_update(bandit_context, X, i_hat, target_reward, {'lsh': lsh})
         if target_reward < 0:
             target_reward = 0
-
+        t = participant_doc[u't']
         update_plot_data = {'rewards': target_reward,
                             'participant_uid': participant_uid,
                             'initial_arm': participant_doc['init_arm'],
@@ -171,6 +120,11 @@ class MyAlg:
                             'time': t}
 
         butler.dashboard.append(key='plot_data', value=update_plot_data)
+        bandit_context['t'] = t + 1
+        participant_doc.update(bandit_context)
+        del participant_doc['_bo_do_not_ask']
+        butler.participants.set_many(uid=participant_doc['participant_uid'],
+                                     key_value_dict=participant_doc)
 
         return True
 
