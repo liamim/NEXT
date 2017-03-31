@@ -104,6 +104,8 @@ class MyAlg:
             '_bo_expected_rewards': est_rewards,
             'shifted': shifted,
             'init_arm': target_id,
+            'n': n,
+            'd': d,
             'b': b
         }
 

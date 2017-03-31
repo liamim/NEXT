@@ -6,7 +6,6 @@ from __future__ import division
 import numpy as np
 import next.utils as utils
 
-from next.lib.bandits import banditclass as bc
 
 class MyAlg:
     app_id = 'ImageSearch'
@@ -90,9 +89,9 @@ class MyAlg:
         return True
 
     def modelInit(self, butler, task_args):
+        from billiard import current_process
         participant_uid = task_args['participant_uid']
         target_id = task_args['target_id']
-
         X = butler.db.X
 
         d = X.shape[1]

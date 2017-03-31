@@ -52,12 +52,27 @@ class MyAlg:
             expected_rewards = np.ones(n)*-np.inf
             NN_order = np.load('NN_order.npy').tolist()
             expected_rewards[NN_order[target_id]] = range(0,50)[::-1]
-            bandit_context = {'_bo_expected_rewards': expected_rewards, '_bo_do_not_ask': [target_id]}
+
+            R = 1.
+            ridge = 1.
+            scale = 0.1
+            delta = 0.1
+            S_hat = 1.
+
+            bandit_context = {
+                '_bo_expected_rewards': expected_rewards,
+                '_bo_do_not_ask': [target_id],
+                'R': R,
+                'ridge': ridge,
+                'scale': scale,
+                'delta': delta,
+                'S_hat': S_hat
+            }
             butler.participants.set_many(uid=participant_uid, key_value_dict=bandit_context)
 
             task_args = {
                 'participant_uid': participant_uid,
-                'target_id': target_id
+                'target_id': target_id,
             }
 
             butler.job('modelInit', task_args, ignore_result=True)
@@ -82,39 +97,41 @@ class MyAlg:
 
         n = X.shape[0]
         d = X.shape[1]
-        R = 1.
-        ridge = 1.
-        scale = 0.1
-        delta = 0.1
-        S_hat = 1.
+
         t = 1
         shifted = False
+
+
+        scale = butler.participants.get(uid=participant_uid, key='scale')
+        R = butler.participants.get(uid=participant_uid, key='R')
+        ridge = butler.participants.get(uid=participant_uid, key='ridge')
+        delta = butler.participants.get(uid=participant_uid, key='delta')
+        S_hat = butler.participants.get(uid=participant_uid, key='S_hat')
+        sqrt_beta = scale * (R * np.sqrt(d * np.log((1 + t / (ridge * d)) / delta)) + np.sqrt(ridge) * S_hat)
 
         invVt = np.eye(d) / ridge
         thetahat = X[target_id, :]
         b = np.zeros(len(thetahat))
-        sqrt_beta = self.CalcSqrtBeta(d, t, scale, R, ridge, delta, S_hat)
 
         X_invVt_norm_sq = np.sum(X * X, axis=1) / ridge
         est_rewards = np.dot(X, thetahat) + sqrt_beta * np.sqrt(X_invVt_norm_sq)
 
         bandit_context = {
-            'R': R,
-            'ridge': ridge,
-            'scale': scale,
-            'delta': delta,
-            'S_hat': S_hat,
             'invVt': invVt,
             't': t,
             '_bo_expected_rewards': est_rewards,
             'shifted': shifted,
             'init_arm': target_id,
             'X_invVt_norm_sq': X_invVt_norm_sq,
+            'd': d,
+            'n': n,
             'b': b
         }
 
 
         butler.participants.set_many(uid=participant_uid, key_value_dict=bandit_context)
+        # utils.debug_print('expected_rewards: ', est_rewards)
+        utils.debug_print('... done initializing')
 
         return True
 
@@ -127,12 +144,28 @@ class MyAlg:
 
 
         participant_doc = butler.participants.get(uid=participant_uid)
+        # utils.debug_print('keys in pdoc: ', participant_doc.keys())
 
+        # scale = butler.participants.get(uid=participant_uid, key='scale')
+        # R = butler.participants.get(uid=participant_uid, key='R')
+        # ridge = butler.participants.get(uid=participant_uid, key='ridge')
+        # delta = butler.participants.get(uid=participant_uid, key='delta')
+        # S_hat = butler.participants.get(uid=participant_uid, key='S_hat')
+
+        # invVt = butler.participants.get(uid=participant_uid, key='invVt')
+        # t = butler.participants.get(uid=participant_uid, key='t')
+        # shifted = butler.participants.get(uid=participant_uid, key='shifted')
+        # init_arm = butler.participants.get(uid=participant_uid, key='init_arm')
+        # X_invVt_norm_sq = butler.participants.get(uid=participant_uid, key='X_invVt_norm_sq')
+        # b = butler.participants.get(uid=participant_uid, key='b')
+        # d = butler.participants.get(uid=participant_uid, key='d')
+
+        scale = participant_doc['scale']
         R = participant_doc['R']
         ridge = participant_doc['ridge']
-        scale = participant_doc['scale']
         delta = participant_doc['delta']
         S_hat = participant_doc['S_hat']
+
         invVt = participant_doc['invVt']
         t = participant_doc['t']
         shifted = participant_doc['shifted']
@@ -154,7 +187,7 @@ class MyAlg:
             thetahat = np.dot(invVt, b)
 
         t += 1
-        sqrt_beta = CalcSqrtBeta(d, t, scale, R, ridge, delta, S_hat)
+        sqrt_beta = scale * (R * np.sqrt(d * np.log((1 + t / (ridge * d)) / delta)) + np.sqrt(ridge) * S_hat)
 
 
         est_rewards = np.dot(X, thetahat) + sqrt_beta * np.sqrt(X_invVt_norm_sq)
@@ -175,7 +208,7 @@ class MyAlg:
 
         update_plot_data = {'rewards': target_reward,
                             'participant_uid': participant_uid,
-                            'initial_arm': participant_doc['init_arm'],
+                            'initial_arm': init_arm,
                             'arm_pulled': target_id,
                             'alg': self.alg_id,
                             'time': t}
@@ -203,6 +236,3 @@ class MyAlg:
         else:
             d = {}
         return d
-
-    def CalcSqrtBeta(d, t, scale, R, ridge, delta, S_hat):
-        return scale * (R * sqrt(d * log((1 + t / (ridge * d)) / delta)) + sqrt(ridge) * S_hat)

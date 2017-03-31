@@ -20,6 +20,8 @@ import next.constants
 import next.apps.Butler as Butler
 import next.lib.pijemont.verifier as verifier
 
+from billiard import current_process
+
 
 from celery.signals import celeryd_init
 
@@ -30,20 +32,19 @@ def configure_workers(sender=None, conf=None, **kwargs):
         from next.lib.hash import lsh_kjun_v3
         from next.lib.hash import lsh_kjun_nonquad
 
-        next.utils.debug_print('loading stuff...')
-        filename = 'projections_all.npy'
-        db.projections_all = numpy.load(filename)
-        filename = 'lsh_index_array.npy'
-        db.lsh_index_array = numpy.load(filename)
-        filename = 'projections_nonquad.npy'
-        db.projections_nonquad = numpy.load(filename)
-        filename = 'hash_object.npy'
-        db.lsh = numpy.load(filename).tolist()
-        filename = 'hash_object_nonquad.npy'
-        db.lsh_nonquad = numpy.load(filename).tolist()
+        next.utils.debug_print('loading stuff in Hash_Worker...')
+        # filename = 'projections_all.npy'
+        # db.projections_all = numpy.load(filename)
+        # filename = 'lsh_index_array.npy'
+        # db.lsh_index_array = numpy.load(filename)
+        # filename = 'projections_nonquad.npy'
+        # db.projections_nonquad = numpy.load(filename)
+        # filename = 'hash_object.npy'
+        # db.lsh = numpy.load(filename).tolist()
+        # filename = 'hash_object_nonquad.npy'
+        # db.lsh_nonquad = numpy.load(filename).tolist()
         filename = 'features_d1000.npy'
         db.X = numpy.load(filename)
-
         next.utils.debug_print('loaded stuff...')
 
 Memory = Butler.Memory

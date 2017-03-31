@@ -73,7 +73,7 @@ nextbackenddocker:
    - NEXT_BACKEND_GLOBAL_HOST
    - NEXT_BACKEND_GLOBAL_PORT
    - TERM=xterm
-   - CELERY_ON=False
+   - CELERY_ON=True
 ####################################
 
 

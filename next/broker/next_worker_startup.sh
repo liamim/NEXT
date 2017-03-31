@@ -21,6 +21,6 @@ do
 done
 
 echo STARTING HASH WORKER
-celery -A next.broker.celery_app worker -l info --loglevel=WARNING --concurrency=1 -n Hash_Worker@${HOSTNAME} -Q Hash_Queue@${HOSTNAME} -- celeryd.prefetch_multiplier=10 &
+celery -A next.broker.celery_app worker -l info --loglevel=WARNING --concurrency=1 -n Hash_Worker@${HOSTNAME} -Q Hash_Queue@${HOSTNAME} -- celeryd.prefetch_multiplier=10
 
 wait

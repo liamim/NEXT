@@ -175,7 +175,6 @@ class App(object):
                               'timestamp_query_generated':str(utils.datetimeNow()),
                               'query_uid':query_uid})
             self.butler.queries.set(uid=query_uid, value=query_doc)
-            utils.debug_print('log_entry_durations: ', self.log_entry_durations)
             return json.dumps({'args':query_doc,'meta':{'log_entry_durations':self.log_entry_durations}}), True,''
         except Exception, error:
             exc_type, exc_value, exc_traceback = sys.exc_info()
