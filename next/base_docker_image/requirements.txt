@@ -6,6 +6,7 @@ pymongo
 redis
 celery==3.1.25
 boto
+gevent
 greenlet
 mpld3
 pyyaml
