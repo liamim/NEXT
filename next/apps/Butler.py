@@ -29,10 +29,10 @@ class Memory(object):
 
     def num_entries(self, size):
         if size % self.max_entry_size == 0:
-            return size / self.max_entry_size
+            return size // self.max_entry_size
         else:
-            return (size / self.max_entry_size) + 1
-        
+            return size // self.max_entry_size + 1
+
     def set(self, key, value):
         self.check_prefix()
         key = self.key_prefix + key

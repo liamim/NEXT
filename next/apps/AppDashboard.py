@@ -110,8 +110,8 @@ class AppDashboard(object):
       y = numpy.array(y)
       t = numpy.array(t)
       num_items = len(list_of_log_dict)
-      multiplier = min(num_items,MAX_SAMPLES_PER_PLOT)
-      incr_inds = [ r*num_items/multiplier for r in range(multiplier)]
+      multiplier = min(num_items, MAX_SAMPLES_PER_PLOT)
+      incr_inds = [ r*num_items//multiplier for r in range(multiplier)]
       max_inds = list(numpy.argsort(-y)[0:multiplier])
       final_inds = sorted(set(incr_inds + max_inds))
       x = list(x[final_inds])
@@ -181,8 +181,8 @@ class AppDashboard(object):
       y.append( item.get('app_duration', 0.) + item.get('duration_enqueued', 0.) )
     y = numpy.array(y)
     num_items = len(list_of_log_dict)
-    multiplier = min(num_items,MAX_SAMPLES_PER_PLOT)
-    incr_inds = [ k*num_items/multiplier for k in range(multiplier)]
+    multiplier = min(num_items, MAX_SAMPLES_PER_PLOT)
+    incr_inds = [ k*num_items//multiplier for k in range(multiplier)]
     max_inds = list(numpy.argsort(-y)[0:multiplier])
     final_inds = sorted(set(incr_inds + max_inds))
 
