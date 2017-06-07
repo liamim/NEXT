@@ -12,3 +12,4 @@ mpld3
 pyyaml
 ply
 joblib
+numpy
