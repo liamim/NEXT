@@ -2,11 +2,12 @@
 Layer for interfacing with Mongo.
 """
 
-import cPickle
+import pickle
 import traceback
 from datetime import datetime
 import time
 from functools import wraps
+import numbers
 
 import numpy as np
 import pymongo
@@ -21,7 +22,7 @@ import next.utils as utils
 try:
     import next.broker.broker
 except:
-    print "Warning: you will not be able to submit jobs to the broker"
+    print("Warning: you will not be able to submit jobs to the broker")
     pass
 
 class DatabaseException(BaseException):
@@ -46,15 +47,22 @@ def to_db_fmt(x):
         return x.tolist()
 
     # types that MongoDB can natively store
-    if type(x) in {int, float, long, complex, str, unicode, datetime}:
+    if type(x) in {str, datetime}:
         return x
+
+    if isinstance(x, numbers.Integral):
+        return int(x)
+    if isinstance(x, numbers.Real):
+        return float(x)
+    if isinstance(x, numbers.Complex):
+        return complex(x)
 
     # interface types. don't repickle these
     if type(x) in {Binary, ObjectId}:
         return x
 
     # pickle everything else, wrap in MongoDB `Binary`
-    return Binary(cPickle.dumps(x, protocol=2))
+    return Binary(pickle.dumps(x, protocol=2))
 
 def from_db_fmt(x):
     # recursive descent through lists
@@ -69,11 +77,11 @@ def from_db_fmt(x):
     if isinstance(x, ObjectId):
         return str(x)
 
-    if isinstance(x, Binary):
+    if isinstance(x, bytes):
         # this might be pickled data; let's attempt to deserialize it
         try:
-            return cPickle.loads(x)
-        except cPickle.UnpicklingError:
+            return pickle.loads(x)
+        except pickle.UnpicklingError:
             # this wasn't pickled data. just return it.
             return x
 
@@ -123,25 +131,25 @@ class DatabaseAPI(object):
     def _bucket(self, bucket_id):
         return self.client[self.db_name][bucket_id]
 
-    def exists(self,bucket_id,doc_uid,key):
+    def exists(self, bucket_id, doc_uid, key):
         # if the document isn't found, just set doc to an empty dict,
         # so that any .get(key) call returns None
         doc = self._bucket(bucket_id).find_one({"_id":doc_uid},
             projection={key: True}) or {}
         return doc.get(key) is not None
 
-    def get(self,bucket_id,doc_uid,key):
+    def get(self, bucket_id, doc_uid, key):
         val = self._bucket(bucket_id).find_one({"_id": doc_uid}, {key: True}).get(key)
         return from_db_fmt(val)
 
-    def get_many(self,bucket_id,doc_uid,key_list):
+    def get_many(self, bucket_id, doc_uid, key_list):
         projection = {k: True for k in key_list}
         doc = self._bucket(bucket_id).find_one({"_id": doc_uid}, projection)
         val = {k: doc.get(k) for k in key_list}
 
         return from_db_fmt(val)
 
-    def get_and_delete(self,bucket_id,doc_uid,key):
+    def get_and_delete(self, bucket_id, doc_uid, key):
         doc = self._bucket(bucket_id).find_one_and_update({"_id": doc_uid},
             update={'$unset': {key: ''}}, projection={key: True})
 
@@ -152,7 +160,7 @@ class DatabaseAPI(object):
             update={'$inc': {key: value}}, projection={key: True},
             new=True, upsert=True).get(key)
 
-    def increment_many(self,bucket_id,doc_uid,key_value_dict):
+    def increment_many(self, bucket_id, doc_uid, key_value_dict):
         projection = {k: True for k in key_value_dict.keys()}
         values = {k: v for k, v in key_value_dict.items() if v != 0}
 
@@ -161,7 +169,7 @@ class DatabaseAPI(object):
 
         return {k: new_doc.get(k) for k in key_value_dict.keys()}
 
-    def get_list(self,bucket_id,doc_uid,key):
+    def get_list(self, bucket_id, doc_uid, key):
         return self.get(bucket_id, doc_uid, key)
 
     def pop_list(self, bucket_id, doc_uid, key, end):
@@ -181,58 +189,58 @@ class DatabaseAPI(object):
         except IndexError:
             raise IndexError("Cannot pop from empty list!")
 
-    def append_list(self,bucket_id,doc_uid,key,value):
+    def append_list(self, bucket_id, doc_uid, key, value):
         return self._bucket(bucket_id).find_one_and_update({"_id": doc_uid},
             {'$push': {key: to_db_fmt(value)}}, new=True, upsert=True).get(key)
 
-    def set_list(self,bucket_id,doc_uid,key,value):
+    def set_list(self, bucket_id, doc_uid, key, value):
         self.set(bucket_id, doc_uid, key, value)
 
-    def set_doc(self,bucket_id,doc_uid,doc):
+    def set_doc(self, bucket_id, doc_uid, doc):
         if doc_uid is not None:
             doc['_id'] = doc_uid
             self._bucket(bucket_id).replace_one({"_id": doc_uid}, to_db_fmt(doc), upsert=True)
         else:
             self._bucket(bucket_id).insert_one(to_db_fmt(doc))
 
-    def get_doc(self,bucket_id,doc_uid):
+    def get_doc(self, bucket_id, doc_uid):
         return from_db_fmt(self._bucket(bucket_id).find_one({"_id": doc_uid}))
 
-    def get_docs_with_filter(self,bucket_id,pattern_dict):
-        docs_cursor = self._bucket(bucket_id).find(pattern_dict)
+    def get_docs_with_filter(self, bucket_id, pattern_dict):
+        docs_cursor = self._bucket(bucket_id).find(to_db_fmt(pattern_dict))
 
         return [from_db_fmt(doc) for doc in docs_cursor]
 
-    def set(self,bucket_id,doc_uid,key,value):
+    def set(self, bucket_id, doc_uid, key, value):
         self._bucket(bucket_id).update_one({"_id": doc_uid},
             {'$set': {key: to_db_fmt(value)}}, upsert=True)
 
-    def set_many(self,bucket_id,doc_uid,key_value_dict):
+    def set_many(self, bucket_id, doc_uid, key_value_dict):
         self._bucket(bucket_id).update_one({"_id": doc_uid},
             {'$set': to_db_fmt(key_value_dict)})
 
-    def delete(self,bucket_id,doc_uid,key):
+    def delete(self, bucket_id, doc_uid, key):
         self._bucket(bucket_id).update_one({"_id": doc_uid},
             {'$unset': {key: True}})
 
-    def ensure_index(self,bucket_id,index_dict):
-        self._bucket(bucket_id).create_index(index_dict.items())
+    def ensure_index(self, bucket_id, index_dict):
+        self._bucket(bucket_id).create_index(list(index_dict.items()))
 
-    def drop_all_indexes(self,bucket_id):
+    def drop_all_indexes(self, bucket_id):
         self._bucket(bucket_id).drop_indexes()
 
-    def delete_docs_with_filter(self,bucket_id,pattern_dict):
-        self._bucket(bucket_id).delete_many(pattern_dict)
+    def delete_docs_with_filter(self, bucket_id, pattern_dict):
+        self._bucket(bucket_id).delete_many(to_db_fmt(pattern_dict))
 
     def submit_job(self,app_id,exp_uid,task,task_args_json,namespace=None,ignore_result=True,time_limit=0, alg_id=None, alg_label=None):
         if self.broker is None:
             self.broker = next.broker.broker.JobBroker()
         if namespace is None:
-            result = self.broker.applyAsync(app_id,exp_uid,task,task_args_json,ignore_result=ignore_result)
+            result = self.broker.applyAsync(app_id, exp_uid, task, task_args_json, ignore_result=ignore_result)
         else:
-            result = self.broker.applySyncByNamespace(app_id,exp_uid,
+            result = self.broker.applySyncByNamespace(app_id, exp_uid,
                                                       alg_id, alg_label,
-                                                      task,task_args_json,namespace=namespace,
-                                                      ignore_result=ignore_result,time_limit=time_limit)
+                                                      task, task_args_json, namespace=namespace,
+                                                      ignore_result=ignore_result, time_limit=time_limit)
         return result
 

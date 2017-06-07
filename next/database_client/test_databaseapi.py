@@ -72,7 +72,7 @@ def test_get_and_delete(db):
 
 def test_increment(db):
     B = 'test_increment'
-    
+
     doc_uid = db._bucket(B).insert_one({'a': 2}).inserted_id
 
     assert db.increment(B, doc_uid, 'a') == 3
@@ -83,7 +83,7 @@ def test_increment(db):
 def test_increment_many(db):
     B = 'test_increment_many'
     doc = {'a': 0, 'b': 0, 'c': 0}
-    
+
     doc_uid = db._bucket(B).insert_one(doc).inserted_id
 
     assert db.increment_many(B, doc_uid, {'a': 1, 'b': 5, 'c': -7}) \
@@ -93,15 +93,15 @@ def test_increment_many(db):
 
 def test_pop_list(db):
     B = 'test_pop_list'
-    doc = {'a': range(0, 10+1)}
+    doc = {'a': list(range(0, 10+1))}
 
     doc_uid = db._bucket(B).insert_one(doc).inserted_id
 
     assert db.pop_list(B, doc_uid, 'a', -1) == 10
-    assert db.get(B, doc_uid, 'a') == range(0, 9+1)
+    assert db.get(B, doc_uid, 'a') == list(range(0, 9+1))
 
     assert db.pop_list(B, doc_uid, 'a', 0) == 0
-    assert db.get(B, doc_uid, 'a') == range(1, 9+1)
+    assert db.get(B, doc_uid, 'a') == list(range(1, 9+1))
 
     # popping from an empty list should raise an exception
     db.set(B, doc_uid, 'a', [])
@@ -122,11 +122,11 @@ def test_set(db):
     doc_uid = db._bucket(B).insert_one({}).inserted_id
 
     assert db.get(B, doc_uid, 'a') == None
-    db.set(B, doc_uid, 'a', [1,2,3,4])
-    assert db.get(B, doc_uid, 'a') == [1,2,3,4]
+    db.set(B, doc_uid, 'a', [1, 2, 3, 4])
+    assert db.get(B, doc_uid, 'a') == [1, 2, 3, 4]
     # alias of db.set()
-    db.set_list(B, doc_uid, 'a', [5,6,7,8])
-    assert db.get(B, doc_uid, 'a') == [5,6,7,8]
+    db.set_list(B, doc_uid, 'a', [5, 6, 7, 8])
+    assert db.get(B, doc_uid, 'a') == [5, 6, 7, 8]
 
 def test_set_many(db):
     B = 'test_set_many'
@@ -173,7 +173,7 @@ def test_get_docs_with_filter(db):
 
     retrieved_docs = db.get_docs_with_filter(B, {'b': 2})
     # remove `_id`s for asserts
-    retrieved_docs = [{k: v for k, v in r.items() if k != '_id'}
+    retrieved_docs = [{k: v for k, v in list(r.items()) if k != '_id'}
         for r in retrieved_docs]
     assert {'a': 3, 'b': 2} in retrieved_docs
     assert {'a': 5, 'b': 2} in retrieved_docs
@@ -208,12 +208,12 @@ def test_delete_docs_with_filter(db):
 
     db.delete_docs_with_filter(B, {'a': 2})
 
-    docs = [{k:v for k, v in d.items() if k != '_id'} for d in db._bucket(B).find()]
+    docs = [{k:v for k, v in list(d.items()) if k != '_id'} for d in db._bucket(B).find()]
     assert docs == [{'a': 6}]
 
 # === test utils ===
 def test_to_db_fmt():
-    import cPickle
+    import pickle
     import numpy as np
     from bson.binary import Binary
 
@@ -224,18 +224,18 @@ def test_to_db_fmt():
     assert to_db_fmt(1+2j) == 1+2j
 
     # lists and dicts should be recursively formatted
-    assert to_db_fmt([1, 1+2j, 'foo', [1,2.3]]) == [1, 1+2j, 'foo', [1,2.3]]
+    assert to_db_fmt([1, 1+2j, 'foo', [1, 2.3]]) == [1, 1+2j, 'foo', [1, 2.3]]
     assert to_db_fmt({'a': 1, 'b': ['foo', 2]}) == {'a': 1, 'b': ['foo', 2]}
 
     # numpy arrays should be converted to lists
-    assert to_db_fmt(np.array([1,2,3])) == [1,2,3]
+    assert to_db_fmt(np.array([1, 2, 3])) == [1, 2, 3]
 
     # objects should be pickled
     x = object()
-    assert to_db_fmt(x) == Binary(cPickle.dumps(x, protocol=2))
+    assert to_db_fmt(x) == Binary(pickle.dumps(x, protocol=2))
 
 def test_from_db_fmt():
-    import cPickle
+    import pickle
     import numpy as np
 
     def does_invert(x):
@@ -247,9 +247,9 @@ def test_from_db_fmt():
     assert does_invert('foobarbaz')
     assert does_invert(1+2j)
 
-    # lists and dicts should invert 
-    assert does_invert([1, 1+2j, 'foo', [1,2.3]])
+    # lists and dicts should invert
+    assert does_invert([1, 1+2j, 'foo', [1, 2.3]])
     assert does_invert({'a': 1, 'b': ['foo', 2]})
 
     # numpy arrays invert to lists
-    assert from_db_fmt(to_db_fmt(np.array([1,2,3]))) == [1,2,3]
+    assert from_db_fmt(to_db_fmt(np.array([1, 2, 3]))) == [1, 2, 3]
