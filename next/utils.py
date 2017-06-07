@@ -1,6 +1,9 @@
 import yaml
 import random
 import sys
+import binascii
+import json
+import numpy as np
 
 color_ansi = {'yellow': '\x1b[33m',
               'red': '\x1b[31m',
@@ -36,11 +39,11 @@ def get_app(app_id, exp_uid, db, ell):
   """
   app_id = str(app_id) # soemtimes input is unicode formatted which causes error
   next_path = 'next.apps.App'
-  app_module = __import__(next_path,fromlist=[''])
+  app_module = __import__(next_path, fromlist=[''])
   app_class = getattr(app_module, 'App')
   return app_class(app_id, exp_uid, db, ell)
 
-def get_app_alg(app_id,alg_id):
+def get_app_alg(app_id, alg_id):
   """
   Returns an object correspoding to the alg_id that contains methods like initExp,getQuery,etc.
   Note that each algorithm (with an alg_id) is a child of an app (with an app_id), hence the app_id input
@@ -83,8 +86,7 @@ def getNewUID():
 
   Used for unique identifiers all over the system
   """
-  uid = os.urandom(16).encode('hex')
-  return uid
+  return binascii.hexlify(os.urandom(16)).decode('ascii')
 
 
 
@@ -128,9 +130,9 @@ def str2datetime(str_time):
     utils.str2datetime(date_str)
   """
   try:
-    return datetime.strptime(str_time,'%Y-%m-%d %H:%M:%S.%f')
+    return datetime.strptime(str_time, '%Y-%m-%d %H:%M:%S.%f')
   except:
-    return datetime.strptime(str_time,'%Y-%m-%d %H:%M:%S')
+    return datetime.strptime(str_time, '%Y-%m-%d %H:%M:%S')
 
 def debug_print(*args, **kwargs):
     """
@@ -140,10 +142,10 @@ def debug_print(*args, **kwargs):
         if type(a) in {str}:
             lines = a.split('\n')
             for line in lines:
-                print '{}{}{}'.format(color_ansi[color], line, color_ansi['reset all'])
+                print('{}{}{}'.format(color_ansi[color], line, color_ansi['reset all']))
         else:
-            print '{}{}{}'.format(color_ansi[color], a, color_ansi['reset all'])
-    print ''
+            print('{}{}{}'.format(color_ansi[color], a, color_ansi['reset all']))
+    print('')
 
 def random_string(length=20):
     letters = list('qwertyuiopasdfghkjlzxcvbnm')
@@ -174,6 +176,18 @@ def timeit(f):
     # TODO: delete these three lines. Use
     # `grep -Hnri ,.*,.* = .*utils.timeit` to find all locations this function
     # is are used (typically in `a, b, c, dt = utils.timeit(...)(...)`. We want
-    # `a, dt = utils.timeit(...)(...)`.    
+    # `a, dt = utils.timeit(...)(...)`.
     return result, (te-ts)
   return timed
+
+# From https://stackoverflow.com/questions/27050108/convert-numpy-type-to-python
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        else:
+            return super(MyEncoder, self).default(obj)
