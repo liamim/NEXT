@@ -27,7 +27,7 @@ from boto.s3.key import Key
 import boto
 # boto.set_stream_logger('boto')
 
-conn = S3Connection(constants.AWS_ACCESS_ID,constants.AWS_SECRET_ACCESS_KEY)
+conn = S3Connection(constants.AWS_ACCESS_ID, constants.AWS_SECRET_ACCESS_KEY)
 b = conn.get_bucket(AWS_BUCKET_NAME)
 
 k = Key(b)
@@ -36,7 +36,7 @@ filename = 'mongo_dump.tar.gz'
 k.get_contents_to_filename(filename)
 
 db_lib.restore_mongodump(filename)
-subprocess.call('rm '+filename,shell=True)
+subprocess.call('rm '+filename, shell=True)
 
 
 

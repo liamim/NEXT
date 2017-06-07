@@ -46,7 +46,7 @@ MINIONREDIS_PORT = int(os.environ.get('MINIONREDIS_PORT_6379_TCP_PORT', 6379))
 MINIONREDIS_PASS = os.environ.get('MINIONREDIS_ENV_REDIS_PASS', '')
 
 # PermStore constants
-MONGODB_HOST = os.environ.get('MONGODB_PORT_27017_TCP_ADDR','localhost')
+MONGODB_HOST = os.environ.get('MONGODB_PORT_27017_TCP_ADDR', 'localhost')
 MONGODB_PORT = int(os.environ.get('MONGODB_PORT_27017_TCP_PORT', 27017) )
 
 
@@ -82,9 +82,9 @@ CELERY_TASK_SERIALIZER='json'
 CELERY_ACCEPT_CONTENT=['json']  # Ignore other content
 CELERY_RESULT_SERIALIZER='json'
 
-CELERY_ON = eval(os.environ.get('CELERY_ON','True'))
+CELERY_ON = eval(os.environ.get('CELERY_ON', 'True'))
 
-CELERY_SYNC_WORKER_COUNT = int(os.environ.get('CELERY_SYNC_WORKER_COUNT',1))
+CELERY_SYNC_WORKER_COUNT = int(os.environ.get('CELERY_SYNC_WORKER_COUNT', 1))
 
 # from kombu import Exchange, Queue
 # exchange_name = 'sync@{hostname}'.format(

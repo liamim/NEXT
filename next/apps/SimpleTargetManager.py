@@ -1,7 +1,7 @@
 import next.utils as utils
 
 class SimpleTargetManager(object):
-    def __init__(self,db):
+    def __init__(self, db):
         self.bucket_id = 'targets'
         self.db = db
 
@@ -9,10 +9,10 @@ class SimpleTargetManager(object):
         """
         Update the default target docs in the DB if a user uploads a target set.
         """
-        for i,target in enumerate(targetset):
+        for i, target in enumerate(targetset):
             target['target_id'] = i
             target['exp_uid'] = exp_uid
-            
+
             try:
                 self.db.set_doc(self.bucket_id, None, target)
             except e:
@@ -37,7 +37,7 @@ class SimpleTargetManager(object):
             got_target = self.db.get_docs_with_filter(self.bucket_id,
                                                       {'exp_uid': exp_uid,
                                                       'target_id': target_id})
-        except e:
+        except Exception as e:
             raise Exception("Failed to get_target_item: " + str(e))
 
         try:
@@ -66,7 +66,7 @@ class SimpleTargetManager(object):
                 mongotized_target_blob.pop(i)
                 break
         try:
-            mongotized_target_blob = sorted(mongotized_target_blob,key = lambda x: x.get('target_id',0))
+            mongotized_target_blob = sorted(mongotized_target_blob, key = lambda x: x.get('target_id', 0))
         except:
             pass
 

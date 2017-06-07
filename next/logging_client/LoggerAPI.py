@@ -20,7 +20,7 @@ class LoggerAPI(DatabaseAPI):
 
         return log
 
-    def log(self,bucket_id,log_dict):
+    def log(self, bucket_id, log_dict):
         """
         Saves log_dict to PermStore as an individual document for later recall. 
         
@@ -29,7 +29,7 @@ class LoggerAPI(DatabaseAPI):
         """
         self.set_doc(bucket_id, None, log_dict)
 
-    def get_logs_with_filter(self,bucket_id,pattern_dict):
+    def get_logs_with_filter(self, bucket_id, pattern_dict):
         """
         Retrieves all logs in bucket_id that match (i.e. contain) pattern_dict
         
@@ -39,7 +39,7 @@ class LoggerAPI(DatabaseAPI):
         return [self._normalize_logentry(d)
             for d in self.get_docs_with_filter(bucket_id, pattern_dict)]
 
-    def delete_logs_with_filter(self,bucket_id,pattern_dict):
+    def delete_logs_with_filter(self, bucket_id, pattern_dict):
         """
         Deletes all logs in bucket_id that match (i.e. contain) pattern_dict
         

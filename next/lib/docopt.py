@@ -59,12 +59,12 @@ class Pattern(object):
         either = [list(child.children) for child in transform(self).children]
         for case in either:
             for e in [child for child in case if case.count(child) > 1]:
-                if type(e) is Argument or type(e) is Option and e.argcount:
+                if isinstance(e, Argument) or isinstance(e, Option) and e.argcount:
                     if e.value is None:
                         e.value = []
-                    elif type(e.value) is not list:
+                    elif not isinstance(e.value, list):
                         e.value = e.value.split()
-                if type(e) is Command or type(e) is Option and e.argcount == 0:
+                if isinstance(e, Command) or isinstance(e, Option) and e.argcount == 0:
                     e.value = 0
         return self
 
@@ -81,13 +81,13 @@ def transform(pattern):
     while groups:
         children = groups.pop(0)
         parents = [Required, Optional, OptionsShortcut, Either, OneOrMore]
-        if any(t in map(type, children) for t in parents):
+        if any(t in list(map(type, children)) for t in parents):
             child = [c for c in children if type(c) in parents][0]
             children.remove(child)
-            if type(child) is Either:
+            if isinstance(child, Either):
                 for c in child.children:
                     groups.append([c] + children)
-            elif type(child) is OneOrMore:
+            elif isinstance(child, OneOrMore):
                 groups.append(child.children * 2 + children)
             else:
                 groups.append(child.children + children)
@@ -117,10 +117,10 @@ class LeafPattern(Pattern):
         left_ = left[:pos] + left[pos + 1:]
         same_name = [a for a in collected if a.name == self.name]
         if type(self.value) in (int, list):
-            if type(self.value) is int:
+            if isinstance(self.value, int):
                 increment = 1
             else:
-                increment = ([match.value] if type(match.value) is str
+                increment = ([match.value] if isinstance(match.value, str)
                              else match.value)
             if not same_name:
                 match.value = increment
@@ -151,7 +151,7 @@ class Argument(LeafPattern):
 
     def single_match(self, left):
         for n, pattern in enumerate(left):
-            if type(pattern) is Argument:
+            if isinstance(pattern, Argument):
                 return n, Argument(self.name, pattern.value)
         return None, None
 
@@ -169,7 +169,7 @@ class Command(Argument):
 
     def single_match(self, left):
         for n, pattern in enumerate(left):
-            if type(pattern) is Argument:
+            if isinstance(pattern, Argument):
                 if pattern.value == self.name:
                     return n, Command(self.name, True)
                 else:
@@ -181,12 +181,12 @@ class Option(LeafPattern):
 
     def __init__(self, short=None, long=None, argcount=0, value=False):
         assert argcount in (0, 1)
-        self.short, self.long, self.argcount = short, long, argcount
+        self.short, self.long, self.argcount = short, int, argcount
         self.value = None if value is False and argcount else value
 
     @classmethod
     def parse(class_, option_description):
-        short, long, argcount, value = None, None, 0, False
+        short, int, argcount, value = None, None, 0, False
         options, _, description = option_description.strip().partition('  ')
         options = options.replace(',', ' ').replace('=', ' ')
         for s in options.split():
@@ -199,7 +199,7 @@ class Option(LeafPattern):
         if argcount:
             matched = re.findall('\[default: (.*)\]', description, flags=re.I)
             value = matched[0] if matched else None
-        return class_(short, long, argcount, value)
+        return class_(short, int, argcount, value)
 
     def single_match(self, left):
         for n, pattern in enumerate(left):
@@ -300,21 +300,21 @@ class Tokens(list):
 
 def parse_long(tokens, options):
     """long ::= '--' chars [ ( ' ' | '=' ) chars ] ;"""
-    long, eq, value = tokens.move().partition('=')
-    assert long.startswith('--')
+    int, eq, value = tokens.move().partition('=')
+    assert int.startswith('--')
     value = None if eq == value == '' else value
-    similar = [o for o in options if o.long == long]
+    similar = [o for o in options if o.long == int]
     if tokens.error is DocoptExit and similar == []:  # if no exact match
-        similar = [o for o in options if o.long and o.long.startswith(long)]
+        similar = [o for o in options if o.long and o.long.startswith(int)]
     if len(similar) > 1:  # might be simply specified ambiguously 2+ times?
         raise tokens.error('%s is not a unique prefix: %s?' %
-                           (long, ', '.join(o.long for o in similar)))
+                           (int, ', '.join(o.long for o in similar)))
     elif len(similar) < 1:
         argcount = 1 if eq == '=' else 0
-        o = Option(None, long, argcount)
+        o = Option(None, int, argcount)
         options.append(o)
         if tokens.error is DocoptExit:
-            o = Option(None, long, argcount, value if argcount else True)
+            o = Option(None, int, argcount, value if argcount else True)
     else:
         o = Option(similar[0].short, similar[0].long,
                    similar[0].argcount, similar[0].value)
@@ -475,7 +475,7 @@ def formal_usage(section):
 
 def extras(help, version, options, doc):
     if help and any((o.name in ('-h', '--help')) and o.value for o in options):
-        print(doc.strip("\n"))
+        print((doc.strip("\n")))
         sys.exit()
     if version and any(o.name == '--version' and o.value for o in options):
         print(version)

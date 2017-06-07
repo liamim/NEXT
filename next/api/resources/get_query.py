@@ -51,17 +51,17 @@ class getQuery(Resource):
         # Fetch app_id data from resource manager
         app_id = resource_manager.get_app_id(exp_uid)
         # Standardized participant_uid
-        if 'participant_uid' in args_data['args'].keys():
+        if 'participant_uid' in list(args_data['args'].keys()):
             args_data['args']['participant_uid'] = exp_uid+"_" + \
                                 str(args_data['args']['participant_uid'])
 
-        render_widget = args_data['args'].get('widget',False)
+        render_widget = args_data['args'].get('widget', False)
 
         # Execute getQuery 
-        response_json,didSucceed,message = broker.applyAsync(app_id,exp_uid,"getQuery", json.dumps(args_data))
+        response_json, didSucceed, message = broker.applyAsync(app_id, exp_uid, "getQuery", json.dumps(args_data))
         response_dict = json.loads(response_json)
         if not didSucceed:
-            return attach_meta({},meta_error['QueryGenerationError'], backend_error=message)
+            return attach_meta({}, meta_error['QueryGenerationError'], backend_error=message)
 
         if render_widget:
             TEMPLATES_DIRECTORY = 'apps/{}/widgets'.format(resource_manager.get_app_id(exp_uid))
@@ -69,7 +69,7 @@ class getQuery(Resource):
             template=env.get_template("getQuery_widget.html")
             return {'html':template.render(query=response_dict), 'args':response_dict}, 200, {'Access-Control-Allow-Origin':'*', 'Content-Type':'application/json'}
         
-        return attach_meta(response_dict,meta_success), 200
+        return attach_meta(response_dict, meta_success), 200
         
             
 

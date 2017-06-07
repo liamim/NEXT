@@ -12,7 +12,7 @@ from flask import Blueprint, render_template, url_for, request, jsonify
 from jinja2 import Environment, PackageLoader, ChoiceLoader
 import requests
 
-import next.broker.broker 
+import next.broker.broker
 import next.constants as constants
 from next.api.resource_manager import ResourceManager
 import next.api.api_util as api_util
@@ -33,8 +33,8 @@ Butler = Butler.Butler
 # add database commands
 dashboard_interface = api_util.NextBackendApi(dashboard)
 from next.dashboard.database import DatabaseBackup, DatabaseRestore
-dashboard_interface.add_resource(DatabaseBackup,'/database/databasebackup', endpoint='databasebackup')
-dashboard_interface.add_resource(DatabaseRestore,'/database/databaserestore', endpoint='databaserestore')
+dashboard_interface.add_resource(DatabaseBackup, '/database/databasebackup', endpoint='databasebackup')
+dashboard_interface.add_resource(DatabaseRestore, '/database/databaserestore', endpoint='databaserestore')
 
 
 @dashboard.route('/experiment_list')
@@ -51,10 +51,10 @@ def experiment_list():
                 experiments.append({'exp_uid': exp_uid,
                                     'app_id': app_id,
                                     'start_date': start_date,
-                                    'num_participants':len(rm.get_participant_uids(exp_uid)),
+                                    'num_participants': len(rm.get_participant_uids(exp_uid)),
                                     })
             except IndexError as e:
-                print e
+                print(e)
                 pass
 
     if constants.SITE_KEY:
@@ -72,8 +72,8 @@ def get_stats():
     exp_uid = args_dict['exp_uid']
     app_id = rm.get_app_id(exp_uid)
 
-    response_json, didSucceed, message = broker.dashboardAsync(app_id,exp_uid,args_dict)
-    response_dict = json.loads(response_json,parse_float=lambda o:round(float(o),4))
+    response_json, didSucceed, message = broker.dashboardAsync(app_id, exp_uid, args_dict)
+    response_dict = json.loads(response_json, parse_float=lambda o:round(float(o), 4))
     response_json = json.dumps(response_dict)
     return response_json
 
@@ -111,8 +111,8 @@ def experiment_dashboard(exp_uid, app_id):
     Inputs: ::\n
     	(string) exp_uid, exp_uid for a current experiment.
     """
-    simple_flag = int(request.args.get('simple',0))
-    force_recompute = int(request.args.get('force_recompute',1))
+    simple_flag = int(request.args.get('simple', 0))
+    force_recompute = int(request.args.get('force_recompute', 1))
 
     # Not a particularly good way to do this.
     alg_label_list = rm.get_algs_for_exp_uid(exp_uid)

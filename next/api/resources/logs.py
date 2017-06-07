@@ -92,7 +92,7 @@ class Logs(Resource):
             experiment_logs = resource_manager.get_experiment_logs_of_type(exp_uid,
                                                                            log_type)
             all_logs = {'log_data': experiment_logs}
-            return attach_meta(all_logs,meta_success), 200
+            return attach_meta(all_logs, meta_success), 200
         else:
             experiment_logs = resource_manager.get_experiment_logs(exp_uid)
             all_logs = {'log_data': experiment_logs}
@@ -105,7 +105,7 @@ class Logs(Resource):
                                  attachment_filename='logs.zip',
                                  as_attachment='True')
             else:
-                return attach_meta(all_logs,meta_success), 200
+                return attach_meta(all_logs, meta_success), 200
 
         if not experiment_logs:
-            return attach_meta({'message':'No logs to report.'},meta_success), 200
+            return attach_meta({'message':'No logs to report.'}, meta_success), 200

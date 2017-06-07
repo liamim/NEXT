@@ -130,7 +130,7 @@ def apply_dashboard(app_id, exp_uid, args_in_json, enqueue_timestamp):
 
     stat_args = args_dict['args']
 
-    hash_object = hashlib.md5(stat_id+'_'+json.dumps(stat_args['params']))
+    hash_object = hashlib.md5((stat_id+'_'+json.dumps(stat_args['params'])).encode('utf-8'))
     stat_uid = hash_object.hexdigest()
     stat_uid += '_' + exp_uid
 

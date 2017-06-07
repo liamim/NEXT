@@ -52,10 +52,10 @@ class DatabaseBackup(Resource):
         :statuscode 400: database backup failed to be generated
     	""" 
         exp_uid_list = request.args.getlist('exp_uid') ## returns a list
-        print exp_uid_list
+        print(exp_uid_list)
         name = '{}.{}'.format(str(next.utils.datetimeNow().strftime("%Y-%m-%d_%H:%M:%S")),
                               'tar.gz')
-        location = make_mongodump(name,exp_uid_list)
+        location = make_mongodump(name, exp_uid_list)
         zip_file = file(location)
         return Response(zip_file,
                         mimetype='application/octet-stream',
@@ -89,11 +89,11 @@ class DatabaseRestore(Resource):
     	"""
         zip_file = request.files['primary_file']
         # zip_file is a file object
-        subprocess.call('mkdir -p /dump',shell=True)
+        subprocess.call('mkdir -p /dump', shell=True)
         filename = '/dump/mongo_dump_restore.tar.gz'
         zip_file.save(filename)
         restore_mongodump(filename)
-        subprocess.call('rm '+filename,shell=True)
+        subprocess.call('rm '+filename, shell=True)
         
         return redirect('/dashboard/{}/experiment_list'.format(constants.SITE_KEY))
 

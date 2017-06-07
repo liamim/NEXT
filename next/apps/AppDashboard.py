@@ -20,17 +20,17 @@ class AppDashboard(object):
     self.db = db
     self.ell = ell
 
-  def basic_info(self,app,butler):
+  def basic_info(self, app, butler):
     """
     returns basic statistics like number of queries, participants, etc.
     """
     experiment_dict = butler.experiment.get()
 
     #git_hash = rm.get_git_hash_for_exp_uid(exp_uid)
-    git_hash = experiment_dict.get('git_hash','None')
+    git_hash = experiment_dict.get('git_hash', 'None')
 
     # start_date = utils.str2datetime(butler.admin.get(uid=app.exp_uid)['start_date'])
-    start_date = experiment_dict.get('start_date','Unknown')+' UTC'
+    start_date = experiment_dict.get('start_date', 'Unknown')+' UTC'
 
     # participant_uids = rm.get_participant_uids(exp_uid)
     participants = butler.participants.get(pattern={'exp_uid':app.exp_uid})
@@ -56,10 +56,10 @@ class AppDashboard(object):
     queries = butler.queries.get(pattern={'exp_uid':app.exp_uid})
     #self.db.get_docs_with_filter(app_id+':queries',{'exp_uid':exp_uid})
     start_date = utils.str2datetime(butler.admin.get(uid=app.exp_uid)['start_date'])
-    numerical_timestamps = [(utils.str2datetime(item['timestamp_query_generated'])-start_date).total_seconds() 
+    numerical_timestamps = [(utils.str2datetime(item['timestamp_query_generated'])-start_date).total_seconds()
                                 for item in queries]
-    fig, ax = plt.subplots(subplot_kw=dict(axisbg='#FFFFFF'),figsize=(12,1.5))
-    ax.hist(numerical_timestamps,min(int(1+4*numpy.sqrt(len(numerical_timestamps))),300),alpha=0.5,color='black')
+    fig, ax = plt.subplots(subplot_kw=dict(axisbg='#FFFFFF'), figsize=(12, 1.5))
+    ax.hist(numerical_timestamps, min(int(1+4*numpy.sqrt(len(numerical_timestamps))), 300), alpha=0.5, color='black')
     ax.set_frame_on(False)
     ax.get_xaxis().set_ticks([])
     ax.get_yaxis().set_ticks([])
@@ -95,7 +95,7 @@ class AppDashboard(object):
       list_of_log_dict = butler.ell.get_logs_with_filter(app.app_id+':ALG-DURATION',
                                                                             {'exp_uid':app.exp_uid,'alg_label':alg_label,'task':task})
       list_of_log_dict = sorted(list_of_log_dict, key=lambda item: utils.str2datetime(item['timestamp']) )
-      
+
       x = []
       y = []
       t = []
@@ -103,9 +103,9 @@ class AppDashboard(object):
       for item in list_of_log_dict:
         k+=1
         x.append(k)
-        y.append( item.get('app_duration',0.) + item.get('duration_enqueued',0.) )
+        y.append( item.get('app_duration', 0.) + item.get('duration_enqueued', 0.) )
         t.append(str(item['timestamp'])[:-3])
-        
+
       x = numpy.array(x)
       y = numpy.array(y)
       t = numpy.array(t)
@@ -124,15 +124,15 @@ class AppDashboard(object):
       alg_dict['y'] = y
       alg_dict['t'] = t
       try:
-        x_min = min(x_min,min(x))
-        x_max = max(x_max,max(x))
-        y_min = min(y_min,min(y))
-        y_max = max(y_max,max(y))
+        x_min = min(x_min, min(x))
+        x_max = max(x_max, max(x))
+        y_min = min(y_min, min(y))
+        y_max = max(y_max, max(y))
       except:
         pass
 
       list_of_alg_dicts.append(alg_dict)
-      
+
     return_dict = {}
     return_dict['data'] = list_of_alg_dicts
     return_dict['plot_type'] = 'multi_line_plot'
@@ -145,14 +145,14 @@ class AppDashboard(object):
 
     fig, ax = plt.subplots(subplot_kw=dict(axisbg='#EEEEEE'))
     for alg_dict in list_of_alg_dicts:
-        ax.plot(alg_dict['x'],alg_dict['y'],label=alg_dict['legend_label'])
+        ax.plot(alg_dict['x'], alg_dict['y'], label=alg_dict['legend_label'])
     ax.set_xlabel('API Call')
     ax.set_ylabel('Duration (s)')
-    ax.set_xlim([x_min,x_max])
-    ax.set_ylim([y_min,y_max])
+    ax.set_xlim([x_min, x_max])
+    ax.set_ylim([y_min, y_max])
     ax.grid(color='white', linestyle='solid')
     ax.set_title(task, size=14)
-    legend = ax.legend(loc=2,ncol=3,mode="expand")
+    legend = ax.legend(loc=2, ncol=3, mode="expand")
     for label in legend.get_texts():
       label.set_fontsize('small')
     plot_dict = mpld3.fig_to_dict(fig)
@@ -178,7 +178,7 @@ class AppDashboard(object):
 
     y = []
     for item in list_of_log_dict:
-      y.append( item.get('app_duration',0.) + item.get('duration_enqueued',0.) )
+      y.append( item.get('app_duration', 0.) + item.get('duration_enqueued', 0.) )
     y = numpy.array(y)
     num_items = len(list_of_log_dict)
     multiplier = min(num_items,MAX_SAMPLES_PER_PLOT)
@@ -199,13 +199,13 @@ class AppDashboard(object):
     for idx in final_inds:
       item = list_of_log_dict[idx]
       x.append(idx+1)
-      t.append(str(item.get('timestamp','')))
+      t.append(str(item.get('timestamp', '')))
 
-      _alg_duration = item.get('duration',0.)
-      _alg_duration_dbGet = item.get('duration_dbGet',0.)
-      _alg_duration_dbSet = item.get('duration_dbSet',0.)
-      _duration_enqueued = item.get('duration_enqueued',0.)
-      _app_duration = item.get('app_duration',0.)
+      _alg_duration = item.get('duration', 0.)
+      _alg_duration_dbGet = item.get('duration_dbGet', 0.)
+      _alg_duration_dbSet = item.get('duration_dbSet', 0.)
+      _duration_enqueued = item.get('duration_enqueued', 0.)
+      _app_duration = item.get('app_duration', 0.)
 
       if (_app_duration+_duration_enqueued) > max_y_value:
         max_y_value = _app_duration + _duration_enqueued
@@ -226,15 +226,15 @@ class AppDashboard(object):
       max_x = 0.
 
     fig, ax = plt.subplots(subplot_kw=dict(axisbg='#EEEEEE'))
-    stack_coll = ax.stackplot(x,compute,dbGet,dbSet,admin,enqueued, alpha=.5)
+    stack_coll = ax.stackplot(x, compute, dbGet, dbSet, admin, enqueued, alpha=.5)
     ax.set_xlabel('API Call')
     ax.set_ylabel('Duration (s)')
-    ax.set_xlim([min_x,max_x])
-    ax.set_ylim([0.,max_y_value])
+    ax.set_xlim([min_x, max_x])
+    ax.set_ylim([0., max_y_value])
     ax.grid(color='white', linestyle='solid')
     ax.set_title(alg_label+' - '+task, size=14)
-    proxy_rects = [plt.Rectangle((0, 0), 1, 1, alpha=.5,fc=pc.get_facecolor()[0]) for pc in stack_coll]
-    legend = ax.legend(proxy_rects, ['compute','dbGet','dbSet','admin','enqueued'],loc=2,ncol=3,mode="expand")
+    proxy_rects = [plt.Rectangle((0, 0), 1, 1, alpha=.5, fc=pc.get_facecolor()[0]) for pc in stack_coll]
+    legend = ax.legend(proxy_rects, ['compute', 'dbGet', 'dbSet', 'admin', 'enqueued'], loc=2, ncol=3, mode="expand")
     for label in legend.get_texts():
       label.set_fontsize('small')
     plot_dict = mpld3.fig_to_dict(fig)
@@ -242,7 +242,7 @@ class AppDashboard(object):
     return plot_dict
 
 
-  def response_time_histogram(self,app,butler,alg_label):
+  def response_time_histogram(self, app, butler, alg_label):
     """
     Description: returns the data to plot response time histogram of processAnswer for each algorithm
 
@@ -252,7 +252,7 @@ class AppDashboard(object):
     Expected output (in dict):
       (dict) MPLD3 plot dictionary
     """
-    list_of_query_dict = self.db.get_docs_with_filter(app.app_id+':queries',{'exp_uid':app.exp_uid,'alg_label':alg_label})
+    list_of_query_dict = self.db.get_docs_with_filter(app.app_id+':queries', {'exp_uid':app.exp_uid,'alg_label':alg_label})
     t = []
     for item in list_of_query_dict:
       try:
@@ -261,7 +261,7 @@ class AppDashboard(object):
         pass
 
     fig, ax = plt.subplots(subplot_kw=dict(axisbg='#FFFFFF'))
-    ax.hist(t, bins=min(len(t), MAX_SAMPLES_PER_PLOT), range=(0,30),alpha=0.5,color='black')
+    ax.hist(t, bins=min(len(t), MAX_SAMPLES_PER_PLOT), range=(0, 30), alpha=0.5, color='black')
     ax.set_xlim(0, 30)
     ax.set_axis_off()
     ax.set_xlabel('Durations (s)')
@@ -282,7 +282,7 @@ class AppDashboard(object):
     Expected output (in dict):
       (dict) MPLD3 plot dictionary
     """
-    list_of_query_dict = self.db.get_docs_with_filter(app.app_id+':queries',{'exp_uid':app.exp_uid,'alg_label':alg_label})
+    list_of_query_dict = self.db.get_docs_with_filter(app.app_id+':queries', {'exp_uid':app.exp_uid,'alg_label':alg_label})
 
     t = []
     for item in list_of_query_dict:
@@ -292,7 +292,7 @@ class AppDashboard(object):
         pass
 
     fig, ax = plt.subplots(subplot_kw=dict(axisbg='#FFFFFF'))
-    ax.hist(t,MAX_SAMPLES_PER_PLOT,range=(0,5),alpha=0.5,color='black')
+    ax.hist(t, MAX_SAMPLES_PER_PLOT, range=(0, 5), alpha=0.5, color='black')
     ax.set_xlim(0, 5)
     ax.set_axis_off()
     ax.set_xlabel('Durations (s)')

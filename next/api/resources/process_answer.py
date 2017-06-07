@@ -63,7 +63,7 @@ class processAnswer(Resource):
         # Parse out a target_winner. If the argument doesn't exist, return a meta dictionary error.
         args_json = json.dumps(args_data) 
         # Execute processAnswer 
-        response_json,didSucceed,message = broker.applyAsync(app_id,
+        response_json, didSucceed, message = broker.applyAsync(app_id,
                                                              exp_uid,
                                                              'processAnswer',
                                                              args_json)
@@ -71,6 +71,6 @@ class processAnswer(Resource):
         if didSucceed:
             return attach_meta(eval(response_json), meta_success), 200
         else:
-            print "Failed to processAnswer", message 
-            return attach_meta({},custom_errors['ReportAnswerError'], backend_error=message)
+            print("Failed to processAnswer", message) 
+            return attach_meta({}, custom_errors['ReportAnswerError'], backend_error=message)
     

@@ -26,7 +26,7 @@ def initExp(initExp_args_dict, assert_200=True):
     #################################################
     url = "http://"+HOSTNAME+"/api/experiment/"+exp_uid
     response = requests.get(url)
-    print "GET experiment response =", response.text, response.status_code
+    print("GET experiment response =", response.text, response.status_code)
     if assert_200: assert response.status_code is 200
     initExp_response_dict = json.loads(response.text)
     return initExp_response_dict, {'exp_uid': exp_uid}
@@ -34,13 +34,13 @@ def initExp(initExp_args_dict, assert_200=True):
 
 def getQuery(getQuery_args_dict, assert_200=True, verbose=False):
     url = 'http://'+HOSTNAME+'/api/experiment/getQuery'
-    response,dt = timeit(requests.post)(url, json.dumps(getQuery_args_dict),headers={'content-type':'application/json'})
+    response, dt = timeit(requests.post)(url, json.dumps(getQuery_args_dict), headers={'content-type':'application/json'})
     if verbose:
-        print "POST getQuery response = ", response.text, response.status_code
+        print("POST getQuery response = ", response.text, response.status_code)
     if assert_200: assert response.status_code is 200
 
     if verbose:
-        print "POST getQuery duration = ", dt
+        print("POST getQuery duration = ", dt)
     query_dict = json.loads(response.text)
     return query_dict, dt
 
@@ -48,15 +48,15 @@ def getQuery(getQuery_args_dict, assert_200=True, verbose=False):
 def processAnswer(processAnswer_args_dict, assert_200=True, verbose=False):
     url = 'http://'+HOSTNAME+'/api/experiment/processAnswer'
     if verbose:
-        print "POST processAnswer args = ", processAnswer_args_dict
-    response,dt = timeit(requests.post)(url, json.dumps(processAnswer_args_dict), headers={'content-type':'application/json'})
+        print("POST processAnswer args = ", processAnswer_args_dict)
+    response, dt = timeit(requests.post)(url, json.dumps(processAnswer_args_dict), headers={'content-type':'application/json'})
     if verbose:
-        print "POST processAnswer response", response.text, response.status_code
+        print("POST processAnswer response", response.text, response.status_code)
     if assert_200: assert response.status_code is 200
 
     if verbose:
-        print "POST processAnswer duration = ", dt
-        print
+        print("POST processAnswer duration = ", dt)
+        print()
     processAnswer_json_response = eval(response.text)
     return processAnswer_json_response, dt
 
@@ -68,10 +68,10 @@ def timeit(f):
         ts = time.time()
         result = f(*args, **kw)
         te = time.time()
-        if type(result)==tuple:
+        if isinstance(result, tuple):
             return result + ((te-ts),)
         else:
-            return result,(te-ts)
+            return result, (te-ts)
     return timed
 
 
@@ -108,7 +108,7 @@ def getModel(exp_uid, app_id, supported_alg_ids, alg_list, assert_200=True):
 def getExp(exp_uid, assert_200=True):
     url = "http://"+HOSTNAME+"/api/experiment/"+exp_uid
     response = requests.get(url)
-    print "GET experiment response =",response.text, response.status_code
+    print("GET experiment response =", response.text, response.status_code)
     if assert_200: assert response.status_code is 200
     initExp_response_dict = json.loads(response.text)
     return initExp_response_dict
@@ -117,7 +117,7 @@ def format_times(getQuery_times, processAnswer_times, total_pulls,
                  participant_uid):
     processAnswer_times.sort()
     getQuery_times.sort()
-    return_str = '%s \n\t getQuery\t : %f (5),        %f (50),        %f (95)\n\t processAnswer\t : %f (5),        %f (50),        %f (95)\n' % (participant_uid,getQuery_times[int(.05*total_pulls)],getQuery_times[int(.50*total_pulls)],getQuery_times[int(.95*total_pulls)],processAnswer_times[int(.05*total_pulls)],processAnswer_times[int(.50*total_pulls)],processAnswer_times[int(.95*total_pulls)])
+    return_str = '%s \n\t getQuery\t : %f (5),        %f (50),        %f (95)\n\t processAnswer\t : %f (5),        %f (50),        %f (95)\n' % (participant_uid, getQuery_times[int(.05*total_pulls)], getQuery_times[int(.50*total_pulls)], getQuery_times[int(.95*total_pulls)], processAnswer_times[int(.05*total_pulls)], processAnswer_times[int(.50*total_pulls)], processAnswer_times[int(.95*total_pulls)])
     return return_str
 
 

@@ -65,17 +65,12 @@ class Experiment(Resource):
         # Args from dict to json type
         args_json = json.dumps(args_data)
         # Execute initExp through the broker
-        response_json,didSucceed,message = broker.applyAsync(app_id,
+        response_json, didSucceed, message = broker.applyAsync(app_id,
                                                              exp_uid,
                                                              'initExp',
                                                              json.dumps(args_data))
-        
+
         if not didSucceed:
             return attach_meta({}, meta_error['InitExpError'], backend_error=message), 400
 
         return attach_meta({'exp_uid':exp_uid}, meta_success), 200
-
-
-
-
-

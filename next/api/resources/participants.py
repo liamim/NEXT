@@ -9,7 +9,7 @@ example use:
 get a tripletMDS query:
 curl -X GET http://localhost:8001/api/experiment/[exp_uid]/participants
 '''
-from StringIO import StringIO
+from io import StringIO
 import pandas as pd
 from flask import Flask, send_file, request, abort
 from flask_restful import Resource, reqparse
@@ -150,7 +150,7 @@ def parse_responses(responses):
 
     r = myApp.format_responses(responses)
 
-    if type(r) != list and type(r[0]) != dict:
+    if not isinstance(r, list) and not isinstance(r[0], dict):
         raise ValueError('ERROR: myApp.format_responses should return a list of dictionaries')
 
     df = pd.DataFrame(r)

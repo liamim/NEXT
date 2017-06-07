@@ -78,17 +78,17 @@ def test_increment_many(db):
 def test_append(db):
     B = 'test_append'
     c = Collection(B, '', '', db)
-    db.set_doc(B, 'f', {'a': [1,3]})
+    db.set_doc(B, 'f', {'a': [1, 3]})
     c.append('f', 'a', 10)
-    assert db.get(B, 'f', 'a') == [1,3,10]
+    assert db.get(B, 'f', 'a') == [1, 3, 10]
 
 def test_pop(db):
     B = 'test_pop'
     c = Collection(B, '', '', db)
-    db.set_doc(B, 'f', {'a': [1,3,10]})
+    db.set_doc(B, 'f', {'a': [1, 3, 10]})
     # pop one by one and check that everything is as expected
     assert c.pop('f', 'a') == 10
-    assert db.get(B, 'f', 'a') == [1,3]
+    assert db.get(B, 'f', 'a') == [1, 3]
     assert c.pop('f', 'a') == 3
     assert db.get(B, 'f', 'a') == [1]
     assert c.pop('f', 'a') == 1

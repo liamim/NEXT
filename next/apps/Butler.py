@@ -1,5 +1,5 @@
 import os
-import StringIO
+import io
 from functools import wraps
 
 import redis
@@ -93,7 +93,7 @@ class Memory(object):
             self.ensure_connection()
             key = self.key_prefix + key
             d = self.cache.get(key)
-            f = StringIO.StringIO()
+            f = io.StringIO()
             n, l = d.split(":")
             l = int(l)
             n = int(n)
@@ -115,7 +115,7 @@ class Memory(object):
         except Exception as e:
             utils.debug_print("Butler.Collection.Memory.lock exception: {}".format(e))
             return None
-    
+
     def exists(self, key):
         try:
             self.ensure_connection()
@@ -193,7 +193,7 @@ class Collection(object):
                 return self.db.get(self.collection, uid, key)
         else:
             return self.db.get_docs_with_filter(self.collection, pattern)
-    
+
     @timed(op_type='get')
     def get_and_delete(self, uid="", key=None, exp=None):
         """
@@ -268,7 +268,7 @@ class Butler(object):
         self.ell = ell
         self.targets = targets
         self.memory = Memory()
-        
+
         if self.targets.db is None:
             self.targets.db = self.db
         self.queries = Collection(self.app_id+":queries", "", self.exp_uid, db)
@@ -291,6 +291,6 @@ class Butler(object):
                                task, task_args_json,
                                self.exp_uid + '_' + self.alg_label,
                                ignore_result, time_limit,
-                               alg_id=self.alg_id, alg_label=self.alg_label)  
+                               alg_id=self.alg_id, alg_label=self.alg_label)
         else:
-            self.db.submit_job(self.app_id, self.exp_uid, task, task_args_json, None, ignore_result, time_limit)  
+            self.db.submit_job(self.app_id, self.exp_uid, task, task_args_json, None, ignore_result, time_limit)

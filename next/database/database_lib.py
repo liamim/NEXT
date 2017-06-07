@@ -19,7 +19,7 @@ def make_mongodump(name,exp_uid_list=[]):
     else:
         exp_uid_list_str = '["'+'","'.join(exp_uid_list)+'"]'
 
-        query_str = '\'{ $or: [ {"exp_uid":{$in:%s}}, {"object_id":{$in:%s}} ] }\'' %  (exp_uid_list_str,exp_uid_list_str)
+        query_str = '\'{ $or: [ {"exp_uid":{$in:%s}}, {"object_id":{$in:%s}} ] }\'' %  (exp_uid_list_str, exp_uid_list_str)
 
         client = MongoClient(constants.MONGODB_HOST, constants.MONGODB_PORT)
         for db in client.database_names():
@@ -30,9 +30,9 @@ def make_mongodump(name,exp_uid_list=[]):
                                                           path=tmp_dir,
                                                           query_str=query_str),
                         shell=True)
-    subprocess.call('mkdir -p /dump',shell=True)
+    subprocess.call('mkdir -p /dump', shell=True)
     subprocess.call(('tar czf /dump/{name} '
-                     '-C {path} .').format(name=name,path=tmp_dir),
+                     '-C {path} .').format(name=name, path=tmp_dir),
                     shell=True)
     
     shutil.rmtree(tmp_dir)
@@ -45,7 +45,7 @@ def remove_mongodump(name):
 
 def restore_mongodump(src_filename):
     tmp_dir = tempfile.mkdtemp()
-    subprocess.call(('tar -xvf {src_filename} -C {dst_path}').format(src_filename=src_filename,dst_path=tmp_dir),shell=True)
+    subprocess.call(('tar -xvf {src_filename} -C {dst_path}').format(src_filename=src_filename, dst_path=tmp_dir), shell=True)
     subprocess.call(('/usr/bin/mongorestore --host {hostname} --port {port} '
                      '{path}').format(hostname=constants.MONGODB_HOST,
                                                port=constants.MONGODB_PORT,

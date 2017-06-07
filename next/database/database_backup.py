@@ -22,13 +22,13 @@ import os
 
 
 NEXT_BACKEND_GLOBAL_HOST = os.environ.get('NEXT_BACKEND_GLOBAL_HOST', 'localhost')
-AWS_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME','next-database-backups')
+AWS_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME', 'next-database-backups')
 
 
 timestamp = utils.datetimeNow()
-print "[ %s ] starting backup of MongoDB to S3..." % str(timestamp)
+print("[ %s ] starting backup of MongoDB to S3..." % str(timestamp))
 
-print "[ %s ] constants.AWS_ACCESS_ID = %s" % (str(timestamp),constants.AWS_ACCESS_ID)
+print("[ %s ] constants.AWS_ACCESS_ID = %s" % (str(timestamp), constants.AWS_ACCESS_ID))
 	
 tar_file = ''
 try:
@@ -43,7 +43,7 @@ from boto.s3.key import Key
 import boto
 # boto.set_stream_logger('boto')
 try:
-	conn = S3Connection(constants.AWS_ACCESS_ID,constants.AWS_SECRET_ACCESS_KEY)
+	conn = S3Connection(constants.AWS_ACCESS_ID, constants.AWS_SECRET_ACCESS_KEY)
 	b = conn.get_bucket(AWS_BUCKET_NAME)
 
 	k = Key(b)
@@ -51,14 +51,14 @@ try:
 	bytes_saved = k.set_contents_from_filename( tar_filename )
 
 	timestamp = utils.datetimeNow()
-	print "[ %s ] done with backup of MongoDB to S3...  %d bytes saved" % (str(timestamp),bytes_saved)
+	print("[ %s ] done with backup of MongoDB to S3...  %d bytes saved" % (str(timestamp), bytes_saved))
 except:
 	error = traceback.format_exc()
 	timestamp = utils.datetimeNow()
-	print "[ %s ] FAILED TO CONNECT TO S3... saving locally" % str(timestamp)
-	print error
+	print("[ %s ] FAILED TO CONNECT TO S3... saving locally" % str(timestamp))
+	print(error)
 
-subprocess.call('rm {tar_filename}'.format(tar_filename=tar_filename),shell=True)
+subprocess.call('rm {tar_filename}'.format(tar_filename=tar_filename), shell=True)
 
 
 	
