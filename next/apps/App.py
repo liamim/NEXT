@@ -175,7 +175,8 @@ class App(object):
                               'timestamp_query_generated':str(utils.datetimeNow()),
                               'query_uid':query_uid})
             self.butler.queries.set(uid=query_uid, value=query_doc)
-            return json.dumps({'args':query_doc,'meta':{'log_entry_durations':self.log_entry_durations}}), True,''
+            return json.dumps({'args':query_doc,'meta':{'log_entry_durations':self.log_entry_durations}},
+                cls=utils.NumpyEncoder), True, ''
         except Exception as error:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             full_error = str(traceback.format_exc())+'\n'+str(error)
@@ -204,8 +205,9 @@ class App(object):
                                  })
             self.butler.queries.set_many(uid=args_dict['args']['query_uid'], key_value_dict=query_update)
 
-            return json.dumps({'args': {}, 'meta': {'log_entry_durations':self.log_entry_durations}}), True, ''
-        
+            return json.dumps({'args': {}, 'meta': {'log_entry_durations':self.log_entry_durations}},
+                cls=utils.NumpyEncoder), True, ''
+
         except Exception as error:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             full_error = str(traceback.format_exc())+'\n'+str(error)
@@ -236,6 +238,7 @@ class App(object):
                 self.butler.log('ALG-EVALUATION', alg_log_entry)
             return json.dumps({'args': myapp_response,
                                'meta': {'log_entry_durations':self.log_entry_durations,
+                                        'timestamp': str(utils.datetimeNow())}}, cls=utils.NumpyEncoder), True, ''
         except Exception as error:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             full_error = str(traceback.format_exc())+'\n'+str(error)
