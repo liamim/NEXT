@@ -1,5 +1,3 @@
-venv/
-
 # Mac
 .DS_Store
 
@@ -12,6 +10,8 @@ target/
 
 # Python
 *.pyc
+__pycache__/
+venv/
 
 # nohup
 nohup.out
