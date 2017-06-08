@@ -27,7 +27,7 @@ def test_api(assert_200=True, num_objects=4, desired_dimension=1,
                          'RandomSamplingLinearLeastSquares',
                          'RoundRobin']
     alg_list = []
-    for idx,alg_id in enumerate(supported_alg_ids):
+    for idx, alg_id in enumerate(supported_alg_ids):
         alg_item = {}
         alg_item['alg_id'] = alg_id
         if idx==0:
@@ -56,7 +56,7 @@ def test_api(assert_200=True, num_objects=4, desired_dimension=1,
                         'meta': {'features':features}})
 
     # Test POST Experiment
-    print '\n'*2 + 'Testing POST initExp...'
+    print('\n'*2 + 'Testing POST initExp...')
     initExp_args_dict = {}
     initExp_args_dict['app_id'] = 'PoolBasedBinaryClassification'
     initExp_args_dict['args'] = {}
@@ -74,7 +74,7 @@ def test_api(assert_200=True, num_objects=4, desired_dimension=1,
         exp_info += [exp_info_]
         exp_uid = initExp_response_dict['exp_uid']
 
-        exp_info.append({'exp_uid':exp_uid,})
+        exp_info.append({'exp_uid': exp_uid,})
 
         # Test GET Experiment
         initExp_response_dict = test_utils.getExp(exp_uid)
@@ -90,13 +90,13 @@ def test_api(assert_200=True, num_objects=4, desired_dimension=1,
 
         experiment = numpy.random.choice(exp_info)
         exp_uid = experiment['exp_uid']
-        pool_args.append((exp_uid,participant_uid,total_pulls_per_client,true_weights,assert_200))
+        pool_args.append((exp_uid, participant_uid, total_pulls_per_client, true_weights, assert_200))
 
-    print "participants are", participants
+    print("participants are", participants)
     results = pool.map(simulate_one_client, pool_args)
 
     for result in results:
-        print result
+        print(result)
 
     test_utils.getModel(exp_uid, app_id, supported_alg_ids, alg_list)
 
@@ -108,7 +108,7 @@ def simulate_one_client(input_args):
     processAnswer_times = []
     for t in range(total_pulls):
 
-        print "participant {} had {} pulls".format(participant_uid, t)
+        print("participant {} had {} pulls".format(participant_uid, t))
 
         # test POST getQuery #
         widget = True
@@ -128,7 +128,7 @@ def simulate_one_client(input_args):
         # generate simulated reward #
         # sleep for a bit to simulate response time
         ts = test_utils.response_delay()
-        target_label = numpy.sign(numpy.dot(x,true_weights))
+        target_label = numpy.sign(numpy.dot(x, true_weights))
         response_time = time.time() - ts
 
         # test POST processAnswer

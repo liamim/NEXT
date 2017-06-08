@@ -3,7 +3,7 @@ import next.utils as utils
 import next.apps.SimpleTargetManager
 
 class MyApp:
-    def __init__(self,db):
+    def __init__(self, db):
         self.app_id = 'PoolBasedBinaryClassification'
         self.TargetManager = next.apps.SimpleTargetManager.SimpleTargetManager(db)
 
@@ -12,7 +12,7 @@ class MyApp:
         # Get the first target, extract it's feature vector and save this as the dimension
         # This assumes that feature dimension consistent across all targets
         args['d'] = len(args['targets']['targetset'][0]['meta']['features'])
-        targets = sorted(args['targets']['targetset'],key=lambda x: x['target_id'])
+        targets = sorted(args['targets']['targetset'], key=lambda x: x['target_id'])
         self.TargetManager.set_targetset(butler.exp_uid, targets)
         del args['targets']
         
