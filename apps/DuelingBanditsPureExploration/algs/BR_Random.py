@@ -43,9 +43,9 @@ class MyAlg:
 
         random_fork = numpy.random.choice(2)
         if random_fork==0:
-            return [index,alt_index,index]
+            return [index, alt_index, index]
         else:
-            return [alt_index,index,index]
+            return [alt_index, index, index]
 
     def processAnswer(self,butler, left_id=0, right_id=0, painted_id=0, winner_id=0):
         alt_index = left_id
@@ -63,7 +63,7 @@ class MyAlg:
 
         return True
 
-    def getModel(self,butler):
+    def getModel(self, butler):
         keys = butler.algorithms.get(key='keys')
         key_value_dict = butler.algorithms.get(key=keys)
         n = butler.algorithms.get(key='n')
@@ -78,7 +78,7 @@ class MyAlg:
             else:
                 mu[i] = sumX[i] * 1.0 / T[i]
 
-        prec = [numpy.sqrt(1.0/max(1,t)) for t in T]
+        prec = [numpy.sqrt(1.0/max(1, t)) for t in T]
         return mu.tolist(), prec
 
 

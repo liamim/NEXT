@@ -1,10 +1,10 @@
 """
 BR_LilUCB app implements DuelingBanditsPureExplorationPrototype
 
-BR_LilUCB implements the lilUCB algorithm described in 
+BR_LilUCB implements the lilUCB algorithm described in
 Jamieson, Malloy, Nowak, Bubeck, "lil' UCB : An Optimal Exploration Algorithm for Multi-Armed Bandits," COLT 2014
 using the Borda reduction described in detail in
-Jamieson et al "Sparse Borda Bandits," AISTATS 2015. 
+Jamieson et al "Sparse Borda Bandits," AISTATS 2015.
 """
 
 import numpy
@@ -68,9 +68,9 @@ class MyAlg:
 
     random_fork = numpy.random.choice(2)
     if random_fork==0:
-      return [index,alt_index,index]
+      return [index, alt_index, index]
     else:
-      return [alt_index,index,index]
+      return [alt_index, index, index]
 
 
   def processAnswer(self,butler, left_id=0, right_id=0, painted_id=0, winner_id=0):
@@ -82,13 +82,13 @@ class MyAlg:
     if painted_id==winner_id:
       reward = 1.
 
-    butler.algorithms.increment_many(key_value_dict={'Xsum_'+str(painted_id):reward, 
-                                                     'T_'+str(painted_id):1., 
+    butler.algorithms.increment_many(key_value_dict={'Xsum_'+str(painted_id):reward,
+                                                     'T_'+str(painted_id):1.,
                                                      'total_pulls':1})
 
     return True
 
-  def getModel(self,butler):
+  def getModel(self, butler):
     keys = butler.algorithms.get(key='keys')
     key_value_dict = butler.algorithms.get(key=keys)
 
@@ -104,6 +104,6 @@ class MyAlg:
       else:
         mu[i] = sumX[i] / T[i]
 
-    prec = [numpy.sqrt(1.0/max(1,t)) for t in T]
+    prec = [numpy.sqrt(1.0/max(1, t)) for t in T]
 
     return mu.tolist(), prec

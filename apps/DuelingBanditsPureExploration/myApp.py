@@ -9,7 +9,7 @@ import next.utils as utils
 
 
 class MyApp:
-    def __init__(self,db):
+    def __init__(self, db):
         self.app_id = 'DuelingBanditsPureExploration'
         self.TargetManager = next.apps.SimpleTargetManager.SimpleTargetManager(db)
 
@@ -38,7 +38,7 @@ class MyApp:
         args: The experiment data, potentially modified.
         """
         # TODO: change this in every app type coded thus far!
-        if 'targetset' in args['targets'].keys():
+        if 'targetset' in args['targets']:
             n = len(args['targets']['targetset'])
             self.TargetManager.set_targetset(butler.exp_uid, args['targets']['targetset'])
         else:
@@ -59,7 +59,7 @@ class MyApp:
         targets = [self.TargetManager.get_target_item(butler.exp_uid, alg_response[i])
                    for i in [0, 1, 2]]
 
-        targets_list = [{'target':targets[0],'label':'left'}, 
+        targets_list = [{'target':targets[0],'label':'left'},
                         {'target':targets[1],'label':'right'}]
 
 
@@ -87,7 +87,7 @@ class MyApp:
         # l.release()
         # utils.debug_print('lock released')
         #END DELETE
-        
+
         #if 'labels' in experiment_dict['args']['rating_scale']:
             #labels = experiment_dict['args']['rating_scale']['labels']
             #return_dict.update({'labels':labels})
@@ -112,25 +112,25 @@ class MyApp:
                 right_id = target['target']['target_id']
             if target['flag'] == 1:
                 painted_id = target['target']['target_id']
-                
+
         winner_id = args['target_winner']
         butler.experiment.increment(key='num_reported_answers_for_' + query['alg_label'])
 
-        alg({'left_id':left_id, 
-             'right_id':right_id, 
+        alg({'left_id':left_id,
+             'right_id':right_id,
              'winner_id':winner_id,
              'painted_id':painted_id})
         return {'winner_id':winner_id}
-                
+
 
     def getModel(self, butler, alg, args):
         scores, precisions = alg()
         ranks = (-numpy.array(scores)).argsort().tolist()
         n = len(scores)
-        indexes = numpy.array(range(n))[ranks]
+        indexes = numpy.arange(n)[ranks]
         scores = numpy.array(scores)[ranks]
         precisions = numpy.array(precisions)[ranks]
-        ranks = range(n)
+        ranks = list(range(n))
 
         targets = []
         for index in range(n):
@@ -140,7 +140,7 @@ class MyApp:
                            'score':scores[index],
                            'precision':precisions[index]} )
         num_reported_answers = butler.experiment.get('num_reported_answers')
-        return {'targets': targets, 'num_reported_answers':num_reported_answers} 
+        return {'targets': targets, 'num_reported_answers':num_reported_answers}
 
 
     def format_responses(self, responses):
