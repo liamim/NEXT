@@ -5,7 +5,7 @@ import next.apps.SimpleTargetManager
 import next.utils as utils
 
 class MyApp:
-    def __init__(self,db):
+    def __init__(self, db):
         self.app_id = 'CardinalBanditsPureExploration'
         self.TargetManager = next.apps.SimpleTargetManager.SimpleTargetManager(db)
 
@@ -26,7 +26,7 @@ class MyApp:
         -------
         exp_data: The experiment data, potentially modified.
         """
-        if 'targetset' in args['targets'].keys():
+        if 'targetset' in args['targets']:
             n  = len(args['targets']['targetset'])
             self.TargetManager.set_targetset(butler.exp_uid, args['targets']['targetset'])
         else:
@@ -34,7 +34,7 @@ class MyApp:
         args['n'] = n
         del args['targets']
 
-        if 'labels' in args['rating_scale'].keys():
+        if 'labels' in args['rating_scale']:
             labels = args['rating_scale']['labels']
             max_label = max( label['reward'] for label in labels )
             min_label = min( label['reward'] for label in labels )
@@ -42,7 +42,7 @@ class MyApp:
 
         R = args['rating_scale']['R']
         alg_data = {'R':R}
-        algorithm_keys = ['n','failure_probability']
+        algorithm_keys = ['n', 'failure_probability']
         for key in algorithm_keys:
             alg_data[key]=args[key]
 
@@ -52,7 +52,7 @@ class MyApp:
     def getQuery(self, butler, alg, args):
         participant_uid = args.get('participant_uid', butler.exp_uid)
         alg_response = alg({'participant_uid':participant_uid})
-        butler.participants.append(uid=participant_uid,key='do_not_ask_list',value=alg_response)
+        butler.participants.append(uid=participant_uid, key='do_not_ask_list', value=alg_response)
 
         target = self.TargetManager.get_target_item(butler.exp_uid, alg_response)
         targets_list = [{'target':target}]
@@ -77,17 +77,17 @@ class MyApp:
 
     def getModel(self, butler, alg, args):
         alg_response = alg()
-        scores, precisions,counts = alg_response
+        scores, precisions, counts = alg_response
         ranks = (-numpy.array(scores)).argsort().tolist()
         n = len(scores)
-        indexes = numpy.array(range(n))[ranks]
+        indexes = numpy.arange(n)[ranks]
         scores = numpy.array(scores)[ranks]
         precisions = numpy.array(precisions)[ranks]
         counts = numpy.array(counts)[ranks]
         standard_deviations = precisions*numpy.sqrt(counts)
-        ranks = range(n)
+        ranks = list(range(n))
         target_set = self.TargetManager.get_targetset(butler.exp_uid)
-        target_set = sorted(target_set,key=lambda x: x['target_id'])
+        target_set = sorted(target_set, key=lambda x: x['target_id'])
         targets = []
         if len(target_set)==0:
             for index in range(n):
@@ -111,7 +111,7 @@ class MyApp:
                                  'precision':precisions[index],
                                  'standard_deviation':standard_deviations[index],
                                  'count':counts[index]} )
-        return {'targets': targets} 
+        return {'targets': targets}
 
 
     def format_responses(self, responses):
