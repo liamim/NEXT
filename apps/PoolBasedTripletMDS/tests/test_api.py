@@ -20,8 +20,8 @@ app_id = 'PoolBasedTripletMDS'
 
 def test_api(assert_200=True, num_objects=5, desired_dimension=2,
             total_pulls_per_client=4, num_experiments=1, num_clients=6):
-    x = numpy.linspace(0,1,num_objects)
-    X_true = numpy.vstack([x,x]).transpose()
+    x = numpy.linspace(0, 1, num_objects)
+    X_true = numpy.vstack([x, x]).transpose()
 
     pool = Pool(processes=num_clients)
     supported_alg_ids = ['CrowdKernel', 'RandomSampling',
@@ -78,23 +78,23 @@ def test_api(assert_200=True, num_objects=5, desired_dimension=2,
 
         experiment = numpy.random.choice(exp_info)
         exp_uid = experiment['exp_uid']
-        pool_args.append( (exp_uid,participant_uid,total_pulls_per_client,X_true,assert_200) )
+        pool_args.append( (exp_uid, participant_uid, total_pulls_per_client, X_true, assert_200) )
     results = pool.map(simulate_one_client, pool_args)
 
     for result in results:
-        print result
+        print(result)
 
     test_utils.getModel(exp_uid, app_id, supported_alg_ids, alg_list)
 
 
 def simulate_one_client( input_args ):
-    exp_uid,participant_uid,total_pulls,X_true,assert_200 = input_args
+    exp_uid, participant_uid, total_pulls, X_true, assert_200 = input_args
 
 
     getQuery_times = []
     processAnswer_times = []
     for t in range(total_pulls):
-        print "Participant {1} has taken {0} pulls".format(t,participant_uid)
+        print("Participant {1} has taken {0} pulls".format(t, participant_uid))
         # test POST getQuery #
         widget = random.choice([True] + 4*[False])
         widget = True

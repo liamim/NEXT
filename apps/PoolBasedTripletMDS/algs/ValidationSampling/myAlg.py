@@ -1,5 +1,5 @@
 import numpy as np
-import utilsMDS
+from . import utilsMDS
 import time
 import next.utils as utils
 import random

@@ -5,7 +5,7 @@ import next.utils as utils
 from next.apps.AppDashboard import AppDashboard
 
 class MyAppDashboard(AppDashboard):
-    def __init__(self,db,ell):
+    def __init__(self, db, ell):
         AppDashboard.__init__(self, db, ell)
 
     def test_error_multiline_plot(self, app, butler):
@@ -32,7 +32,7 @@ class MyAppDashboard(AppDashboard):
 
         for algorithm in args['alg_list']:
             alg_label = algorithm['alg_label']
-            list_of_log_dict = butler.ell.get_logs_with_filter(app.app_id+':ALG-EVALUATION',{'exp_uid':app.exp_uid, 'alg_label':alg_label})
+            list_of_log_dict = butler.ell.get_logs_with_filter(app.app_id+':ALG-EVALUATION', {'exp_uid':app.exp_uid, 'alg_label':alg_label})
             list_of_log_dict = sorted(list_of_log_dict, key=lambda item: utils.str2datetime(item['timestamp']) )
             x = []
             y = []
@@ -46,7 +46,7 @@ class MyAppDashboard(AppDashboard):
                     for query in test_S:
                         if 'q' in query:
                             i, j, k = query['q']
-                            score =  numpy.dot(Xd[j],Xd[j]) -2*numpy.dot(Xd[j],Xd[k]) + 2*numpy.dot(Xd[i],Xd[k]) - numpy.dot(Xd[i],Xd[i])
+                            score =  numpy.dot(Xd[j], Xd[j]) -2*numpy.dot(Xd[j], Xd[k]) + 2*numpy.dot(Xd[i], Xd[k]) - numpy.dot(Xd[i], Xd[i])
                             if score > 0:
                                 number_correct += 1.0
 
@@ -56,10 +56,10 @@ class MyAppDashboard(AppDashboard):
                 y.append(err)
             alg_dict = {'legend_label':alg_label, 'x':x,'y':y}
             try:
-                x_min = min(x_min,min(x))
-                x_max = max(x_max,max(x))
-                y_min = min(y_min,min(y))
-                y_max = max(y_max,max(y))
+                x_min = min(x_min, min(x))
+                x_max = max(x_max, max(x))
+                y_min = min(y_min, min(y))
+                y_max = max(y_max, max(y))
             except:
                 pass
             list_of_alg_dicts.append(alg_dict)
@@ -68,14 +68,14 @@ class MyAppDashboard(AppDashboard):
         import mpld3
         fig, ax = plt.subplots(subplot_kw=dict(axisbg='#EEEEEE'))
         for alg_dict in list_of_alg_dicts:
-            ax.plot(alg_dict['x'],alg_dict['y'],label=alg_dict['legend_label'])
+            ax.plot(alg_dict['x'], alg_dict['y'], label=alg_dict['legend_label'])
         ax.set_xlabel('Number of answered triplets')
         ax.set_ylabel('Error on hold-out set')
-        ax.set_xlim([x_min,x_max])
-        ax.set_ylim([y_min,y_max])
+        ax.set_xlim([x_min, x_max])
+        ax.set_ylim([y_min, y_max])
         ax.grid(color='white', linestyle='solid')
         ax.set_title('Triplet Test Error', size=14)
-        legend = ax.legend(loc=2,ncol=3,mode="expand")
+        legend = ax.legend(loc=2, ncol=3, mode="expand")
         for label in legend.get_texts():
           label.set_fontsize('small')
         plot_dict = mpld3.fig_to_dict(fig)
@@ -83,7 +83,7 @@ class MyAppDashboard(AppDashboard):
         return plot_dict
 
 
-    def most_current_embedding(self,app,butler,alg_label):
+    def most_current_embedding(self, app, butler, alg_label):
         """
         Description: Returns embedding in the form of a list of dictionaries, which is conveneint for downstream applications
 
@@ -110,7 +110,7 @@ class MyAppDashboard(AppDashboard):
         x_max = -numpy.float('inf')
         y_min = numpy.float('inf')
         y_max = -numpy.float('inf')
-        for idx,target in enumerate(embedding):
+        for idx, target in enumerate(embedding):
 
             target_dict = {}
             target_dict['target'] = TargetManager.get_target_item(app.exp_uid, idx)
@@ -121,10 +121,10 @@ class MyAppDashboard(AppDashboard):
                 target_dict['y'] = 0.
             target_dict['darray'] = target
 
-            x_min = min(x_min,target[0])
-            x_max = max(x_max,target[0])
-            y_min = min(y_min,target[1])
-            y_max = max(y_max,target[1])
+            x_min = min(x_min, target[0])
+            x_max = max(x_max, target[0])
+            y_min = min(y_min, target[1])
+            y_max = max(y_max, target[1])
             data.append(target_dict)
 
         return_dict = {'timestamp':str(utils.datetimeNow()),

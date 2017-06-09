@@ -43,21 +43,21 @@ def main():
     
     Strain = []
     Stest = []
-    Xtrue = randn(n,d);
-    for iter in range(0,m):
+    Xtrue = randn(n, d);
+    for iter in range(0, m):
 
         # get random triplet
-        q,score = getRandomQuery(Xtrue)
+        q, score = getRandomQuery(Xtrue)
 
         # align it so it agrees with Xtrue: "q[2] is more similar to q[0] than q[1]"
         query_ordering_disagrees_with_Xtrue = score<0
         if query_ordering_disagrees_with_Xtrue:
-            q = [ q[i] for i in [1,0,2]]
+            q = [ q[i] for i in [1, 0, 2]]
 
         # add some noise
         R = rand()
         if R<p:
-            q = [ q[i] for i in [1,0,2]]
+            q = [ q[i] for i in [1, 0, 2]]
 
         if iter < .9*m:
             Strain.append(q)
@@ -66,13 +66,13 @@ def main():
 
     alpha = 1.
     # compute embedding 
-    X,emp_loss_train = computeEmbedding(n,d,Strain,alpha=alpha,num_random_restarts=2,epsilon=.00001,verbose=True)
+    X, emp_loss_train = computeEmbedding(n, d, Strain, alpha=alpha, num_random_restarts=2, epsilon=.00001, verbose=True)
 
     # compute loss on test set
-    emp_loss_test,hinge_loss_test,log_loss_test = getLoss(X,Stest,alpha)
+    emp_loss_test, hinge_loss_test, log_loss_test = getLoss(X, Stest, alpha)
 
-    print
-    print 'Training loss = %f,   Test loss = %f' %(emp_loss_train,emp_loss_test)
+    print()
+    print('Training loss = %f,   Test loss = %f' %(emp_loss_train, emp_loss_test))
 
 def getRandomQuery(X):
     """
@@ -89,7 +89,7 @@ def getRandomQuery(X):
     Usage:
         q,score = getRandomQuery(X)
     """
-    n,d = X.shape
+    n, d = X.shape
     
     i = randint(n)
     j = randint(n)
@@ -100,11 +100,11 @@ def getRandomQuery(X):
         k = randint(n)
     q = [i, j, k]
     
-    score = getTripletScore(X,q)
+    score = getTripletScore(X, q)
 
-    return q,score
+    return q, score
 
-def getTripletScore(X,q):
+def getTripletScore(X, q):
     """
     Given X,q=[i,j,k] returns score = ||x_j - x_k||^2 - ||x_i - x_k||^2
     If score > 0 then the triplet agrees with the embedding, otherwise it does not 
@@ -112,12 +112,12 @@ def getTripletScore(X,q):
     Usage:
         score = getTripletScore(X,[3,4,5])
     """
-    i,j,k = q
+    i, j, k = q
 
-    return dot(X[j],X[j]) -2*dot(X[j],X[k]) + 2*dot(X[i],X[k]) - dot(X[i],X[i])
+    return dot(X[j], X[j]) -2*dot(X[j], X[k]) + 2*dot(X[i], X[k]) - dot(X[i], X[i])
 
 
-def getLoss(X,S,alpha):
+def getLoss(X, S, alpha):
     """
     Returns loss on X with respect to list of triplets S: 1/len(S) \sum_{q in S} loss(X,q).
     Intuitively, q=[i,j,k] "agrees" with X if ||x_j - x_k||^2 > ||x_i - x_k||^2.
@@ -136,9 +136,9 @@ def getLoss(X,S,alpha):
     hinge_loss = 0 # hinge loss
     log_loss = 0 #log_loss in crowd kernel model
     for q in S:
-        loss_ijk = getTripletScore(X,q)
-        hinge_loss = hinge_loss + max(0,1. - loss_ijk)
-        log_loss = log_loss - log(getSTETripletProbability(X[q[0]], X[q[1]], X[q[2]],alpha=1))
+        loss_ijk = getTripletScore(X, q)
+        hinge_loss = hinge_loss + max(0, 1. - loss_ijk)
+        log_loss = log_loss - log(getSTETripletProbability(X[q[0]], X[q[1]], X[q[2]], alpha=1))
 
         if loss_ijk < 0:
            emp_loss = emp_loss + 1.
@@ -197,14 +197,14 @@ def getSTETauDistribution(X, S, alpha=1):
     Usage:
         tau = getSTEDistribution(X,S) 
     """
-    n,d = X.shape
-    tau = zeros((n,n))
+    n, d = X.shape
+    tau = zeros((n, n))
     # Loop over each query
     for q in S:
         a = q[2]
         # Multiply by the amount the query contributes to each tau
         for i in range(n):
-            tau[a,i] = tau[a,i] + log( getSTETripletProbability(X[q[0]], X[q[1]], X[i], alpha=alpha) )
+            tau[a, i] = tau[a, i] + log( getSTETripletProbability(X[q[0]], X[q[1]], X[i], alpha=alpha) )
                 
     # Normalize
     for a in range(n):
@@ -222,21 +222,21 @@ def getGradient(X, S, alpha):
     Usage:
         G,avg_grad_row_norm_sq,max_grad_row_norm_sq,avg_row_norm_sq = getGradient(X,S)
     """
-    n,d = X.shape
+    n, d = X.shape
     m = len(S)
     
-    G = zeros((n,d))
+    G = zeros((n, d))
     c = -(alpha+1.)/2
     # By defintion d = 2c/alpha
     cc = -(alpha+1.)/alpha
     log_loss = 0
     for q in S:
-        i,j,k = q
+        i, j, k = q
         normki = norm( X[k] - X[i] )
         normki = normki*normki
         normkj = norm( X[k] - X[j] )
         normkj = normkj*normkj
-        num = max((1 + normki/alpha )**c , realmin)
+        num = max((1 + normki/alpha )**c, realmin)
         den = max((1 + normki/alpha )**c + ( 1 + normkj/alpha )**c, realmin)#max(2*alpha + D[k,i] + D[k,j], realmin)
         P = num/den
         G[k] += (1-P) * cc * ( ( X[k] - X[i] )/( 1 + normki/alpha ) - ( X[k] - X[j] )/( 1 + normkj/alpha ) )
@@ -248,7 +248,7 @@ def getGradient(X, S, alpha):
     # Remember, the loss function is the sum of log(1/p^k_ij), this leads to an extra minus sign
     G = -1./len(S) * G
     # compute statistics about gradient used for stopping conditions
-    mu = mean(X,0)
+    mu = mean(X, 0)
     avg_row_norm_sq = 0.
     avg_grad_row_norm_sq = 0.
     max_grad_row_norm_sq = 0.
@@ -258,13 +258,13 @@ def getGradient(X, S, alpha):
         row_norm_sq = 0
         grad_row_norm_sq = 0
         for j in range(d):
-            row_norm_sq += (X[i,j]-mu[j])*(X[i,j]-mu[j])
-            grad_row_norm_sq += G[i,j]*G[i,j]
+            row_norm_sq += (X[i, j]-mu[j])*(X[i, j]-mu[j])
+            grad_row_norm_sq += G[i, j]*G[i, j]
         avg_row_norm_sq += row_norm_sq/n
         avg_grad_row_norm_sq += grad_row_norm_sq/n
-        max_grad_row_norm_sq = max(max_grad_row_norm_sq,grad_row_norm_sq)
+        max_grad_row_norm_sq = max(max_grad_row_norm_sq, grad_row_norm_sq)
 
-    return G,log_loss,avg_grad_row_norm_sq,max_grad_row_norm_sq,avg_row_norm_sq
+    return G, log_loss, avg_grad_row_norm_sq, max_grad_row_norm_sq, avg_row_norm_sq
 
 
 def computeEmbedding(n, d, S, alpha=1, num_random_restarts=0,max_num_passes=0,max_norm=0, epsilon=0.001, verbose=False):
@@ -302,12 +302,12 @@ def computeEmbedding(n, d, S, alpha=1, num_random_restarts=0,max_num_passes=0,ma
         # ts = time.time()
         # X,acc = computeEmbeddingWithEpochSGD(n, d, S, alpha, max_num_passes=max_num_passes, max_norm=max_norm, epsilon=0., verbose=verbose)
         # te_sgd = time.time()-ts
-        X = randn(n,d)*.0001
+        X = randn(n, d)*.0001
         
         # print "Gradient Descent"
         ts = time.time()
         X_new, emp_loss_new, hinge_loss_new, log_loss_new, acc_new = computeEmbeddingWithGD(X, S, alpha, max_iters=50, max_norm=max_norm, epsilon=epsilon, verbose=verbose)
-        emp_loss_new,hinge_loss_new,log_loss_new = getLoss(X_new,S,alpha)
+        emp_loss_new, hinge_loss_new, log_loss_new = getLoss(X_new, S, alpha)
         te_gd = time.time()-ts
 
         if emp_loss_new<emp_loss_old:
@@ -315,7 +315,7 @@ def computeEmbedding(n, d, S, alpha=1, num_random_restarts=0,max_num_passes=0,ma
             emp_loss_old = emp_loss_new
 
         if verbose:
-            print "restart %d:   emp_loss = %f,   hinge_loss = %f,   duration=%f+%f" %(num_restarts,emp_loss_new,hinge_loss_new,te_sgd,te_gd)
+            print("restart %d:   emp_loss = %f,   hinge_loss = %f,   duration=%f+%f" %(num_restarts, emp_loss_new, hinge_loss_new, te_sgd, te_gd))
 
 
     return X_old, emp_loss_old
@@ -352,7 +352,7 @@ def computeEmbeddingWithEpochSGD(n, d, S, alpha=1, max_num_passes=0, max_norm=0,
     m = len(S)
 
     # norm of each object is equal to 1 in expectation
-    X = randn(n,d)*.0001
+    X = randn(n, d)*.0001
 
     if max_num_passes==0:
         max_iters = 16*m
@@ -370,8 +370,8 @@ def computeEmbeddingWithEpochSGD(n, d, S, alpha=1, max_num_passes=0, max_norm=0,
     
     # check losses
     if verbose:
-        emp_loss,hinge_loss,log_loss = getLoss(X,S, alpha)
-        print "iter=%d,   emp_loss=%f,   hinge_loss=%f, log_loss=%f,  a=%f" % (0,emp_loss,hinge_loss,log_loss,a)
+        emp_loss, hinge_loss, log_loss = getLoss(X, S, alpha)
+        print("iter=%d,   emp_loss=%f,   hinge_loss=%f, log_loss=%f,  a=%f" % (0, emp_loss, hinge_loss, log_loss, a))
     rel_max_grad = None
     while t < max_iters:
         t += 1
@@ -385,15 +385,15 @@ def computeEmbeddingWithEpochSGD(n, d, S, alpha=1, max_num_passes=0, max_norm=0,
 
             if epsilon>0 or verbose:
                 # get losses
-                emp_loss,hinge_loss,log_loss = getLoss(X,S,alpha)
+                emp_loss, hinge_loss, log_loss = getLoss(X, S, alpha)
 
                 # get gradient and check stopping-time statistics
-                G,log_loss,avg_grad_row_norm_sq,max_grad_row_norm_sq,avg_row_norm_sq = getGradient(X,S,alpha)
+                G, log_loss, avg_grad_row_norm_sq, max_grad_row_norm_sq, avg_row_norm_sq = getGradient(X, S, alpha)
                 rel_max_grad = sqrt( max_grad_row_norm_sq / avg_row_norm_sq )
                 rel_avg_grad = sqrt( avg_grad_row_norm_sq / avg_row_norm_sq )
 
                 if verbose:
-                    print "iter=%d,   emp_loss=%f,   hinge_loss=%f,  log_loss=%f,   rel_avg_grad=%f,   rel_max_grad=%f,   a=%f" % (t,emp_loss,hinge_loss,log_loss,rel_avg_grad,rel_max_grad,a)
+                    print("iter=%d,   emp_loss=%f,   hinge_loss=%f,  log_loss=%f,   rel_avg_grad=%f,   rel_max_grad=%f,   a=%f" % (t, emp_loss, hinge_loss, log_loss, rel_avg_grad, rel_max_grad, a))
 
                 if rel_max_grad < epsilon:
                     break
@@ -405,7 +405,7 @@ def computeEmbeddingWithEpochSGD(n, d, S, alpha=1, max_num_passes=0, max_norm=0,
         # By defintion d = 2c/alpha
         cc = -(alpha+1.)/alpha
         # take gradient step
-        i,j,k = q
+        i, j, k = q
         normki = norm( X[k] - X[i] )**2
         normkj = norm( X[k] - X[j] )**2
         num = (1 + normki/alpha )**c
@@ -428,7 +428,7 @@ def computeEmbeddingWithEpochSGD(n, d, S, alpha=1, max_num_passes=0, max_norm=0,
                X[i] = X[i] * (max_norm / norm_i)
 
 
-    return X,rel_max_grad
+    return X, rel_max_grad
 
 
 
@@ -464,7 +464,7 @@ def computeEmbeddingWithGD(X, S, alpha=1, max_iters=0, max_norm=0, epsilon=0.001
     """
     m = len(S)
 
-    n,d = X.shape
+    n, d = X.shape
 
     if max_iters==0:
         max_iters = 16*m
@@ -474,8 +474,8 @@ def computeEmbeddingWithGD(X, S, alpha=1, max_iters=0, max_norm=0, epsilon=0.001
 
     # check losses
     if verbose:
-        emp_loss,hinge_loss,log_loss = getLoss(X,S,alpha)
-        print "iter=%d,   emp_loss=%f,   hinge_loss=%f, log_loss=%f,   a=%f" % (0,emp_loss,hinge_loss,log_loss,float('nan'))
+        emp_loss, hinge_loss, log_loss = getLoss(X, S, alpha)
+        print("iter=%d,   emp_loss=%f,   hinge_loss=%f, log_loss=%f,   a=%f" % (0, emp_loss, hinge_loss, log_loss, float('nan')))
     a = .5*n
     t = 0
     emp_loss_0 = float('inf')
@@ -487,25 +487,25 @@ def computeEmbeddingWithGD(X, S, alpha=1, max_iters=0, max_norm=0, epsilon=0.001
         t+=1
         # get gradient and stopping-time statistics
         ts = time.time()
-        G,log_loss,avg_grad_row_norm_sq,max_grad_row_norm_sq,avg_row_norm_sq  = getGradient(X, S, alpha)
+        G, log_loss, avg_grad_row_norm_sq, max_grad_row_norm_sq, avg_row_norm_sq  = getGradient(X, S, alpha)
         rel_max_grad = sqrt( max_grad_row_norm_sq / avg_row_norm_sq )
         rel_avg_grad = sqrt( avg_grad_row_norm_sq / avg_row_norm_sq )
         if rel_max_grad < epsilon:
             if verbose:
-                print "Exited on rel_max_grad %s"%(str(rel_max_grad))
+                print("Exited on rel_max_grad %s"%(str(rel_max_grad)))
             break
         
         # perform backtracking line search
         a = 2*a
         ts = time.time()
-        emp_loss_0, hinge_loss_0, log_loss_0 = getLoss(X,S,alpha)
+        emp_loss_0, hinge_loss_0, log_loss_0 = getLoss(X, S, alpha)
         norm_grad_sq_0 = avg_grad_row_norm_sq*n
-        emp_loss_k, hinge_loss_k, log_loss_k = getLoss(X-a*G, S,alpha)
+        emp_loss_k, hinge_loss_k, log_loss_k = getLoss(X-a*G, S, alpha)
         
         inner_t = 0
         while log_loss_k > log_loss_0 - c1*a*norm_grad_sq_0:
             a = a*rho
-            emp_loss_k,hinge_loss_k,log_loss_k = getLoss(X-a*G, S,alpha)
+            emp_loss_k, hinge_loss_k, log_loss_k = getLoss(X-a*G, S, alpha)
             inner_t += 1
         X  = X - a*G
 
@@ -516,10 +516,10 @@ def computeEmbeddingWithGD(X, S, alpha=1, max_iters=0, max_norm=0, epsilon=0.001
 
         # check losses
         if verbose:
-            print "ste  iter=%d,   emp_loss=%f,   hinge_loss=%f,   log_loss=%f,   rel_avg_grad=%f,   rel_max_grad=%f,   a=%f,   i_t=%d" % (t,emp_loss_k,hinge_loss_k,log_loss_k,rel_avg_grad,rel_max_grad,a,inner_t)
+            print("ste  iter=%d,   emp_loss=%f,   hinge_loss=%f,   log_loss=%f,   rel_avg_grad=%f,   rel_max_grad=%f,   a=%f,   i_t=%d" % (t, emp_loss_k, hinge_loss_k, log_loss_k, rel_avg_grad, rel_max_grad, a, inner_t))
 
     
-    return X,emp_loss_0,hinge_loss_0,log_loss_0,rel_max_grad
+    return X, emp_loss_0, hinge_loss_0, log_loss_0, rel_max_grad
 
 
 if __name__ == "__main__":
