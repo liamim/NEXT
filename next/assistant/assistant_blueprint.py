@@ -41,7 +41,7 @@ def init_file(app_id=None):
 class ExperimentAssistant(Resource):
     def deserialise(self, data):
         start = data.find('\n')
-        s = data[:start].decode('ascii')
+        s = data[:start]
         # print('s',s)
         d = [x.split(':') for x in s.split(';')]
         # print('d',d)
@@ -58,13 +58,14 @@ class ExperimentAssistant(Resource):
         utils.debug_print('POSTED!')
         utils.debug_print('H', request.headers)
         try:
+            print(type(request.get_data()))
             utils.debug_print('L', len(request.get_data()))
         except Exception as exc:
             print(exc)
             print(('OH NO an error in assistant_blueprint!', exc, sys.exc_info()))
 
         # TODO? replace with msgpack
-        args = self.deserialise(request.get_data())
+        args = self.deserialise(request.get_data().decode())
 
         # Unpacking the YAML/ZIP file
         for key in args:
@@ -74,7 +75,7 @@ class ExperimentAssistant(Resource):
                 if args[key] in {'True', 'False'}:
                     args[key] = True if args[key] == 'True' else False
                 else:
-                    args[key] = base64.decodestring(args[key])
+                    args[key] = base64.b64decode(args[key])
 
         if all([key not in args for key in ['bucket_id', 'key_id', 'sercret_key']]):
             args['upload'] = False
@@ -82,6 +83,7 @@ class ExperimentAssistant(Resource):
             args['upload'] = True
 
         utils.debug_print('args.keys() = ', list(args.keys()))
+        utils.debug_print('args.args', args['args'])
 
         args['args'] = yaml.load(args['args'])
 
