@@ -2,7 +2,7 @@ import zipfile
 import io
 import os
 from joblib import Parallel, delayed
-from io import StringIO
+from io import BytesIO
 import base64
 import random
 import sys
@@ -46,7 +46,7 @@ def upload_target(filename, file_obj, bucket_name, aws_key, aws_secret_key,
         bucket = s3.create_bucket(bucket_name, aws_key, aws_secret_key)
 
     utils.debug_print('begin ' + filename)
-    url = s3.upload(filename,  StringIO(file_obj), bucket)
+    url = s3.upload(filename, BytesIO(file_obj), bucket)
     target_types = {'png': 'image', 'jpeg': 'image', 'jpg': 'image',
                     'mp4': 'movie', 'mov': 'movie',
                     'txt': 'text', 'csv': 'text'}
