@@ -102,7 +102,7 @@ def unpack_text_file(s, kind='csv'):
     files = zipfile_to_dictionary(zip_file)
 
     # files is has at least one key; (tested before call in assistant_blueprint.py)
-    file_str = files[files.keys()[0]].decode()
+    file_str = files[next(iter(files.keys()))].decode()
     if kind in {'csv', 'txt'}:
         strings = file_str.split('\n')[:-1]  # -1 because last newline
         targets = [{'target_id': str(i),
