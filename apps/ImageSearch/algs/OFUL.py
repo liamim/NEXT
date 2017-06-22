@@ -5,7 +5,6 @@ OFUL X9 with Hashing
 from __future__ import division
 import numpy as np
 import next.utils as utils
-from next.lib.bandits import banditclass as bc
 
 class MyAlg:
     app_id = 'ImageSearch'
@@ -50,8 +49,8 @@ class MyAlg:
 
             n = 50025
             expected_rewards = np.ones(n)*-np.inf
-            NN_order = np.load('NN_order.npy').tolist()
-            expected_rewards[NN_order[target_id]] = range(0,50)[::-1]
+            # NN_order = np.load('NN_order.npy').tolist()
+            # expected_rewards[NN_order[target_id]] = range(0,50)[::-1]
 
             R = 1.
             ridge = 1.

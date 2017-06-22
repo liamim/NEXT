@@ -1,3 +1,4 @@
+import random
 import numpy as np
 from decorator import decorator
 from line_profiler import LineProfiler
@@ -70,7 +71,7 @@ class MyApp(object):
         utils.debug_print('line 69: InitExp')
 
         num_algs_pulled = {alg['alg_id']: 0 for alg in args['alg_list']}
-        possible_target_indices = ['2226', '35793', '36227']
+        possible_target_indices = map(str, random.sample(range(1, 3000), 10))
         num_arms_pulled = {arm: 0 for arm in possible_target_indices}
         utils.debug_print('num_arms_pulled: ', num_arms_pulled)
         args['num_algs_pulled'] = num_algs_pulled
@@ -90,7 +91,7 @@ class MyApp(object):
 
         Inputs
         ------
-        exp_uid : The unique identiefief for the exp.
+        exp_uid : The unique identifier for the exp.
         alg_response : The response from the algorithm. The algorithm should
                        return only one value, be it a list or a dictionary.
         butler : The wrapper for database writes. See next/apps/Butler.py for
@@ -116,11 +117,11 @@ class MyApp(object):
             butler.experiment.set(key='args', value=experiment_dict)
 
             target_indices = [int(next_arm)]
-            target_instructions = {2226: 'Pick red boots', 35793: 'Pick only shoes for babies/toddlers',
-                                   36227: 'Pick only ASICS branded shoes'}
-
+            # target_instructions = {2226: 'Pick red boots', 35793: 'Pick only shoes for babies/toddlers',
+                                   # 36227: 'Pick only ASICS branded shoes'}
+            print(target_indices)
             targets_list = [{'index': i, 'target': self.TargetManager.get_target_item(exp_uid, i),
-                             'instructions': target_instructions[i]} for i in
+                             'instructions': 'Pick similar images'} for i in
                             target_indices]
 
             return_dict = {'initial_query': True, 'targets': targets_list,

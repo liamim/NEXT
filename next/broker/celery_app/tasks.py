@@ -43,9 +43,8 @@ def configure_workers(sender=None, conf=None, **kwargs):
         # db.lsh = numpy.load(filename).tolist()
         # filename = 'hash_object_nonquad.npy'
         # db.lsh_nonquad = numpy.load(filename).tolist()
-        filename = 'features_d1000.npy'
-        db.X = numpy.load(filename)
-        next.utils.debug_print('loaded stuff...')
+        db.X = numpy.load('untagged_features_cpca80_morph.npy')
+        next.utils.debug_print('loaded features & stuff...')
 
 Memory = Butler.Memory
 Butler = Butler.Butler

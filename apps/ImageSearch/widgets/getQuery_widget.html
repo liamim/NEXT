@@ -56,12 +56,13 @@ div.option{
 	vertical-align:middle;
 	max-height:100%;
 	max-width:100%;
-	height:auto;
+  /*width: 40%;
+	height:auto;*/
 }
 
 .text_container{
 	display:table;
-	width:100%;
+	/*width:100%;*/
 }
 
 .text{
@@ -133,11 +134,11 @@ div.option{
     {% else %}
         {% if query.targets[0].target.primary_type == "image" or query.targets[0].target.primary_type == "img" %}
         <div class="image_container"> 
-          <img class="image" src="{{ query.targets[0].target.primary_description }}"> </img>
+          <img height="350em" class="image" src="{{ query.targets[0].target.primary_description }}"> </img>
           <p></p>
         </div>
         <div id="init_query" style="float:right;">
-          Starting image: <br /><img width="50%" height="50%" class="image" src="{{ query.main_target.primary_description }}"> </img>
+          Starting image: <br /><img class="image" src="{{ query.main_target.primary_description }}"> </img>
         </div>
         {% elif query.targets[0].target.primary_type == "text"%}
         {% endif %}
