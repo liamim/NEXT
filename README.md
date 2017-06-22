@@ -1,4 +1,4 @@
-# NEXT
+*Have a question? Ask us on Gitter!* [![gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/next-ml/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link) *We encourage asking the dev team questions*
 
 **Documentation:** https://github.com/nextml/NEXT/wiki
 
@@ -6,6 +6,11 @@
 
 NEXT is a system that makes it *easy* to develop, evaluate, and apply active
 learning.
+
+Talk given by Lalit Jain that explains high level features of NEXT to active
+learning researchers:
+
+[![](https://github.com/nextml/NEXT/wiki/Figures/lalit-talk.png)](https://youtu.be/ESXgbZQ1ZTk?t=1732)
   
 This readme contains a quick start to launch the NEXT system on EC2, and to
 replicate and launch the experiments from the [NEXT

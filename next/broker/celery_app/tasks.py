@@ -46,7 +46,7 @@ def configure_workers(sender=None, conf=None, **kwargs):
         db.X = numpy.load('untagged_features_cpca80_morph.npy')
         next.utils.debug_print('loaded features & stuff...')
 
-Memory = Butler.Memory
+
 Butler = Butler.Butler
 
 class App_Wrapper:

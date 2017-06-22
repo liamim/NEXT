@@ -66,6 +66,7 @@ class ExperimentAssistant(Resource):
         # TODO? replace with msgpack
         args = self.deserialise(request.get_data())
 
+        # Unpacking the YAML/ZIP file
         for key in args:
             if key not in {'bucket_id', 'key_id', 'secret_key'}:
                 comma_idx = args[key].find(',')
@@ -74,12 +75,17 @@ class ExperimentAssistant(Resource):
                     args[key] = True if args[key] == 'True' else False
                 else:
                     args[key] = base64.decodestring(args[key])
+
+        if all([key not in args for key in ['bucket_id', 'key_id', 'sercret_key']]):
+            args['upload'] = False
+        else:
+            args['upload'] = True
+
         utils.debug_print('args.keys() = ', args.keys())
 
         args['args'] = yaml.load(args['args'])
 
         try:
-            utils.debug_print(args['args'].keys())
             init_exp_args = args['args']
             if 'targets' in args.keys():
                 target_zipfile = args['targets']
@@ -88,13 +94,16 @@ class ExperimentAssistant(Resource):
                     key_id = args['key_id']
                     secret_key = args['secret_key']
 
-                    for x_ in ['bucket_id', 'secret_key', 'key_id']:
-                        utils.debug_print(x_, args[x_])
-                    # Unpack the targets
                     targets = target_unpacker.unpack(target_zipfile, key_id,
                                                      secret_key, bucket_id)
                 else:
-                    targets = target_unpacker.unpack_csv_file(target_zipfile)
+                    filenames = target_unpacker.get_filenames_from_zip(target_zipfile)
+                    if len(filenames) != 1:
+                        raise ValueError('Specify exactly one file in the ZIP file')
+                    filename = filenames[0]
+                    extension = filename.split('.')[-1]
+                    targets = target_unpacker.unpack_text_file(target_zipfile,
+                                                               kind=extension)
                 init_exp_args['args']['targets'] = {'targetset':  targets}
 
             # Init the experiment:
