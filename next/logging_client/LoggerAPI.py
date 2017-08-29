@@ -22,9 +22,9 @@ class LoggerAPI(DatabaseAPI):
 
     def log(self, bucket_id, log_dict):
         """
-        Saves log_dict to PermStore as an individual document for later recall. 
-        
-        Inputs: 
+        Saves log_dict to PermStore as an individual document for later recall.
+
+        Inputs:
             (string) bucket_id, (dict with string values) log_dict
         """
         self.set_doc(bucket_id, None, log_dict)
@@ -32,8 +32,8 @@ class LoggerAPI(DatabaseAPI):
     def get_logs_with_filter(self, bucket_id, pattern_dict):
         """
         Retrieves all logs in bucket_id that match (i.e. contain) pattern_dict
-        
-        Inputs: 
+
+        Inputs:
             (string) bucket_id, (dict of string values) pattern_dict
         """
         return [self._normalize_logentry(d)
@@ -42,8 +42,8 @@ class LoggerAPI(DatabaseAPI):
     def delete_logs_with_filter(self, bucket_id, pattern_dict):
         """
         Deletes all logs in bucket_id that match (i.e. contain) pattern_dict
-        
-        Inputs: 
+
+        Inputs:
             (string) bucket_id, (dict of string values) pattern_dict
         """
         self.delete_docs_with_filter(bucket_id, pattern_dict)

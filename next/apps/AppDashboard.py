@@ -302,4 +302,3 @@ class AppDashboard(object):
     plt.close()
 
     return plot_dict
-

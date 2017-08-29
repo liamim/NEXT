@@ -82,7 +82,6 @@ class App(object):
         self.butler.log('ALG-DURATION', log_entry)
 
     def init_app(self, exp_uid, alg_list, args):
-        utils.debug_print(str(args))
         def init_algs_wrapper(alg_args={}):
             for algorithm in alg_list:
                 # Set doc in algorithms bucket. These objects are used by the algorithms to store data.
@@ -100,11 +99,14 @@ class App(object):
             args_dict = verifier.verify(args_dict, self.reference_dict['initExp']['args'])
             args_dict['exp_uid'] = exp_uid # to get doc from db
             args_dict['start_date'] = utils.datetime2str(utils.datetimeNow())
-            self.butler.admin.set(uid=exp_uid, value={'exp_uid': exp_uid, 'app_id':self.app_id, 'start_date':str(utils.datetimeNow())})
-            utils.debug_print("ASD "+str(args_dict))
+            self.butler.admin.set(uid=exp_uid, value={'exp_uid': exp_uid,
+                                                      'app_id': self.app_id,
+                                                      'start_date': str(utils.datetimeNow())})
+            utils.debug_print("Launching app with arguments: {}".format(args_dict))
+            self.butler.experiment.set(value={'exp_uid': exp_uid})
             args_dict['args'] = self.init_app(exp_uid, args_dict['args']['alg_list'], args_dict['args'])
             args_dict['git_hash'] = git_hash
-            self.butler.experiment.set(value=args_dict)
+            self.butler.experiment.set_many(key_value_dict=args_dict)
             return '{}', True, ''
         except Exception as error:
             exc_type, exc_value, exc_traceback = sys.exc_info()

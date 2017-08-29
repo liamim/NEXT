@@ -9,8 +9,8 @@ import next.utils as utils
 
 
 class Memory(object):
-    def __init__(self, collection='', exp_uid=''):
-        self.key_prefix = collection + exp_uid
+    def __init__(self, collection='', exp_uid='', uid_prefix=''):
+        self.key_prefix = collection + uid_prefix.format(exp_uid=exp_uid)
         self.cache = None
         self.max_entry_size = 500000000  # 500MB
 
@@ -135,7 +135,7 @@ class Collection(object):
         self.get_durations = 0.0
         self.set_durations = 0.0
         self.timing = timing
-        self.memory = Memory(collection, exp_uid)
+        self.memory = Memory(collection, exp_uid, uid_prefix)
 
     def timed(op_type='set'):
         def decorator(f):
@@ -287,10 +287,13 @@ class Butler(object):
 
     def job(self, task, task_args_json, ignore_result=True, time_limit=0):
         if self.alg_label:
-            self.db.submit_job(self.app_id, self.exp_uid,
+            res = self.db.submit_job(self.app_id, self.exp_uid,
                                task, task_args_json,
                                self.exp_uid + '_' + self.alg_label,
                                ignore_result, time_limit,
                                alg_id=self.alg_id, alg_label=self.alg_label)
         else:
-            self.db.submit_job(self.app_id, self.exp_uid, task, task_args_json, None, ignore_result, time_limit)
+            res = self.db.submit_job(self.app_id, self.exp_uid, task, task_args_json, None, ignore_result, time_limit)
+
+        if not ignore_result:
+            return res

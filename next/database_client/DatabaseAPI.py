@@ -243,4 +243,3 @@ class DatabaseAPI(object):
                                                       task, task_args_json, namespace=namespace,
                                                       ignore_result=ignore_result, time_limit=time_limit)
         return result
-

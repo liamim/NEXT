@@ -20,7 +20,7 @@ class MyAppDashboard(AppDashboard):
           (dict) MPLD3 plot dictionary
         """
         # get list of algorithms associated with project
-        args = butler.experiment.get(key='args')        
+        args = butler.experiment.get(key='args')
         test_alg_label = args['alg_list'][0]['test_alg_label']
 
         test_S = butler.queries.get(pattern={'exp_uid':app.exp_uid, 'alg_label':test_alg_label})
@@ -132,8 +132,3 @@ class MyAppDashboard(AppDashboard):
                        'plot_type':'scatter2d_noaxis'}
 
         return return_dict
-
-
-
-
-

@@ -1,5 +1,6 @@
-import next.utils as utils
+from datetime import datetime
 import yaml
+import next.utils as utils
 
 from next.database_client.DatabaseAPI import DatabaseAPI
 db = DatabaseAPI()
@@ -117,7 +118,26 @@ class ResourceManager:
             rm.get_app_exp_uid_start_date('PoolBasedTripletMDS')
         """
 
-        return db.get('experiments_admin', exp_uid, 'start_date')
+        start_date = db.get('experiments_admin', exp_uid, 'start_date')
+
+        if isinstance(start_date, datetime):
+            return start_date
+        else:
+            return utils.str2datetime(start_date)
+
+
+    def is_exp_retired(self, exp_uid):
+        app_id = self.get_app_id(exp_uid)
+        is_retired = db.get(app_id+':experiments', exp_uid, 'retired')
+
+        return is_retired or False
+
+
+    def set_exp_retired(self, exp_uid, retired=True):
+        app_id = self.get_app_id(exp_uid)
+
+        db.set(app_id+':experiments', exp_uid, 'retired', retired)
+
 
     def get_experiment(self, exp_uid):
         """
@@ -303,8 +323,4 @@ class ResourceManager:
 
         app_id = self.get_app_id(exp_uid)
 
-        log_types = ['APP-CALL', 'APP-RESPONSE', 'APP-EXCEPTION', 'ALG-DURATION', 'ALG-EVALUATION']
         return ell.get_logs_with_filter(app_id+':'+log_type, {'exp_uid':exp_uid})
-
-
-

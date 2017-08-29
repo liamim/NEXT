@@ -55,15 +55,6 @@ class ExperimentAssistant(Resource):
         return ans
 
     def post(self):
-        utils.debug_print('POSTED!')
-        utils.debug_print('H', request.headers)
-        try:
-            print(type(request.get_data()))
-            utils.debug_print('L', len(request.get_data()))
-        except Exception as exc:
-            print(exc)
-            print(('OH NO an error in assistant_blueprint!', exc, sys.exc_info()))
-
         # TODO? replace with msgpack
         args = self.deserialise(request.get_data().decode())
 
@@ -77,13 +68,10 @@ class ExperimentAssistant(Resource):
                 else:
                     args[key] = base64.b64decode(args[key])
 
-        if all([key not in args for key in ['bucket_id', 'key_id', 'sercret_key']]):
+        if all([key not in args for key in ['bucket_id', 'key_id', 'secret_key']]):
             args['upload'] = False
         else:
             args['upload'] = True
-
-        utils.debug_print('args.keys() = ', list(args.keys()))
-        utils.debug_print('args.args', args['args'])
 
         args['args'] = yaml.load(args['args'])
 

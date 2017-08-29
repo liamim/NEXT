@@ -105,6 +105,3 @@ class MyAppDashboard(AppDashboard):
         plt.close()
 
         return plot_dict
-
-
-

@@ -135,8 +135,6 @@ def str2datetime(str_time):
     return datetime.strptime(str_time, '%Y-%m-%d %H:%M:%S')
 
 def debug_print(*args, **kwargs):
-    """
-    """
     color = kwargs.get('color', 'yellow')
     for a in args:
         if type(a) in {str}:

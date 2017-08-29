@@ -213,4 +213,3 @@ if next.constants.CELERY_ON:
     apply = app.task(apply)
     apply_dashboard = app.task(apply_dashboard)
     apply_sync_by_namespace = app.task(apply_sync_by_namespace)
-

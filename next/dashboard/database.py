@@ -93,8 +93,10 @@ class DatabaseRestore(Resource):
         filename = '/dump/mongo_dump_restore.tar.gz'
         zip_file.save(filename)
         restore_mongodump(filename)
-        subprocess.call('rm '+filename, shell=True)
+        subprocess.call('rm '+filename,shell=True)
 
-        return redirect('/dashboard/{}/experiment_list'.format(constants.SITE_KEY))
-
-
+        if constants.SITE_KEY:
+            dashboard_prefix = '/dashboard/{}'.format(constants.SITE_KEY)
+        else:
+            dashboard_prefix = '/dashboard'
+        return redirect(dashboard_prefix + '/experiment_list')

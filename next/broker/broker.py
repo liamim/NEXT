@@ -172,26 +172,22 @@ class JobBroker:
         This implementation assumes just a single master node and no workers
         so only a single hostname (e.g. localhost) has celery workers.
         """
-        ttw = 0
-        while self.hostname==None:
-            time.sleep(ttw)
-            tmp = self.r.get('MINIONWORKER_HOSTNAME')
-            if tmp!=None:
-                self.hostname=tmp.decode()
-                print('Hostname = %s  from Redis' % self.hostname)
-                break
-            else:
-                fid = open('/etc/hosts', 'r')
-                line = fid.readline()
-                while line!='':
+        if self.r.exists('MINIONWORKER_HOSTNAME'):
+            self.hostname = self.r.get('MINIONWORKER_HOSTNAME').decode('utf-8')
+            utils.debug_print('Found hostname: {} (Redis)'.format(self.hostname))
+        else:
+            with open('/etc/hosts', 'r') as fid:
+                for line in fid:
                     if 'MINIONWORKER' in line:
                         self.hostname = line.split('\t')[1].split(' ')[1]
-                        self.r.set('MINIONWORKER_HOSTNAME', self.hostname)
-                        print('Hostname = %s  from /etc/hosts' % self.hostname)
+                        self.r.set('MINIONWORKER_HOSTNAME',
+                                   self.hostname.encode('utf-8'), ex=360)  # expire after 10 minutes
+                        utils.debug_print('Found hostname: {} (/etc/hosts)'.format(self.hostname))
                         break
-                    line = fid.readline()
-            ttw += .01
-            print('Failed to retrieve hostname... trying again in %f seconds' % ttw)
+        if self.hostname is None:
+            import socket
+            self.hostname = socket.gethostname()
+            self.r.set('MINIONWORKER_HOSTNAME', self.hostname, ex=360)  # expire after 10 minutes
+            utils.debug_print('Found hostname: {} (socket.gethostname())'.format(self.hostname))
 
         return self.hostname
-
