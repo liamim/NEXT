@@ -68,12 +68,12 @@
   document.onkeydown = checkKey;
 
   var submit_right = function() {
-  	next_widget.processAnswer({"target_label": -1.});
+  	next_widget.processAnswer({"target_label": 1.});
   	$('#right').css({'outline': '2px solid #FF0000'});
   }
 
   var submit_left = function() {
-  	next_widget.processAnswer({"target_label": 1.});
+  	next_widget.processAnswer({"target_label": -1.});
   	$('#left').css({'outline': '2px solid #FF0000'});
   }
 
