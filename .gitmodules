@@ -1,0 +1,3 @@
+[submodule "apps/S2BoundaryEstimation/s2"]
+	path = apps/S2BoundaryEstimation/s2
+	url = https://github.com/liamim/s2.git

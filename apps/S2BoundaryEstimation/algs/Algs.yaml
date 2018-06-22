@@ -3,12 +3,6 @@ initExp:
     n:
       type: num
       description: Number of targets available.
-    failure_probability:
-      type: num
-      description:
-    d:
-      description: Number of elements in a single feature vector.
-      type: num
   rets:
     type: bool
     description: A boolean indiciating if the algorithm initialization succeeded or failed
