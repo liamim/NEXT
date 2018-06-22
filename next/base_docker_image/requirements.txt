@@ -39,3 +39,4 @@ six==1.10.0
 urllib3==1.21.1
 virtualenv==15.1.0
 Werkzeug==0.12.2
+networkx==2.1
