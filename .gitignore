@@ -37,3 +37,5 @@ nohup.out
 *.swp
 
 local/docker-compose.yml
+local/cat_dog/
+local/cat_dog.yml

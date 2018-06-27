@@ -1,0 +1,9 @@
+app_id: S2BoundaryEstimation
+args:
+  alg_list:
+    - {alg_id: S2, alg_label: S2}
+  algorithm_management_settings:
+    mode: fixed_proportions
+    params:
+    - {alg_label: S2, proportion: 1.}
+  participant_to_algorithm_management: one_to_many
