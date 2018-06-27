@@ -4,6 +4,7 @@ import networkx as nx
 class MyAlg:
     def initExp(self, butler, n):
         butler.algorithms.set(key='n',value=n)
+        butler.algorithms.set(key='current_arm', value=None)
 
         return True
 
@@ -14,12 +15,14 @@ class MyAlg:
         return idx
 
     def processAnswer(self, butler, target_index, target_label):
+        # load the graph, somehow?
+        # graph = _load_graph
+
         ## TODO: VOTING ##
         setname = butler.exp_uid + {1: '__s_U', -1: '__s_V'}[target_label]
         butler.algorithms.memory.cache.sadd(setname, target_index)
 
         return True
-
 
     def getModel(self, butler):
         return {}

@@ -1,6 +1,8 @@
 import json
 import next.utils as utils
 import next.apps.SimpleTargetManager
+import networkx as nx
+from networkx.readwrite import json_graph
 
 class MyApp:
     def __init__(self,db):
@@ -13,6 +15,10 @@ class MyApp:
         targets = args['targets']['targetset']
         self.TargetManager.set_targetset(butler.exp_uid, targets)
         del args['targets']
+
+        ### reconstruct & save the graph
+        G = _nx_from_neighbors(targets)
+        butler.experiment.set(key='G', value=json_graph.adjacency_data(G))
 
         alg_data = {'n': args['n']}
         init_algs(alg_data)
@@ -35,3 +41,13 @@ class MyApp:
 
     def getModel(self, butler, alg, args):
         return alg()
+
+
+def _nx_from_neighbors(targets):
+    G = nx.Graph()
+    for i, target in enumerate(targets):
+        G.add_node(i)
+        for j in target['neighbors']:
+            G.add_edge(i, j)
+
+    return G
