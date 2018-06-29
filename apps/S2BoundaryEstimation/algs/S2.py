@@ -1,10 +1,18 @@
-import numpy
+# encoding: utf-8
+
+import numpy as np
 import networkx as nx
+from networkx.readwrite import json_graph
+import itertools
+from next.utils import debug_print
 
 class MyAlg:
     def initExp(self, butler, n):
         butler.algorithms.set(key='n',value=n)
-        butler.algorithms.set(key='current_arm', value=None)
+        butler.algorithms.set(key='required_voters', value=1)
+
+        butler.algorithms.set(key='T', value=np.zeros(n))
+        butler.algorithms.set(key='X', value=np.zeros(n))
 
         return True
 

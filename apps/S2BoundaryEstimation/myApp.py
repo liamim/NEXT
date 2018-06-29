@@ -18,7 +18,8 @@ class MyApp:
 
         ### reconstruct & save the graph
         G = _nx_from_neighbors(targets)
-        butler.experiment.set(key='G', value=json_graph.adjacency_data(G))
+        # i would prefer to_dict_of_lists, but that doesn't store node attrs!
+        butler.experiment.set(key='G', value=json_graph.node_link_data(G))
 
         alg_data = {'n': args['n']}
         init_algs(alg_data)
@@ -37,6 +38,7 @@ class MyApp:
         num_reported_answers = butler.experiment.increment(key='num_reported_answers_for_' + query['alg_label'])
 
         alg({'target_index':target['target_id'],'target_label':target_label})
+
         return {'target_index':target['target_id'],'target_label':target_label}
 
     def getModel(self, butler, alg, args):
