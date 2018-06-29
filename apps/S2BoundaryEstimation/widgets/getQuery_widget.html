@@ -11,16 +11,6 @@
     height:85%;
   }
 
-  div.row > div.col-xs-6 {
-    height:100%;
-    outline: 1px solid black;
-  }
-
-  div.row > div.col-xs-12 {
-    height:100%;
-    outline: 1px solid black;
-  }
-
   #wrapper > div.row {
     height:50%;
   }
@@ -30,36 +20,43 @@
     max-width:100%;
     height:auto;
   }
-</style>
-<br/>
-<div class="row" style="height:50%">
-  <!-- Center Target -->
-  <div class="col-xs-12" id="center" >
-    {% if query.target_indices.primary_type == "image" or query.target_indices.primary_type == "img" %}
-    <img class="center-block" src={{ query.target_indices.primary_description }}></img>
-    {% elif query.target_indices.primary_type == "text" %}
-    <div>
-      <div>{{ query.target_indices.primary_description }}</div>
-    </div>
 
-    {% elif query.target_indices.primary_type == "video" %}
-    <video width="320" height="240"  poster="http://jimpunk.net/Loading/wp-content/uploads/loading1.gif" controls autoplay loop>
-      <source src={{ query.target_indices.primary_description }} type="video/mp4">
-	Your browser does not support the video tag.
-    </video>
-    {% endif %}
+  .vertical-align {
+    display: flex;
+    align-items: center;
+  }
+
+  .vertical-align > [class^="col-"],
+  .vertical-align > [class*=" col-"] {
+    display: flex;
+    align-items: center;     /* Align the flex-items vertically */
+    justify-content: center; /* Optional, to align inner flex-items
+                                horizontally within the column  */
+  }
+
+  .h-full { height: 100%; }
+  .bordered { border: 1px solid black; }
+</style>
+
+<div class="row vertical-align" style="padding: 2em;">
+  <div class="col-md-6 h-full bordered">
+    <div>
+      <img class="center-block h-full bordered" src={{ query.target_indices.primary_description }}></img>
+      <div class="text-center">{{query.target_indices.target_id}}</div>
+    </div>
+  </div>
+  <div class="col-md-6 h-full bordered">
+    <img class="center-block" src="data:image/png;base64,{{query.graph_img_data}}" style="width: 20em;" />
   </div>
 </div>
-<br/>
-<div class="row">
-  <!-- Left Target -->
-  <div class="col-xs-6" id="left">
-    <div>No (-1)</div>
+
+<div class="btn-group btn-group-justified">
+  <div class="btn-group">
+    <button class="btn btn-lg btn-danger" id="left">No</button>
   </div>
 
-  <!-- Right Target -->
-  <div class="col-xs-6" id="right">
-    <div>Yes (+1)</div>
+  <div class="btn-group">
+    <button class="btn btn-lg btn-success" id="right">Yes</button>
   </div>
 </div>
 
