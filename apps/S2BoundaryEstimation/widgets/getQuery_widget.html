@@ -39,14 +39,11 @@
 </style>
 
 <div class="row vertical-align" style="padding: 2em;">
-  <div class="col-md-6 h-full bordered">
+  <div class="col-md-12 h-full bordered">
     <div>
       <img class="center-block h-full bordered" src={{ query.target_indices.primary_description }}></img>
       <div class="text-center">{{query.target_indices.target_id}}</div>
     </div>
-  </div>
-  <div class="col-md-6 h-full bordered">
-    <img class="center-block" src="data:image/png;base64,{{query.graph_img_data}}" style="width: 20em;" />
   </div>
 </div>
 
@@ -65,32 +62,32 @@
   document.onkeydown = checkKey;
 
   var submit_right = function() {
-  	next_widget.processAnswer({"target_label": 1.});
-  	$('#right').css({'outline': '2px solid #FF0000'});
+    next_widget.processAnswer({"target_label": 1.});
+    $('#right').addClass('active');
   }
 
   var submit_left = function() {
-  	next_widget.processAnswer({"target_label": -1.});
-  	$('#left').css({'outline': '2px solid #FF0000'});
+    next_widget.processAnswer({"target_label": -1.});
+    $('#left').addClass('active')
   }
 
   function checkKey(e) {
       e = e || window.event;
       if (e.keyCode == '37') {
-  	submit_left();
+    submit_left();
       }
       else if (e.keyCode == '39') {
-	submit_right();
+  submit_right();
       }
 
   }
 
   $('#right').click(function() {
-  	submit_right();
+    submit_right();
   });
 
   $('#left').click(function() {
-  	submit_left();
+    submit_left();
   });
 
 

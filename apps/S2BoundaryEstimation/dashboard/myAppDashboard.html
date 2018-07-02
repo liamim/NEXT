@@ -3,4 +3,44 @@
 
 {% block custom_dashboard %}
 
+<!--###################### current_graph_state_figure ###################-->
+<div class="container-fluid" style ='padding-bottom: 1cm'>
+    <div class="col-lg-10 col-lg-offset-1">
+        <h2>Current Graph State</h2>
+    </div>
+  <div class="col-lg-10 col-lg-offset-1" style='text-align: center'>
+    <div id="current_graph_state_figure"></div>
+  </div>
+</div>
+<script>
+
+  current_graph_state_figure = function(data) {
+    data['width'] = 800
+    data['height'] = 800
+    mpld3.draw_figure("current_graph_state_figure", data);
+  }
+
+  $.ajax({
+    url: "{{ dashboard_url }}/get_stats",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({
+        'exp_uid': "{{ exp_uid }}",
+        'args':{
+            'stat_id' : 'current_graph_state_figure',
+            'params'  : {},
+            'force_recompute': {{ force_recompute }}
+            }
+        }),
+    dataType: "json"
+    }).done( function(data,textStatus, jqXHR) {
+    delete data['meta']
+    current_graph_state_figure(data)
+    }).fail( function(error){
+    console.log("Failed to get stats", error);
+    });
+
+</script>
+
+
 {% endblock %}
