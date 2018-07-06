@@ -7,9 +7,10 @@ import itertools
 from next.utils import debug_print
 
 class MyAlg:
-    def initExp(self, butler, n):
+    def initExp(self, butler, n, query_repeats):
         butler.algorithms.set(key='n',value=n)
-        butler.algorithms.set(key='required_voters', value=1)
+        # TODO: make sure repeats are assigned to different users
+        butler.algorithms.set(key='required_voters', value=query_repeats)
 
         butler.algorithms.set(key='T', value=np.zeros(n))
         butler.algorithms.set(key='X', value=np.zeros(n))
@@ -102,6 +103,7 @@ def find_obvious_cuts(G, L=None):
     return cuts
 
 def find_moss(G, U, V):
+    # TODO: replace enumerate_find_ssp with the accelerated ball-growth MOSS algorithm.
     return path_midpoint(enumerate_find_ssp(G, U, V))
 
 def path_midpoint(path):
