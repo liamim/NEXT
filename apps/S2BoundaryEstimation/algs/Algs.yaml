@@ -29,6 +29,9 @@ processAnswer:
     target_index:
       type: num
       description: The ID of the target we are asking about
+    participant_uid:
+      type: str
+      description: Participant unique ID
   rets:
     description: Indicates if the algorithm succeeded
     type: bool

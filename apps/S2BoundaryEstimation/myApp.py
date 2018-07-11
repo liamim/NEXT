@@ -36,16 +36,17 @@ class MyApp:
         alg_response = alg({'participant_uid':args['participant_uid']})
         target = self.TargetManager.get_target_item(butler.exp_uid, alg_response)
 
-        return {'target_indices':target, 'graph_img_data': img_data}
+        return {'target_indices':target}
 
     def processAnswer(self, butler, alg, args):
         query = butler.queries.get(uid=args['query_uid'])
         target = query['target_indices']
         target_label = args['target_label']
+        participant_uid = query['participant_uid']
 
         num_reported_answers = butler.experiment.increment(key='num_reported_answers_for_' + query['alg_label'])
 
-        alg({'target_index':target['target_id'],'target_label':target_label})
+        alg({'target_index':target['target_id'],'target_label':target_label, 'participant_uid': participant_uid})
 
         return {'target_index':target['target_id'],'target_label':target_label}
 

@@ -9,7 +9,6 @@ from next.utils import debug_print
 class MyAlg:
     def initExp(self, butler, n, query_repeats):
         butler.algorithms.set(key='n',value=n)
-        # TODO: make sure repeats are assigned to different users
         butler.algorithms.set(key='required_voters', value=query_repeats)
 
         butler.algorithms.set(key='T', value=np.zeros(n))
@@ -25,6 +24,12 @@ class MyAlg:
         U = {int(v) for v in butler.algorithms.memory.cache.smembers(butler.exp_uid + '__s_U')}
         V = {int(v) for v in butler.algorithms.memory.cache.smembers(butler.exp_uid + '__s_V')}
 
+
+        rated_list = butler.participants.get(uid=participant_uid, key='rated_list') or []
+
+        # don't consider nodes we've already rated
+        G.remove_nodes_from(rated_list)
+
         # what vertex we consider next
         idx = find_moss(G, U, V)
         if idx is not None:
@@ -38,7 +43,7 @@ class MyAlg:
 
         return idx
 
-    def processAnswer(self, butler, target_index, target_label):
+    def processAnswer(self, butler, target_index, target_label, participant_uid):
         butler.algorithms.memory.ensure_connection() # hhah
 
         X = butler.algorithms.get(key='X')
@@ -47,6 +52,8 @@ class MyAlg:
         T[target_index] += 1
         butler.algorithms.set(key='X', value=X)
         butler.algorithms.set(key='T', value=T)
+
+        butler.participants.append(uid=participant_uid, key='rated_list', value=target_index)
 
         # load the graph
         G = json_graph.node_link_graph(butler.experiment.get(key='G'))
