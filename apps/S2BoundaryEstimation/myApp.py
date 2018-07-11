@@ -28,7 +28,7 @@ class MyApp:
         # i would prefer to_dict_of_lists, but that doesn't store node attrs!
         butler.experiment.set(key='G', value=json_graph.node_link_data(G))
 
-        alg_data = {'n': args['n']}
+        alg_data = {'n': args['n'], 'query_repeats': args['query_repeats']}
         init_algs(alg_data)
         return args
 
