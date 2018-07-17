@@ -1,0 +1,10 @@
+extends: [base.yaml]
+processAnswer:
+  args:
+    args:
+      type: dict
+      values:
+        target_label:
+          description: The label in {-1,1} provided by participant of the target.
+          type: num
+

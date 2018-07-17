@@ -1,0 +1,100 @@
+<style>
+  html,body{
+  height:100%;
+  }
+
+  div.container{
+  height:100%;
+  }
+
+  #wrapper {
+    height:85%;
+  }
+
+  #wrapper > div.row {
+    height:50%;
+  }
+
+  #wrapper img{
+    max-height:100%;
+    max-width:100%;
+    height:auto;
+  }
+
+  .vertical-align {
+    display: flex;
+    align-items: center;
+  }
+
+  .vertical-align > [class^="col-"],
+  .vertical-align > [class*=" col-"] {
+    display: flex;
+    align-items: center;     /* Align the flex-items vertically */
+    justify-content: center; /* Optional, to align inner flex-items
+                                horizontally within the column  */
+  }
+
+  .h-full { height: 100%; }
+  .bordered { border: 1px solid black; }
+</style>
+
+<div class="row vertical-align" style="padding: 2em;">
+  <div class="col-md-12 h-full bordered">
+    <div>
+      <img class="center-block h-full bordered" src={{ query.target_indices.primary_description }}></img>
+      <div class="text-center">{{query.target_indices.target_id}}</div>
+    </div>
+  </div>
+  <div class="col-md-6 h-full bordered">
+    <img class="center-block" src="data:image/png;base64,{{query.graph_img_data}}" style="width: 20em;" />
+  </div>
+</div>
+
+<div class="btn-group btn-group-justified">
+  <div class="btn-group">
+    <button class="btn btn-lg btn-danger" id="left">No</button>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn btn-lg btn-success" id="right">Yes</button>
+  </div>
+</div>
+
+
+<script>
+  document.onkeydown = checkKey;
+
+  var submit_right = function() {
+    next_widget.processAnswer({"target_label": 1.});
+    $('#right').addClass('active');
+  }
+
+  var submit_left = function() {
+    next_widget.processAnswer({"target_label": -1.});
+    $('#left').addClass('active')
+  }
+
+  function checkKey(e) {
+      e = e || window.event;
+      if (e.keyCode == '37') {
+    submit_left();
+      }
+      else if (e.keyCode == '39') {
+  submit_right();
+      }
+
+  }
+
+  $('#right').click(function() {
+    submit_right();
+  });
+
+  $('#left').click(function() {
+    submit_left();
+  });
+
+
+
+</script>
+</div>
+
