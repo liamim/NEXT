@@ -3,9 +3,6 @@ initExp:
     n:
       type: num
       description: Number of targets available.
-    query_repeats:
-      type: num
-      description: Number of times to repeat each query (for voting).
   rets:
     type: bool
     description: A boolean indiciating if the algorithm initialization succeeded or failed

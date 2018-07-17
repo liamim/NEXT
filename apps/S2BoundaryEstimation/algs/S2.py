@@ -7,9 +7,8 @@ import itertools
 from next.utils import debug_print
 
 class MyAlg:
-    def initExp(self, butler, n, query_repeats):
+    def initExp(self, butler, n):
         butler.algorithms.set(key='n',value=n)
-        butler.algorithms.set(key='required_voters', value=query_repeats)
 
         butler.algorithms.set(key='T', value=np.zeros(n))
         butler.algorithms.set(key='X', value=np.zeros(n))

@@ -1,10 +1,4 @@
 extends: [base.yaml]
-initExp:
-  args:
-    args:
-      values:
-        query_repeats:
-          type: num
 processAnswer:
   args:
     args:

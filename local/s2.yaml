@@ -8,5 +8,4 @@ args:
     - {alg_label: S2, proportion: 1.}
   instructions: Does the image depict a cat?
   participant_to_algorithm_management: one_to_many
-  query_repeats: 2
   num_tries: 400
