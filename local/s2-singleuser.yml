@@ -1,4 +1,4 @@
-app_id: S2BoundaryEstimation
+app_id: SingleUserS2
 args:
   alg_list:
     - {alg_id: S2, alg_label: S2}

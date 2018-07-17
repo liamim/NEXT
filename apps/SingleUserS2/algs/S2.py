@@ -8,26 +8,24 @@ from next.utils import debug_print
 
 class MyAlg:
     def initExp(self, butler, n):
-        butler.algorithms.set(key='n',value=n)
-
-        butler.algorithms.set(key='T', value=np.zeros(n))
-        butler.algorithms.set(key='X', value=np.zeros(n))
+        butler.algorithms.set(key='n', value=n)
 
         return True
 
     def getQuery(self, butler, participant_uid):
         butler.algorithms.memory.ensure_connection() # hhah
 
-        # load the graph
-        G = json_graph.node_link_graph(butler.experiment.get(key='G'))
-        U = {int(v) for v in butler.algorithms.memory.cache.smembers(butler.exp_uid + '__s_U')}
-        V = {int(v) for v in butler.algorithms.memory.cache.smembers(butler.exp_uid + '__s_V')}
+        user_graph_dat = butler.participants.get(uid=participant_uid, key='G')
+        if user_graph_dat is None:
+            print("No graph! Loading experiment-wide one.")
+            graph_dat = butler.experiment.get(key='G')
+            butler.participants.set(uid=participant_uid, key='G', value=graph_dat)
+            G = json_graph.node_link_graph(graph_dat)
+        else:
+            G = json_graph.node_link_graph(user_graph_dat)
 
-
-        rated_list = butler.participants.get(uid=participant_uid, key='rated_list') or []
-
-        # don't consider nodes we've already rated
-        G.remove_nodes_from(rated_list)
+        U = {int(v) for v in butler.algorithms.memory.cache.smembers(participant_uid + '__s_U')}
+        V = {int(v) for v in butler.algorithms.memory.cache.smembers(participant_uid + '__s_V')}
 
         # what vertex we consider next
         idx = find_moss(G, U, V)
@@ -45,23 +43,13 @@ class MyAlg:
     def processAnswer(self, butler, target_index, target_label, participant_uid):
         butler.algorithms.memory.ensure_connection() # hhah
 
-        X = butler.algorithms.get(key='X')
-        T = butler.algorithms.get(key='T')
-        X[target_index] += target_label
-        T[target_index] += 1
-        butler.algorithms.set(key='X', value=X)
-        butler.algorithms.set(key='T', value=T)
-
-        butler.participants.append(uid=participant_uid, key='rated_list', value=target_index)
-
         # load the graph
-        G = json_graph.node_link_graph(butler.experiment.get(key='G'))
+        G = json_graph.node_link_graph(butler.participants.get(uid=participant_uid, key='G'))
 
-        if T[target_index] >= butler.algorithms.get(key='required_voters'):
-            y = np.sign(X[target_index])
-            setname = butler.exp_uid + {1: '__s_U', -1: '__s_V'}[y]
-            butler.algorithms.memory.cache.sadd(setname, target_index)
-            G.nodes[target_index]['label'] = y
+        y = int(target_label)
+        setname = participant_uid + {1: '__s_U', -1: '__s_V'}[y]
+        butler.algorithms.memory.cache.sadd(setname, target_index)
+        G.nodes[target_index]['label'] = y
 
         # find obvious cuts
         cuts = find_obvious_cuts(G)
@@ -70,7 +58,7 @@ class MyAlg:
         G.remove_edges_from(cuts)
 
         # save the graph back
-        butler.experiment.set(key='G', value=json_graph.node_link_data(G))
+        butler.participants.set(uid=participant_uid, key='G', value=json_graph.node_link_data(G))
 
         return True
 
