@@ -4,14 +4,16 @@ import numpy as np
 import networkx as nx
 from networkx.readwrite import json_graph
 import itertools
-from next.utils import debug_print
+from next.utils import debug_print, profile_each_line
 
 class MyAlg:
-    def initExp(self, butler, n):
+    def initExp(self, butler, n, budget):
         butler.algorithms.set(key='n', value=n)
+        butler.algorithms.set(key='budget', value=budget)
 
         return True
 
+    @profile_each_line
     def getQuery(self, butler, participant_uid):
         butler.algorithms.memory.ensure_connection() # hhah
 
@@ -29,19 +31,29 @@ class MyAlg:
 
         # what vertex we consider next
         idx = find_moss(G, U, V)
-        if idx is not None:
-            idx = int(idx)
-
         debug_print("MOSS vert ::: {}".format(idx))
+        if not butler.participants.get(uid=participant_uid, key='enough_random_samples'):
+            if idx is None:
+                n = butler.algorithms.get(key='n')
+                idx = np.random.choice(n)
+            else:
+                butler.participants.set(uid=participant_uid, key='enough_random_samples', value=True)
+        else:
+            if idx is None:
+                # we're done. we separated the components.
+                return None
 
-        if idx is None:
-            n = butler.algorithms.get(key='n')
-            idx = np.random.choice(n)
+        if butler.participants.get(uid=participant_uid, key='n_responses') > butler.algorithms.get(key='budget'):
+            return None
+
+        debug_print("choosing vert ::: {}".format(idx))
 
         return idx
 
     def processAnswer(self, butler, target_index, target_label, participant_uid):
         butler.algorithms.memory.ensure_connection() # hhah
+
+        butler.participants.increment(uid=participant_uid, key='n_responses')
 
         # load the graph
         G = json_graph.node_link_graph(butler.participants.get(uid=participant_uid, key='G'))

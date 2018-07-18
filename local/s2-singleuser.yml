@@ -9,3 +9,4 @@ args:
   instructions: Does the image depict a cat?
   participant_to_algorithm_management: one_to_many
   num_tries: 400
+  budget: 400
