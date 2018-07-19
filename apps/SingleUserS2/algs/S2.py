@@ -106,8 +106,6 @@ def find_obvious_cuts(G, L=None):
     return cuts
 
 def find_moss(G, U, V):
-    # TODO: replace enumerate_find_ssp with the accelerated ball-growth MOSS algorithm.
-    # return path_midpoint(enumerate_find_ssp(G, U, V))
     return accel_moss(G, U, V)
 
 def path_midpoint(path):
