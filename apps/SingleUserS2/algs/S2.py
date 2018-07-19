@@ -4,6 +4,7 @@ import numpy as np
 import networkx as nx
 from networkx.readwrite import json_graph
 import itertools
+from collections import deque
 from next.utils import debug_print, profile_each_line
 
 class MyAlg:
@@ -15,8 +16,6 @@ class MyAlg:
 
     @profile_each_line
     def getQuery(self, butler, participant_uid):
-        butler.algorithms.memory.ensure_connection() # hhah
-
         user_graph_dat = butler.participants.get(uid=participant_uid, key='G')
         if user_graph_dat is None:
             print("No graph! Loading experiment-wide one.")
@@ -26,8 +25,8 @@ class MyAlg:
         else:
             G = json_graph.node_link_graph(user_graph_dat)
 
-        U = {int(v) for v in butler.algorithms.memory.cache.smembers(participant_uid + '__s_U')}
-        V = {int(v) for v in butler.algorithms.memory.cache.smembers(participant_uid + '__s_V')}
+        U = {int(v) for v in butler.participants.get(uid=participant_uid, key='items_U') or []}
+        V = {int(v) for v in butler.participants.get(uid=participant_uid, key='items_V') or []}
 
         # what vertex we consider next
         idx = find_moss(G, U, V)
@@ -51,16 +50,14 @@ class MyAlg:
         return idx
 
     def processAnswer(self, butler, target_index, target_label, participant_uid):
-        butler.algorithms.memory.ensure_connection() # hhah
-
         butler.participants.increment(uid=participant_uid, key='n_responses')
 
         # load the graph
         G = json_graph.node_link_graph(butler.participants.get(uid=participant_uid, key='G'))
 
         y = int(target_label)
-        setname = participant_uid + {1: '__s_U', -1: '__s_V'}[y]
-        butler.algorithms.memory.cache.sadd(setname, target_index)
+        keyname = {1: 'items_U', -1: 'items_V'}[y]
+        butler.participants.append(uid=participant_uid, key=keyname, value=target_index)
         G.nodes[target_index]['label'] = y
 
         # find obvious cuts
@@ -110,13 +107,41 @@ def find_obvious_cuts(G, L=None):
 
 def find_moss(G, U, V):
     # TODO: replace enumerate_find_ssp with the accelerated ball-growth MOSS algorithm.
-    return path_midpoint(enumerate_find_ssp(G, U, V))
+    # return path_midpoint(enumerate_find_ssp(G, U, V))
+    return accel_moss(G, U, V)
 
 def path_midpoint(path):
     if path is None:
         return None
 
     return path[len(path)//2]
+
+def accel_moss(G, U, V):
+    queue_u, queue_v = deque([]), deque([])
+    visited_u, visited_v = U.copy(), V.copy()
+
+    for u in U:
+        queue_u.append((u, G.neighbors(u)))
+
+    for v in V:
+        queue_v.append((v, G.neighbors(v)))
+
+    while queue_u and queue_v:
+        parent, children = queue_u.popleft()
+        for child in children:
+            if child not in visited_u:
+                visited_u.add(child)
+                queue_u.append((child, G.neighbors(child)))
+                if child in visited_v and child not in V:
+                    return child
+
+        parent, children = queue_v.popleft()
+        for child in children:
+            if child not in visited_v:
+                visited_v.add(child)
+                queue_v.append((child, G.neighbors(child)))
+                if child in visited_u and child not in U:
+                    return child
 
 def enumerate_find_ssp(G, U, V):
     """
