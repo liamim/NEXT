@@ -6,6 +6,8 @@ initExp:
       values:
         budget:
           type: num
+        early_stop:
+          type: bool
 processAnswer:
   args:
     args:

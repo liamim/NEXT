@@ -10,3 +10,4 @@ args:
   participant_to_algorithm_management: one_to_many
   num_tries: 400
   budget: 400
+  early_stop: true

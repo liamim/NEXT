@@ -8,9 +8,10 @@ from collections import deque
 from next.utils import debug_print, profile_each_line
 
 class MyAlg:
-    def initExp(self, butler, n, budget):
+    def initExp(self, butler, n, budget, early_stop):
         butler.algorithms.set(key='n', value=n)
         butler.algorithms.set(key='budget', value=budget)
+        butler.algorithms.set(key='early_stop', value=early_stop)
 
         return True
 
@@ -31,7 +32,7 @@ class MyAlg:
         # what vertex we consider next
         idx = find_moss(G, U, V)
         debug_print("MOSS vert ::: {}".format(idx))
-        if not butler.participants.get(uid=participant_uid, key='enough_random_samples'):
+        if not butler.participants.get(uid=participant_uid, key='enough_random_samples') or butler.algorithms.get(key='early_stop'):
             if idx is None:
                 n = butler.algorithms.get(key='n')
                 idx = np.random.choice(n)
