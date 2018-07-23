@@ -1,11 +1,5 @@
 extends: [base.yaml]
 
-initExp:
-  args:
-    args:
-      values:
-        budget:
-          type: num
 processAnswer:
   args:
     args:

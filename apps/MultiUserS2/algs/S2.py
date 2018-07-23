@@ -14,61 +14,10 @@ class MyAlg:
 
         return True
 
-    @profile_each_line
     def getQuery(self, butler, participant_uid):
-        user_graph_dat = butler.participants.get(uid=participant_uid, key='G')
-        if user_graph_dat is None:
-            print("No graph! Loading experiment-wide one.")
-            graph_dat = butler.experiment.get(key='G')
-            butler.participants.set(uid=participant_uid, key='G', value=graph_dat)
-            G = json_graph.node_link_graph(graph_dat)
-        else:
-            G = json_graph.node_link_graph(user_graph_dat)
-
-        U = {int(v) for v in butler.participants.get(uid=participant_uid, key='items_U') or []}
-        V = {int(v) for v in butler.participants.get(uid=participant_uid, key='items_V') or []}
-
-        # what vertex we consider next
-        idx = find_moss(G, U, V)
-        debug_print("MOSS vert ::: {}".format(idx))
-        if not butler.participants.get(uid=participant_uid, key='enough_random_samples'):
-            if idx is None:
-                n = butler.algorithms.get(key='n')
-                idx = np.random.choice(n)
-            else:
-                butler.participants.set(uid=participant_uid, key='enough_random_samples', value=True)
-        else:
-            if idx is None:
-                # we're done. we separated the components.
-                return None
-
-        if butler.participants.get(uid=participant_uid, key='n_responses') > butler.algorithms.get(key='budget'):
-            return None
-
-        debug_print("choosing vert ::: {}".format(idx))
-
-        return idx
+        return 0
 
     def processAnswer(self, butler, target_index, target_label, participant_uid):
-        butler.participants.increment(uid=participant_uid, key='n_responses')
-
-        # load the graph
-        G = json_graph.node_link_graph(butler.participants.get(uid=participant_uid, key='G'))
-
-        y = int(target_label)
-        keyname = {1: 'items_U', -1: 'items_V'}[y]
-        butler.participants.append(uid=participant_uid, key=keyname, value=target_index)
-        G.nodes[target_index]['label'] = y
-
-        # find obvious cuts
-        cuts = find_obvious_cuts(G)
-        debug_print("Found cuts: {}".format(cuts))
-        # unzip
-        G.remove_edges_from(cuts)
-
-        # save the graph back
-        butler.participants.set(uid=participant_uid, key='G', value=json_graph.node_link_data(G))
-
         return True
 
     def getModel(self, butler):

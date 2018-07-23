@@ -3,8 +3,6 @@ initExp:
     n:
       type: num
       description: Number of targets available.
-    budget:
-      type: num
   rets:
     type: bool
     description: A boolean indiciating if the algorithm initialization succeeded or failed

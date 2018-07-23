@@ -32,46 +32,12 @@ class MyApp:
         init_algs(alg_data)
         return args
 
-    @profile_each_line
     def getQuery(self, butler, alg, args):
         participant_uid = args['participant_uid']
-        user_graph_dat = butler.participants.get(uid=participant_uid, key='G')
-        if user_graph_dat is None:
-            print("No graph! Loading experiment-wide one.")
-            graph_dat = butler.experiment.get(key='G')
-            butler.participants.set(uid=participant_uid, key='G', value=graph_dat)
-            G = json_graph.node_link_graph(graph_dat)
-        else:
-            G = json_graph.node_link_graph(user_graph_dat)
-
         alg_response = alg({'participant_uid':participant_uid})
+        target = self.TargetManager.get_target_item(butler.exp_uid, alg_response)
 
-        # draw it
-        fig = plt.figure(figsize=(10, 10), frameon=False)
-        ax = fig.add_subplot(111)
-        def oracle(n):
-            return G.nodes.data('label')[n]
-        def pos(n):
-            targ = self.TargetManager.get_target_item(butler.exp_uid, n)
-            x, y = targ['location']
-            return x, y
-        draw_labeled_graph(G, oracle, pos, ax=ax)
-        ax.set_axis_off()
-        ax.get_xaxis().set_visible(False)
-        ax.get_yaxis().set_visible(False)
-        ax.autoscale(tight=True)
-        ax.set_frame_on(False)
-
-        img = StringIO()
-        fig.savefig(img, format='png', aspect='normal', bbox_inches='tight', pad_inches=0)
-        img_data = base64.encodestring(img.getvalue())
-
-        if alg_response is not None:
-            target = self.TargetManager.get_target_item(butler.exp_uid, alg_response)
-            return {'target_indices':target, 'graph_img_data': img_data, 'done': False}
-        else:
-            return {'graph_img_data': img_data, 'done': True}
-
+        return {'target_indices':target}
 
     def processAnswer(self, butler, alg, args):
         query = butler.queries.get(uid=args['query_uid'])
