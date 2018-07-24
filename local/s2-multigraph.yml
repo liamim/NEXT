@@ -1,0 +1,10 @@
+app_id: MultiUserS2
+args:
+  alg_list:
+    - {alg_id: S2, alg_label: S2}
+  algorithm_management_settings:
+    mode: fixed_proportions
+    params:
+    - {alg_label: S2, proportion: 1.}
+  instructions: zzzzz
+  participant_to_algorithm_management: one_to_many
