@@ -7,6 +7,11 @@ import itertools
 from collections import deque
 from next.utils import debug_print, profile_each_line
 
+class Status:
+    NOT_ASSIGNED = 'not_assigned'
+    WAITING      = 'waiting'
+    COMPLETED    = 'completed'
+
 class MyAlg:
     def initExp(self, butler, n):
         butler.algorithms.set(key='n', value=n)
