@@ -1,8 +1,13 @@
 initExp:
   args:
-    n:
+    n_graphs:
       type: num
-      description: Number of targets available.
+    graph_sizes:
+      type: list
+      values:
+        type: num
+    required_votes:
+      type: num
   rets:
     type: bool
     description: A boolean indiciating if the algorithm initialization succeeded or failed

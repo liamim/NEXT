@@ -9,6 +9,9 @@ from networkx.readwrite import json_graph
 import matplotlib.pyplot as plt
 from cStringIO import StringIO
 import base64
+import collections
+import itertools
+import __builtin__
 
 
 class MyApp:
@@ -63,13 +66,3 @@ def _nx_from_neighbors(targets):
             G.add_edge(i, j)
 
     return G
-
-def draw_labeled_graph(G, oracle, pos, ax=None):
-    def label_to_color(l):
-        if l is None: return 'grey'
-        return 'r' if l > 0 else 'b'
-
-    nx.draw(G,
-        pos={n: pos(n) for n in G.nodes()},
-        node_color=[label_to_color(oracle(n)) for n in G.nodes()],
-        ax=ax)

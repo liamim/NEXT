@@ -1,5 +1,13 @@
 extends: [base.yaml]
 
+initExp:
+  args:
+    args:
+      type: dict
+      values:
+        required_votes:
+          type: num
+
 processAnswer:
   args:
     args:
