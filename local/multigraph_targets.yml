@@ -1,0 +1,7057 @@
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id001 [2, 2]
+  neighbors: [270, 370, 427, 433]
+  node_id: 0
+  primary_description: http://localhost:8889/2_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id001
+  neighbors: [270, 370, 427, 433]
+  node_id: 0
+  primary_description: http://localhost:8889/2_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id002 [6, 9]
+  neighbors: [212, 430, 348, 33]
+  node_id: 1
+  primary_description: http://localhost:8889/6_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id002
+  neighbors: [212, 430, 348, 33]
+  node_id: 1
+  primary_description: http://localhost:8889/6_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id003 [-3, 9]
+  neighbors: [386, 147, 385, 326]
+  node_id: 2
+  primary_description: http://localhost:8889/-3_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id003
+  neighbors: [386, 147, 385, 326]
+  node_id: 2
+  primary_description: http://localhost:8889/-3_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id004 [-9, 7]
+  neighbors: [244, 400, 65, 105]
+  node_id: 3
+  primary_description: http://localhost:8889/-9_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id004
+  neighbors: [244, 400, 65, 105]
+  node_id: 3
+  primary_description: http://localhost:8889/-9_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id005 [-10, 2]
+  neighbors: [276, 414, 229]
+  node_id: 4
+  primary_description: http://localhost:8889/-10_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id005
+  neighbors: [276, 414, 229]
+  node_id: 4
+  primary_description: http://localhost:8889/-10_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id006 [-4, -7]
+  neighbors: [61, 21, 420, 334]
+  node_id: 5
+  primary_description: http://localhost:8889/-4_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id006
+  neighbors: [61, 21, 420, 334]
+  node_id: 5
+  primary_description: http://localhost:8889/-4_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id007 [10, -10]
+  neighbors: [78, 422]
+  node_id: 6
+  primary_description: http://localhost:8889/10_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id007
+  neighbors: [78, 422]
+  node_id: 6
+  primary_description: http://localhost:8889/10_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id008 [2, -4]
+  neighbors: [409, 37, 377, 294]
+  node_id: 7
+  primary_description: http://localhost:8889/2_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id008
+  neighbors: [409, 37, 377, 294]
+  node_id: 7
+  primary_description: http://localhost:8889/2_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id009 [-8, 1]
+  neighbors: [98, 418, 286, 36]
+  node_id: 8
+  primary_description: http://localhost:8889/-8_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id009
+  neighbors: [98, 418, 286, 36]
+  node_id: 8
+  primary_description: http://localhost:8889/-8_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id010 [-2, -6]
+  neighbors: [266, 196, 281, 189]
+  node_id: 9
+  primary_description: http://localhost:8889/-2_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id010
+  neighbors: [266, 196, 281, 189]
+  node_id: 9
+  primary_description: http://localhost:8889/-2_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id011 [8, 8]
+  neighbors: [238, 92, 258, 336]
+  node_id: 10
+  primary_description: http://localhost:8889/8_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id011
+  neighbors: [238, 92, 258, 336]
+  node_id: 10
+  primary_description: http://localhost:8889/8_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id012 [4, -7]
+  neighbors: [321, 20, 397, 187]
+  node_id: 11
+  primary_description: http://localhost:8889/4_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id012
+  neighbors: [321, 20, 397, 187]
+  node_id: 11
+  primary_description: http://localhost:8889/4_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id013 [-3, 2]
+  neighbors: [324, 60, 432, 351]
+  node_id: 12
+  primary_description: http://localhost:8889/-3_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id013
+  neighbors: [324, 60, 432, 351]
+  node_id: 12
+  primary_description: http://localhost:8889/-3_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id014 [-4, 0]
+  neighbors: [227, 373, 425, 183]
+  node_id: 13
+  primary_description: http://localhost:8889/-4_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id014
+  neighbors: [227, 373, 425, 183]
+  node_id: 13
+  primary_description: http://localhost:8889/-4_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id015 [0, -8]
+  neighbors: [114, 198, 346, 437]
+  node_id: 14
+  primary_description: http://localhost:8889/0_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id015
+  neighbors: [114, 198, 346, 437]
+  node_id: 14
+  primary_description: http://localhost:8889/0_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id016 [-8, -6]
+  neighbors: [232, 257, 113, 121]
+  node_id: 15
+  primary_description: http://localhost:8889/-8_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id016
+  neighbors: [232, 257, 113, 121]
+  node_id: 15
+  primary_description: http://localhost:8889/-8_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id017 [8, -10]
+  neighbors: [172, 78, 110]
+  node_id: 16
+  primary_description: http://localhost:8889/8_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id017
+  neighbors: [172, 78, 110]
+  node_id: 16
+  primary_description: http://localhost:8889/8_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id018 [7, 7]
+  neighbors: [295, 258, 173, 238]
+  node_id: 17
+  primary_description: http://localhost:8889/7_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id018
+  neighbors: [295, 258, 173, 238]
+  node_id: 17
+  primary_description: http://localhost:8889/7_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id019 [-9, -4]
+  neighbors: [62, 305, 240, 249]
+  node_id: 18
+  primary_description: http://localhost:8889/-9_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id019
+  neighbors: [62, 305, 240, 249]
+  node_id: 18
+  primary_description: http://localhost:8889/-9_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id020 [8, -5]
+  neighbors: [182, 82, 203, 264]
+  node_id: 19
+  primary_description: http://localhost:8889/8_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id020
+  neighbors: [182, 82, 203, 264]
+  node_id: 19
+  primary_description: http://localhost:8889/8_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id021 [5, -7]
+  neighbors: [11, 271, 66, 402]
+  node_id: 20
+  primary_description: http://localhost:8889/5_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id021
+  neighbors: [11, 271, 66, 402]
+  node_id: 20
+  primary_description: http://localhost:8889/5_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id022 [-3, -7]
+  neighbors: [5, 281, 143, 266]
+  node_id: 21
+  primary_description: http://localhost:8889/-3_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id022
+  neighbors: [5, 281, 143, 266]
+  node_id: 21
+  primary_description: http://localhost:8889/-3_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id023 [-1, -9]
+  neighbors: [162, 346, 301, 114]
+  node_id: 22
+  primary_description: http://localhost:8889/-1_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id023
+  neighbors: [162, 346, 301, 114]
+  node_id: 22
+  primary_description: http://localhost:8889/-1_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id024 [5, -4]
+  neighbors: [353, 309, 40, 221]
+  node_id: 23
+  primary_description: http://localhost:8889/5_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id024
+  neighbors: [353, 309, 40, 221]
+  node_id: 23
+  primary_description: http://localhost:8889/5_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id025 [5, 7]
+  neighbors: [267, 295, 34, 210]
+  node_id: 24
+  primary_description: http://localhost:8889/5_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id025
+  neighbors: [267, 295, 34, 210]
+  node_id: 24
+  primary_description: http://localhost:8889/5_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id026 [1, 3]
+  neighbors: [39, 433, 270, 415]
+  node_id: 25
+  primary_description: http://localhost:8889/1_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id026
+  neighbors: [39, 433, 270, 415]
+  node_id: 25
+  primary_description: http://localhost:8889/1_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id027 [7, -7]
+  neighbors: [271, 205, 213, 315]
+  node_id: 26
+  primary_description: http://localhost:8889/7_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id027
+  neighbors: [271, 205, 213, 315]
+  node_id: 26
+  primary_description: http://localhost:8889/7_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id028 [10, 8]
+  neighbors: [92, 144, 263]
+  node_id: 27
+  primary_description: http://localhost:8889/10_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id028
+  neighbors: [92, 144, 263]
+  node_id: 27
+  primary_description: http://localhost:8889/10_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id029 [0, -3]
+  neighbors: [436, 206, 440, 285]
+  node_id: 28
+  primary_description: http://localhost:8889/0_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id029
+  neighbors: [436, 206, 440, 285]
+  node_id: 28
+  primary_description: http://localhost:8889/0_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id030 [1, -5]
+  neighbors: [47, 377, 149, 409]
+  node_id: 29
+  primary_description: http://localhost:8889/1_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id030
+  neighbors: [47, 377, 149, 409]
+  node_id: 29
+  primary_description: http://localhost:8889/1_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id031 [-4, -9]
+  neighbors: [333, 314, 96, 420]
+  node_id: 30
+  primary_description: http://localhost:8889/-4_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id031
+  neighbors: [333, 314, 96, 420]
+  node_id: 30
+  primary_description: http://localhost:8889/-4_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id032 [-6, -9]
+  neighbors: [128, 333, 431, 168]
+  node_id: 31
+  primary_description: http://localhost:8889/-6_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id032
+  neighbors: [128, 333, 431, 168]
+  node_id: 31
+  primary_description: http://localhost:8889/-6_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id033 [-9, -9]
+  neighbors: [102, 434, 73, 225]
+  node_id: 32
+  primary_description: http://localhost:8889/-9_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id033
+  neighbors: [102, 434, 73, 225]
+  node_id: 32
+  primary_description: http://localhost:8889/-9_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id034 [6, 10]
+  neighbors: [300, 42, 1]
+  node_id: 33
+  primary_description: http://localhost:8889/6_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id034
+  neighbors: [300, 42, 1]
+  node_id: 33
+  primary_description: http://localhost:8889/6_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id035 [5, 6]
+  neighbors: [379, 211, 269, 24]
+  node_id: 34
+  primary_description: http://localhost:8889/5_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id035
+  neighbors: [379, 211, 269, 24]
+  node_id: 34
+  primary_description: http://localhost:8889/5_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id036 [5, -10]
+  neighbors: [355, 111, 197]
+  node_id: 35
+  primary_description: http://localhost:8889/5_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id036
+  neighbors: [355, 111, 197]
+  node_id: 35
+  primary_description: http://localhost:8889/5_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id037 [-8, 2]
+  neighbors: [276, 275, 8, 155]
+  node_id: 36
+  primary_description: http://localhost:8889/-8_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id037
+  neighbors: [276, 275, 8, 155]
+  node_id: 36
+  primary_description: http://localhost:8889/-8_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id038 [3, -4]
+  neighbors: [7, 353, 50, 84]
+  node_id: 37
+  primary_description: http://localhost:8889/3_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id038
+  neighbors: [7, 353, 50, 84]
+  node_id: 37
+  primary_description: http://localhost:8889/3_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id039 [-4, -3]
+  neighbors: [177, 362, 389, 224]
+  node_id: 38
+  primary_description: http://localhost:8889/-4_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id039
+  neighbors: [177, 362, 389, 224]
+  node_id: 38
+  primary_description: http://localhost:8889/-4_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id040 [0, 3]
+  neighbors: [137, 25, 331, 124]
+  node_id: 39
+  primary_description: http://localhost:8889/0_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id040
+  neighbors: [137, 25, 331, 124]
+  node_id: 39
+  primary_description: http://localhost:8889/0_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id041 [5, -5]
+  neighbors: [245, 131, 402, 23]
+  node_id: 40
+  primary_description: http://localhost:8889/5_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id041
+  neighbors: [245, 131, 402, 23]
+  node_id: 40
+  primary_description: http://localhost:8889/5_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id042 [7, -2]
+  neighbors: [46, 253, 145, 424]
+  node_id: 41
+  primary_description: http://localhost:8889/7_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id042
+  neighbors: [46, 253, 145, 424]
+  node_id: 41
+  primary_description: http://localhost:8889/7_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id043 [7, 10]
+  neighbors: [33, 100, 430]
+  node_id: 42
+  primary_description: http://localhost:8889/7_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id043
+  neighbors: [33, 100, 430]
+  node_id: 42
+  primary_description: http://localhost:8889/7_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id044 [8, 3]
+  neighbors: [361, 150, 116, 64]
+  node_id: 43
+  primary_description: http://localhost:8889/8_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id044
+  neighbors: [361, 150, 116, 64]
+  node_id: 43
+  primary_description: http://localhost:8889/8_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id045 [4, 0]
+  neighbors: [243, 288, 154, 56]
+  node_id: 44
+  primary_description: http://localhost:8889/4_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id045
+  neighbors: [243, 288, 154, 56]
+  node_id: 44
+  primary_description: http://localhost:8889/4_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id046 [-9, -7]
+  neighbors: [216, 113, 225, 232]
+  node_id: 45
+  primary_description: http://localhost:8889/-9_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id046
+  neighbors: [216, 113, 225, 232]
+  node_id: 45
+  primary_description: http://localhost:8889/-9_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id047 [6, -2]
+  neighbors: [122, 41, 387, 167]
+  node_id: 46
+  primary_description: http://localhost:8889/6_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id047
+  neighbors: [122, 41, 387, 167]
+  node_id: 46
+  primary_description: http://localhost:8889/6_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id048 [0, -5]
+  neighbors: [214, 29, 178, 440]
+  node_id: 47
+  primary_description: http://localhost:8889/0_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id048
+  neighbors: [214, 29, 178, 440]
+  node_id: 47
+  primary_description: http://localhost:8889/0_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id049 [3, 9]
+  neighbors: [153, 53, 87, 406]
+  node_id: 48
+  primary_description: http://localhost:8889/3_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id049
+  neighbors: [153, 53, 87, 406]
+  node_id: 48
+  primary_description: http://localhost:8889/3_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id050 [-7, -7]
+  neighbors: [113, 99, 282, 257]
+  node_id: 49
+  primary_description: http://localhost:8889/-7_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id050
+  neighbors: [113, 99, 282, 257]
+  node_id: 49
+  primary_description: http://localhost:8889/-7_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id051 [3, -5]
+  neighbors: [377, 245, 354, 37]
+  node_id: 50
+  primary_description: http://localhost:8889/3_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id051
+  neighbors: [377, 245, 354, 37]
+  node_id: 50
+  primary_description: http://localhost:8889/3_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id052 [-1, 1]
+  neighbors: [341, 256, 383, 215]
+  node_id: 51
+  primary_description: http://localhost:8889/-1_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id052
+  neighbors: [341, 256, 383, 215]
+  node_id: 51
+  primary_description: http://localhost:8889/-1_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id053 [10, 4]
+  neighbors: [273, 426, 199]
+  node_id: 52
+  primary_description: http://localhost:8889/10_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id053
+  neighbors: [273, 426, 199]
+  node_id: 52
+  primary_description: http://localhost:8889/10_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id054 [4, 9]
+  neighbors: [48, 212, 390, 417]
+  node_id: 53
+  primary_description: http://localhost:8889/4_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id054
+  neighbors: [48, 212, 390, 417]
+  node_id: 53
+  primary_description: http://localhost:8889/4_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id055 [9, 6]
+  neighbors: [416, 322, 410, 132]
+  node_id: 54
+  primary_description: http://localhost:8889/9_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id055
+  neighbors: [416, 322, 410, 132]
+  node_id: 54
+  primary_description: http://localhost:8889/9_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id056 [10, -3]
+  neighbors: [120, 91, 63]
+  node_id: 55
+  primary_description: http://localhost:8889/10_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id056
+  neighbors: [120, 91, 63]
+  node_id: 55
+  primary_description: http://localhost:8889/10_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id057 [4, 1]
+  neighbors: [438, 401, 44, 75]
+  node_id: 56
+  primary_description: http://localhost:8889/4_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id057
+  neighbors: [438, 401, 44, 75]
+  node_id: 56
+  primary_description: http://localhost:8889/4_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id058 [4, 4]
+  neighbors: [80, 191, 277, 366]
+  node_id: 57
+  primary_description: http://localhost:8889/4_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id058
+  neighbors: [80, 191, 277, 366]
+  node_id: 57
+  primary_description: http://localhost:8889/4_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id059 [7, 0]
+  neighbors: [398, 349, 424, 179]
+  node_id: 58
+  primary_description: http://localhost:8889/7_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id059
+  neighbors: [398, 349, 424, 179]
+  node_id: 58
+  primary_description: http://localhost:8889/7_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id060 [-1, 5]
+  neighbors: [287, 71, 136, 126]
+  node_id: 59
+  primary_description: http://localhost:8889/-1_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id060
+  neighbors: [287, 71, 136, 126]
+  node_id: 59
+  primary_description: http://localhost:8889/-1_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id061 [-2, 2]
+  neighbors: [12, 215, 341, 292]
+  node_id: 60
+  primary_description: http://localhost:8889/-2_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id061
+  neighbors: [12, 215, 341, 292]
+  node_id: 60
+  primary_description: http://localhost:8889/-2_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id062 [-5, -7]
+  neighbors: [99, 5, 201, 291]
+  node_id: 61
+  primary_description: http://localhost:8889/-5_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id062
+  neighbors: [99, 5, 201, 291]
+  node_id: 61
+  primary_description: http://localhost:8889/-5_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id063 [-10, -4]
+  neighbors: [18, 181, 171]
+  node_id: 62
+  primary_description: http://localhost:8889/-10_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id063
+  neighbors: [18, 181, 171]
+  node_id: 62
+  primary_description: http://localhost:8889/-10_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id064 [10, -2]
+  neighbors: [237, 55, 74]
+  node_id: 63
+  primary_description: http://localhost:8889/10_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id064
+  neighbors: [237, 55, 74]
+  node_id: 63
+  primary_description: http://localhost:8889/10_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id065 [8, 4]
+  neighbors: [89, 273, 43, 381]
+  node_id: 64
+  primary_description: http://localhost:8889/8_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id065
+  neighbors: [89, 273, 43, 381]
+  node_id: 64
+  primary_description: http://localhost:8889/8_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id066 [-9, 6]
+  neighbors: [184, 134, 185, 3]
+  node_id: 65
+  primary_description: http://localhost:8889/-9_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id066
+  neighbors: [184, 134, 185, 3]
+  node_id: 65
+  primary_description: http://localhost:8889/-9_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id067 [5, -8]
+  neighbors: [397, 278, 197, 20]
+  node_id: 66
+  primary_description: http://localhost:8889/5_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id067
+  neighbors: [397, 278, 197, 20]
+  node_id: 66
+  primary_description: http://localhost:8889/5_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id068 [10, 2]
+  neighbors: [411, 356, 426]
+  node_id: 67
+  primary_description: http://localhost:8889/10_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id068
+  neighbors: [411, 356, 426]
+  node_id: 67
+  primary_description: http://localhost:8889/10_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id069 [-5, 7]
+  neighbors: [107, 118, 342, 129]
+  node_id: 68
+  primary_description: http://localhost:8889/-5_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id069
+  neighbors: [107, 118, 342, 129]
+  node_id: 68
+  primary_description: http://localhost:8889/-5_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id070 [8, -3]
+  neighbors: [145, 120, 264, 253]
+  node_id: 69
+  primary_description: http://localhost:8889/8_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id070
+  neighbors: [145, 120, 264, 253]
+  node_id: 69
+  primary_description: http://localhost:8889/8_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id071 [9, 9]
+  neighbors: [336, 263, 92, 90]
+  node_id: 70
+  primary_description: http://localhost:8889/9_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id071
+  neighbors: [336, 263, 92, 90]
+  node_id: 70
+  primary_description: http://localhost:8889/9_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id072 [0, 5]
+  neighbors: [59, 108, 124, 293]
+  node_id: 71
+  primary_description: http://localhost:8889/0_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id072
+  neighbors: [59, 108, 124, 293]
+  node_id: 71
+  primary_description: http://localhost:8889/0_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id073 [-2, 7]
+  neighbors: [255, 338, 344, 298]
+  node_id: 72
+  primary_description: http://localhost:8889/-2_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id073
+  neighbors: [255, 338, 344, 298]
+  node_id: 72
+  primary_description: http://localhost:8889/-2_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id074 [-9, -10]
+  neighbors: [156, 252, 32]
+  node_id: 73
+  primary_description: http://localhost:8889/-9_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id074
+  neighbors: [156, 252, 32]
+  node_id: 73
+  primary_description: http://localhost:8889/-9_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id075 [10, -1]
+  neighbors: [217, 63, 307]
+  node_id: 74
+  primary_description: http://localhost:8889/10_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id075
+  neighbors: [217, 63, 307]
+  node_id: 74
+  primary_description: http://localhost:8889/10_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id076 [4, 2]
+  neighbors: [370, 393, 56, 277]
+  node_id: 75
+  primary_description: http://localhost:8889/4_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id076
+  neighbors: [370, 393, 56, 277]
+  node_id: 75
+  primary_description: http://localhost:8889/4_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id077 [-10, 4]
+  neighbors: [360, 229, 135]
+  node_id: 76
+  primary_description: http://localhost:8889/-10_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id077
+  neighbors: [360, 229, 135]
+  node_id: 76
+  primary_description: http://localhost:8889/-10_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id078 [-1, 9]
+  neighbors: [147, 303, 261, 200]
+  node_id: 77
+  primary_description: http://localhost:8889/-1_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id078
+  neighbors: [147, 303, 261, 200]
+  node_id: 77
+  primary_description: http://localhost:8889/-1_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id079 [9, -10]
+  neighbors: [16, 6, 329]
+  node_id: 78
+  primary_description: http://localhost:8889/9_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id079
+  neighbors: [16, 6, 329]
+  node_id: 78
+  primary_description: http://localhost:8889/9_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id080 [1, 9]
+  neighbors: [303, 153, 404, 236]
+  node_id: 79
+  primary_description: http://localhost:8889/1_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id080
+  neighbors: [303, 153, 404, 236]
+  node_id: 79
+  primary_description: http://localhost:8889/1_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id081 [3, 4]
+  neighbors: [231, 57, 218, 130]
+  node_id: 80
+  primary_description: http://localhost:8889/3_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id081
+  neighbors: [231, 57, 218, 130]
+  node_id: 80
+  primary_description: http://localhost:8889/3_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id082 [3, -1]
+  neighbors: [235, 154, 340, 243]
+  node_id: 81
+  primary_description: http://localhost:8889/3_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id082
+  neighbors: [235, 154, 340, 243]
+  node_id: 81
+  primary_description: http://localhost:8889/3_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id083 [9, -5]
+  neighbors: [19, 188, 140, 219]
+  node_id: 82
+  primary_description: http://localhost:8889/9_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id083
+  neighbors: [19, 188, 140, 219]
+  node_id: 82
+  primary_description: http://localhost:8889/9_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id084 [9, 1]
+  neighbors: [328, 356, 368, 411]
+  node_id: 83
+  primary_description: http://localhost:8889/9_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id084
+  neighbors: [328, 356, 368, 411]
+  node_id: 83
+  primary_description: http://localhost:8889/9_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id085 [3, -3]
+  neighbors: [294, 421, 37, 340]
+  node_id: 84
+  primary_description: http://localhost:8889/3_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id085
+  neighbors: [294, 421, 37, 340]
+  node_id: 84
+  primary_description: http://localhost:8889/3_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id086 [-5, 5]
+  neighbors: [234, 151, 209, 342]
+  node_id: 85
+  primary_description: http://localhost:8889/-5_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id086
+  neighbors: [234, 151, 209, 342]
+  node_id: 85
+  primary_description: http://localhost:8889/-5_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id087 [-7, 3]
+  neighbors: [155, 259, 275, 343]
+  node_id: 86
+  primary_description: http://localhost:8889/-7_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id087
+  neighbors: [155, 259, 275, 343]
+  node_id: 86
+  primary_description: http://localhost:8889/-7_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id088 [3, 8]
+  neighbors: [302, 390, 350, 48]
+  node_id: 87
+  primary_description: http://localhost:8889/3_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id088
+  neighbors: [302, 390, 350, 48]
+  node_id: 87
+  primary_description: http://localhost:8889/3_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id089 [-10, 10]
+  neighbors: [157, 164]
+  node_id: 88
+  primary_description: http://localhost:8889/-10_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id089
+  neighbors: [157, 164]
+  node_id: 88
+  primary_description: http://localhost:8889/-10_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id090 [7, 4]
+  neighbors: [268, 64, 361, 222]
+  node_id: 89
+  primary_description: http://localhost:8889/7_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id090
+  neighbors: [268, 64, 361, 222]
+  node_id: 89
+  primary_description: http://localhost:8889/7_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id091 [9, 10]
+  neighbors: [100, 93, 70]
+  node_id: 90
+  primary_description: http://localhost:8889/9_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id091
+  neighbors: [100, 93, 70]
+  node_id: 90
+  primary_description: http://localhost:8889/9_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id092 [10, -4]
+  neighbors: [219, 188, 55]
+  node_id: 91
+  primary_description: http://localhost:8889/10_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id092
+  neighbors: [219, 188, 55]
+  node_id: 91
+  primary_description: http://localhost:8889/10_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id093 [9, 8]
+  neighbors: [10, 27, 132, 70]
+  node_id: 92
+  primary_description: http://localhost:8889/9_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id093
+  neighbors: [10, 27, 132, 70]
+  node_id: 92
+  primary_description: http://localhost:8889/9_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id094 [10, 10]
+  neighbors: [90, 263]
+  node_id: 93
+  primary_description: http://localhost:8889/10_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id094
+  neighbors: [90, 263]
+  node_id: 93
+  primary_description: http://localhost:8889/10_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id095 [-4, 4]
+  neighbors: [209, 319, 138, 151]
+  node_id: 94
+  primary_description: http://localhost:8889/-4_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id095
+  neighbors: [209, 319, 138, 151]
+  node_id: 94
+  primary_description: http://localhost:8889/-4_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id096 [-7, 0]
+  neighbors: [286, 384, 106, 418]
+  node_id: 95
+  primary_description: http://localhost:8889/-7_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id096
+  neighbors: [286, 384, 106, 418]
+  node_id: 95
+  primary_description: http://localhost:8889/-7_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id097 [-4, -10]
+  neighbors: [101, 230, 30]
+  node_id: 96
+  primary_description: http://localhost:8889/-4_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id097
+  neighbors: [101, 230, 30]
+  node_id: 96
+  primary_description: http://localhost:8889/-4_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id098 [-6, -2]
+  neighbors: [272, 103, 192, 262]
+  node_id: 97
+  primary_description: http://localhost:8889/-6_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id098
+  neighbors: [272, 103, 192, 262]
+  node_id: 97
+  primary_description: http://localhost:8889/-6_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id099 [-9, 1]
+  neighbors: [414, 8, 407, 276]
+  node_id: 98
+  primary_description: http://localhost:8889/-9_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id099
+  neighbors: [414, 8, 407, 276]
+  node_id: 98
+  primary_description: http://localhost:8889/-9_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id100 [-6, -7]
+  neighbors: [49, 61, 168, 378]
+  node_id: 99
+  primary_description: http://localhost:8889/-6_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id100
+  neighbors: [49, 61, 168, 378]
+  node_id: 99
+  primary_description: http://localhost:8889/-6_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id101 [8, 10]
+  neighbors: [42, 90, 336]
+  node_id: 100
+  primary_description: http://localhost:8889/8_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id101
+  neighbors: [42, 90, 336]
+  node_id: 100
+  primary_description: http://localhost:8889/8_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id102 [-5, -10]
+  neighbors: [431, 96, 333]
+  node_id: 101
+  primary_description: http://localhost:8889/-5_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id102
+  neighbors: [431, 96, 333]
+  node_id: 101
+  primary_description: http://localhost:8889/-5_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id103 [-10, -9]
+  neighbors: [32, 156, 335]
+  node_id: 102
+  primary_description: http://localhost:8889/-10_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id103
+  neighbors: [32, 156, 335]
+  node_id: 102
+  primary_description: http://localhost:8889/-10_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id104 [-5, -2]
+  neighbors: [97, 224, 177, 394]
+  node_id: 103
+  primary_description: http://localhost:8889/-5_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id104
+  neighbors: [97, 224, 177, 394]
+  node_id: 103
+  primary_description: http://localhost:8889/-5_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id105 [-4, 10]
+  neighbors: [223, 326, 386]
+  node_id: 104
+  primary_description: http://localhost:8889/-4_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id105
+  neighbors: [223, 326, 386]
+  node_id: 104
+  primary_description: http://localhost:8889/-4_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id106 [-9, 8]
+  neighbors: [220, 283, 3, 306]
+  node_id: 105
+  primary_description: http://localhost:8889/-9_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id106
+  neighbors: [220, 283, 3, 306]
+  node_id: 105
+  primary_description: http://localhost:8889/-9_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id107 [-7, -1]
+  neighbors: [186, 262, 272, 95]
+  node_id: 106
+  primary_description: http://localhost:8889/-7_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id107
+  neighbors: [186, 262, 272, 95]
+  node_id: 106
+  primary_description: http://localhost:8889/-7_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id108 [-6, 7]
+  neighbors: [133, 68, 127, 112]
+  node_id: 107
+  primary_description: http://localhost:8889/-6_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id108
+  neighbors: [133, 68, 127, 112]
+  node_id: 107
+  primary_description: http://localhost:8889/-6_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id109 [1, 5]
+  neighbors: [71, 308, 415, 159]
+  node_id: 108
+  primary_description: http://localhost:8889/1_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id109
+  neighbors: [71, 308, 415, 159]
+  node_id: 108
+  primary_description: http://localhost:8889/1_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id110 [-2, 10]
+  neighbors: [326, 200, 147]
+  node_id: 109
+  primary_description: http://localhost:8889/-2_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id110
+  neighbors: [326, 200, 147]
+  node_id: 109
+  primary_description: http://localhost:8889/-2_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id111 [8, -9]
+  neighbors: [139, 329, 16, 435]
+  node_id: 110
+  primary_description: http://localhost:8889/8_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id111
+  neighbors: [139, 329, 16, 435]
+  node_id: 110
+  primary_description: http://localhost:8889/8_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id112 [6, -10]
+  neighbors: [35, 172, 369]
+  node_id: 111
+  primary_description: http://localhost:8889/6_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id112
+  neighbors: [35, 172, 369]
+  node_id: 111
+  primary_description: http://localhost:8889/6_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id113 [-6, 8]
+  neighbors: [279, 129, 107, 241]
+  node_id: 112
+  primary_description: http://localhost:8889/-6_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id113
+  neighbors: [279, 129, 107, 241]
+  node_id: 112
+  primary_description: http://localhost:8889/-6_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id114 [-8, -7]
+  neighbors: [45, 49, 317, 15]
+  node_id: 113
+  primary_description: http://localhost:8889/-8_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id114
+  neighbors: [45, 49, 317, 15]
+  node_id: 113
+  primary_description: http://localhost:8889/-8_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id115 [-1, -8]
+  neighbors: [299, 14, 22, 358]
+  node_id: 114
+  primary_description: http://localhost:8889/-1_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id115
+  neighbors: [299, 14, 22, 358]
+  node_id: 114
+  primary_description: http://localhost:8889/-1_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id116 [1, -7]
+  neighbors: [437, 290, 198, 149]
+  node_id: 115
+  primary_description: http://localhost:8889/1_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id116
+  neighbors: [437, 290, 198, 149]
+  node_id: 115
+  primary_description: http://localhost:8889/1_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id117 [8, 2]
+  neighbors: [202, 411, 328, 43]
+  node_id: 116
+  primary_description: http://localhost:8889/8_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id117
+  neighbors: [202, 411, 328, 43]
+  node_id: 116
+  primary_description: http://localhost:8889/8_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id118 [4, -2]
+  neighbors: [340, 122, 421, 154]
+  node_id: 117
+  primary_description: http://localhost:8889/4_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id118
+  neighbors: [340, 122, 421, 154]
+  node_id: 117
+  primary_description: http://localhost:8889/4_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id119 [-4, 7]
+  neighbors: [68, 255, 158, 365]
+  node_id: 118
+  primary_description: http://localhost:8889/-4_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id119
+  neighbors: [68, 255, 158, 365]
+  node_id: 118
+  primary_description: http://localhost:8889/-4_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id120 [10, -7]
+  neighbors: [325, 195, 242]
+  node_id: 119
+  primary_description: http://localhost:8889/10_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id120
+  neighbors: [325, 195, 242]
+  node_id: 119
+  primary_description: http://localhost:8889/10_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id121 [9, -3]
+  neighbors: [69, 55, 219, 237]
+  node_id: 120
+  primary_description: http://localhost:8889/9_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id121
+  neighbors: [69, 55, 219, 237]
+  node_id: 120
+  primary_description: http://localhost:8889/9_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id122 [-8, -5]
+  neighbors: [240, 412, 15, 305]
+  node_id: 121
+  primary_description: http://localhost:8889/-8_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id122
+  neighbors: [240, 412, 15, 305]
+  node_id: 121
+  primary_description: http://localhost:8889/-8_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id123 [5, -2]
+  neighbors: [117, 46, 221, 388]
+  node_id: 122
+  primary_description: http://localhost:8889/5_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id123
+  neighbors: [117, 46, 221, 388]
+  node_id: 122
+  primary_description: http://localhost:8889/5_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id124 [1, 7]
+  neighbors: [239, 423, 159, 404]
+  node_id: 123
+  primary_description: http://localhost:8889/1_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id124
+  neighbors: [239, 423, 159, 404]
+  node_id: 123
+  primary_description: http://localhost:8889/1_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id125 [0, 4]
+  neighbors: [136, 415, 39, 71]
+  node_id: 124
+  primary_description: http://localhost:8889/0_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id125
+  neighbors: [136, 415, 39, 71]
+  node_id: 124
+  primary_description: http://localhost:8889/0_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id126 [-6, 4]
+  neighbors: [343, 209, 259, 234]
+  node_id: 125
+  primary_description: http://localhost:8889/-6_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id126
+  neighbors: [343, 209, 259, 234]
+  node_id: 125
+  primary_description: http://localhost:8889/-6_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id127 [-1, 6]
+  neighbors: [344, 293, 59, 338]
+  node_id: 126
+  primary_description: http://localhost:8889/-1_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id127
+  neighbors: [344, 293, 59, 338]
+  node_id: 126
+  primary_description: http://localhost:8889/-1_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id128 [-6, 6]
+  neighbors: [190, 342, 234, 107]
+  node_id: 127
+  primary_description: http://localhost:8889/-6_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id128
+  neighbors: [190, 342, 234, 107]
+  node_id: 127
+  primary_description: http://localhost:8889/-6_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id129 [-7, -9]
+  neighbors: [434, 31, 382, 282]
+  node_id: 128
+  primary_description: http://localhost:8889/-7_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id129
+  neighbors: [434, 31, 382, 282]
+  node_id: 128
+  primary_description: http://localhost:8889/-7_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id130 [-5, 8]
+  neighbors: [112, 365, 68, 228]
+  node_id: 129
+  primary_description: http://localhost:8889/-5_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id130
+  neighbors: [112, 365, 68, 228]
+  node_id: 129
+  primary_description: http://localhost:8889/-5_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id131 [3, 5]
+  neighbors: [308, 366, 80, 174]
+  node_id: 130
+  primary_description: http://localhost:8889/3_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id131
+  neighbors: [308, 366, 80, 174]
+  node_id: 130
+  primary_description: http://localhost:8889/3_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id132 [6, -5]
+  neighbors: [40, 182, 204, 309]
+  node_id: 131
+  primary_description: http://localhost:8889/6_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id132
+  neighbors: [40, 182, 204, 309]
+  node_id: 131
+  primary_description: http://localhost:8889/6_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id133 [9, 7]
+  neighbors: [258, 144, 54, 92]
+  node_id: 132
+  primary_description: http://localhost:8889/9_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id133
+  neighbors: [258, 144, 54, 92]
+  node_id: 132
+  primary_description: http://localhost:8889/9_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id134 [-7, 7]
+  neighbors: [400, 107, 190, 279]
+  node_id: 133
+  primary_description: http://localhost:8889/-7_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id134
+  neighbors: [400, 107, 190, 279]
+  node_id: 133
+  primary_description: http://localhost:8889/-7_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id135 [-8, 6]
+  neighbors: [65, 190, 359, 400]
+  node_id: 134
+  primary_description: http://localhost:8889/-8_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id135
+  neighbors: [65, 190, 359, 400]
+  node_id: 134
+  primary_description: http://localhost:8889/-8_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id136 [-10, 5]
+  neighbors: [185, 76, 184]
+  node_id: 135
+  primary_description: http://localhost:8889/-10_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id136
+  neighbors: [185, 76, 184]
+  node_id: 135
+  primary_description: http://localhost:8889/-10_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id137 [-1, 4]
+  neighbors: [166, 124, 137, 59]
+  node_id: 136
+  primary_description: http://localhost:8889/-1_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id137
+  neighbors: [166, 124, 137, 59]
+  node_id: 136
+  primary_description: http://localhost:8889/-1_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id138 [-1, 3]
+  neighbors: [292, 39, 215, 136]
+  node_id: 137
+  primary_description: http://localhost:8889/-1_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id138
+  neighbors: [292, 39, 215, 136]
+  node_id: 137
+  primary_description: http://localhost:8889/-1_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id139 [-4, 3]
+  neighbors: [375, 351, 324, 94]
+  node_id: 138
+  primary_description: http://localhost:8889/-4_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id139
+  neighbors: [375, 351, 324, 94]
+  node_id: 138
+  primary_description: http://localhost:8889/-4_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id140 [7, -9]
+  neighbors: [369, 110, 172, 213]
+  node_id: 139
+  primary_description: http://localhost:8889/7_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id140
+  neighbors: [369, 110, 172, 213]
+  node_id: 139
+  primary_description: http://localhost:8889/7_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id141 [9, -6]
+  neighbors: [203, 242, 325, 82]
+  node_id: 140
+  primary_description: http://localhost:8889/9_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id141
+  neighbors: [203, 242, 325, 82]
+  node_id: 140
+  primary_description: http://localhost:8889/9_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id142 [-10, -2]
+  neighbors: [357, 171, 367]
+  node_id: 141
+  primary_description: http://localhost:8889/-10_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id142
+  neighbors: [357, 171, 367]
+  node_id: 141
+  primary_description: http://localhost:8889/-10_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id143 [2, -9]
+  neighbors: [327, 152, 318, 254]
+  node_id: 142
+  primary_description: http://localhost:8889/2_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id143
+  neighbors: [327, 152, 318, 254]
+  node_id: 142
+  primary_description: http://localhost:8889/2_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id144 [-3, -8]
+  neighbors: [420, 299, 314, 21]
+  node_id: 143
+  primary_description: http://localhost:8889/-3_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id144
+  neighbors: [420, 299, 314, 21]
+  node_id: 143
+  primary_description: http://localhost:8889/-3_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id145 [10, 7]
+  neighbors: [132, 322, 27]
+  node_id: 144
+  primary_description: http://localhost:8889/10_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id145
+  neighbors: [132, 322, 27]
+  node_id: 144
+  primary_description: http://localhost:8889/10_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id146 [7, -3]
+  neighbors: [387, 69, 332, 41]
+  node_id: 145
+  primary_description: http://localhost:8889/7_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id146
+  neighbors: [387, 69, 332, 41]
+  node_id: 145
+  primary_description: http://localhost:8889/7_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id147 [-2, -1]
+  neighbors: [194, 163, 311, 396]
+  node_id: 146
+  primary_description: http://localhost:8889/-2_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id147
+  neighbors: [194, 163, 311, 396]
+  node_id: 146
+  primary_description: http://localhost:8889/-2_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id148 [-2, 9]
+  neighbors: [2, 77, 298, 109]
+  node_id: 147
+  primary_description: http://localhost:8889/-2_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id148
+  neighbors: [2, 77, 298, 109]
+  node_id: 147
+  primary_description: http://localhost:8889/-2_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id149 [-1, -4]
+  neighbors: [160, 440, 214, 436]
+  node_id: 148
+  primary_description: http://localhost:8889/-1_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id149
+  neighbors: [160, 440, 214, 436]
+  node_id: 148
+  primary_description: http://localhost:8889/-1_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id150 [1, -6]
+  neighbors: [178, 323, 115, 29]
+  node_id: 149
+  primary_description: http://localhost:8889/1_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id150
+  neighbors: [178, 323, 115, 29]
+  node_id: 149
+  primary_description: http://localhost:8889/1_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id151 [9, 3]
+  neighbors: [43, 426, 411, 273]
+  node_id: 150
+  primary_description: http://localhost:8889/9_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id151
+  neighbors: [43, 426, 411, 273]
+  node_id: 150
+  primary_description: http://localhost:8889/9_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id152 [-4, 5]
+  neighbors: [85, 233, 94, 158]
+  node_id: 151
+  primary_description: http://localhost:8889/-4_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id152
+  neighbors: [85, 233, 94, 158]
+  node_id: 151
+  primary_description: http://localhost:8889/-4_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id153 [3, -9]
+  neighbors: [142, 226, 380, 289]
+  node_id: 152
+  primary_description: http://localhost:8889/3_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id153
+  neighbors: [142, 226, 380, 289]
+  node_id: 152
+  primary_description: http://localhost:8889/3_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id154 [2, 9]
+  neighbors: [79, 48, 302, 339]
+  node_id: 153
+  primary_description: http://localhost:8889/2_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id154
+  neighbors: [79, 48, 302, 339]
+  node_id: 153
+  primary_description: http://localhost:8889/2_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id155 [4, -1]
+  neighbors: [81, 388, 117, 44]
+  node_id: 154
+  primary_description: http://localhost:8889/4_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id155
+  neighbors: [81, 388, 117, 44]
+  node_id: 154
+  primary_description: http://localhost:8889/4_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id156 [-8, 3]
+  neighbors: [395, 86, 36, 408]
+  node_id: 155
+  primary_description: http://localhost:8889/-8_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id156
+  neighbors: [395, 86, 36, 408]
+  node_id: 155
+  primary_description: http://localhost:8889/-8_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id157 [-10, -10]
+  neighbors: [73, 102]
+  node_id: 156
+  primary_description: http://localhost:8889/-10_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id157
+  neighbors: [73, 102]
+  node_id: 156
+  primary_description: http://localhost:8889/-10_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id158 [-9, 10]
+  neighbors: [88, 310, 306]
+  node_id: 157
+  primary_description: http://localhost:8889/-9_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id158
+  neighbors: [88, 310, 306]
+  node_id: 157
+  primary_description: http://localhost:8889/-9_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id159 [-4, 6]
+  neighbors: [342, 330, 151, 118]
+  node_id: 158
+  primary_description: http://localhost:8889/-4_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id159
+  neighbors: [342, 330, 151, 118]
+  node_id: 158
+  primary_description: http://localhost:8889/-4_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id160 [1, 6]
+  neighbors: [293, 176, 108, 123]
+  node_id: 159
+  primary_description: http://localhost:8889/1_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id160
+  neighbors: [293, 176, 108, 123]
+  node_id: 159
+  primary_description: http://localhost:8889/1_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id161 [-2, -4]
+  neighbors: [265, 148, 189, 337]
+  node_id: 160
+  primary_description: http://localhost:8889/-2_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id161
+  neighbors: [265, 148, 189, 337]
+  node_id: 160
+  primary_description: http://localhost:8889/-2_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id162 [8, -1]
+  neighbors: [424, 217, 253, 349]
+  node_id: 161
+  primary_description: http://localhost:8889/8_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id162
+  neighbors: [424, 217, 253, 349]
+  node_id: 161
+  primary_description: http://localhost:8889/8_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id163 [-2, -9]
+  neighbors: [314, 22, 392, 299]
+  node_id: 162
+  primary_description: http://localhost:8889/-2_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id163
+  neighbors: [314, 22, 392, 299]
+  node_id: 162
+  primary_description: http://localhost:8889/-2_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id164 [-1, -1]
+  neighbors: [146, 246, 247, 383]
+  node_id: 163
+  primary_description: http://localhost:8889/-1_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id164
+  neighbors: [146, 246, 247, 383]
+  node_id: 163
+  primary_description: http://localhost:8889/-1_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id165 [-10, 9]
+  neighbors: [306, 220, 88]
+  node_id: 164
+  primary_description: http://localhost:8889/-10_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id165
+  neighbors: [306, 220, 88]
+  node_id: 164
+  primary_description: http://localhost:8889/-10_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id166 [-8, -2]
+  neighbors: [357, 272, 439, 186]
+  node_id: 165
+  primary_description: http://localhost:8889/-8_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id166
+  neighbors: [357, 272, 439, 186]
+  node_id: 165
+  primary_description: http://localhost:8889/-8_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id167 [-2, 4]
+  neighbors: [319, 136, 292, 287]
+  node_id: 166
+  primary_description: http://localhost:8889/-2_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id167
+  neighbors: [319, 136, 292, 287]
+  node_id: 166
+  primary_description: http://localhost:8889/-2_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id168 [6, -1]
+  neighbors: [388, 424, 46, 398]
+  node_id: 167
+  primary_description: http://localhost:8889/6_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id168
+  neighbors: [388, 424, 46, 398]
+  node_id: 167
+  primary_description: http://localhost:8889/6_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id169 [-6, -8]
+  neighbors: [282, 201, 31, 99]
+  node_id: 168
+  primary_description: http://localhost:8889/-6_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id169
+  neighbors: [282, 201, 31, 99]
+  node_id: 168
+  primary_description: http://localhost:8889/-6_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id170 [-6, 10]
+  neighbors: [320, 223, 241]
+  node_id: 169
+  primary_description: http://localhost:8889/-6_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id170
+  neighbors: [320, 223, 241]
+  node_id: 169
+  primary_description: http://localhost:8889/-6_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id171 [-10, 0]
+  neighbors: [407, 367, 414]
+  node_id: 170
+  primary_description: http://localhost:8889/-10_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id171
+  neighbors: [407, 367, 414]
+  node_id: 170
+  primary_description: http://localhost:8889/-10_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id172 [-10, -3]
+  neighbors: [249, 62, 141]
+  node_id: 171
+  primary_description: http://localhost:8889/-10_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id172
+  neighbors: [249, 62, 141]
+  node_id: 171
+  primary_description: http://localhost:8889/-10_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id173 [7, -10]
+  neighbors: [111, 16, 139]
+  node_id: 172
+  primary_description: http://localhost:8889/7_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id173
+  neighbors: [111, 16, 139]
+  node_id: 172
+  primary_description: http://localhost:8889/7_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id174 [7, 6]
+  neighbors: [211, 416, 222, 17]
+  node_id: 173
+  primary_description: http://localhost:8889/7_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id174
+  neighbors: [211, 416, 222, 17]
+  node_id: 173
+  primary_description: http://localhost:8889/7_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id175 [3, 6]
+  neighbors: [176, 379, 130, 350]
+  node_id: 174
+  primary_description: http://localhost:8889/3_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id175
+  neighbors: [176, 379, 130, 350]
+  node_id: 174
+  primary_description: http://localhost:8889/3_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id176 [5, 3]
+  neighbors: [277, 429, 393, 191]
+  node_id: 175
+  primary_description: http://localhost:8889/5_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id176
+  neighbors: [277, 429, 393, 191]
+  node_id: 175
+  primary_description: http://localhost:8889/5_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id177 [2, 6]
+  neighbors: [159, 174, 308, 423]
+  node_id: 176
+  primary_description: http://localhost:8889/2_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id177
+  neighbors: [159, 174, 308, 423]
+  node_id: 176
+  primary_description: http://localhost:8889/2_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id178 [-5, -3]
+  neighbors: [192, 38, 260, 103]
+  node_id: 177
+  primary_description: http://localhost:8889/-5_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id178
+  neighbors: [192, 38, 260, 103]
+  node_id: 177
+  primary_description: http://localhost:8889/-5_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id179 [0, -6]
+  neighbors: [196, 149, 437, 47]
+  node_id: 178
+  primary_description: http://localhost:8889/0_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id179
+  neighbors: [196, 149, 437, 47]
+  node_id: 178
+  primary_description: http://localhost:8889/0_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id180 [7, 1]
+  neighbors: [207, 328, 58, 202]
+  node_id: 179
+  primary_description: http://localhost:8889/7_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id180
+  neighbors: [207, 328, 58, 202]
+  node_id: 179
+  primary_description: http://localhost:8889/7_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id181 [-3, -5]
+  neighbors: [297, 189, 266, 265]
+  node_id: 180
+  primary_description: http://localhost:8889/-3_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id181
+  neighbors: [297, 189, 266, 265]
+  node_id: 180
+  primary_description: http://localhost:8889/-3_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id182 [-10, -5]
+  neighbors: [240, 312, 62]
+  node_id: 181
+  primary_description: http://localhost:8889/-10_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id182
+  neighbors: [240, 312, 62]
+  node_id: 181
+  primary_description: http://localhost:8889/-10_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id183 [7, -5]
+  neighbors: [131, 19, 315, 332]
+  node_id: 182
+  primary_description: http://localhost:8889/7_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id183
+  neighbors: [131, 19, 315, 332]
+  node_id: 182
+  primary_description: http://localhost:8889/7_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id184 [-4, 1]
+  neighbors: [376, 432, 13, 324]
+  node_id: 183
+  primary_description: http://localhost:8889/-4_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id184
+  neighbors: [376, 432, 13, 324]
+  node_id: 183
+  primary_description: http://localhost:8889/-4_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id185 [-10, 6]
+  neighbors: [65, 135, 244]
+  node_id: 184
+  primary_description: http://localhost:8889/-10_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id185
+  neighbors: [65, 135, 244]
+  node_id: 184
+  primary_description: http://localhost:8889/-10_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id186 [-9, 5]
+  neighbors: [135, 359, 360, 65]
+  node_id: 185
+  primary_description: http://localhost:8889/-9_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id186
+  neighbors: [135, 359, 360, 65]
+  node_id: 185
+  primary_description: http://localhost:8889/-9_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id187 [-8, -1]
+  neighbors: [250, 106, 165, 286]
+  node_id: 186
+  primary_description: http://localhost:8889/-8_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id187
+  neighbors: [250, 106, 165, 286]
+  node_id: 186
+  primary_description: http://localhost:8889/-8_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id188 [4, -6]
+  neighbors: [354, 402, 11, 245]
+  node_id: 187
+  primary_description: http://localhost:8889/4_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id188
+  neighbors: [354, 402, 11, 245]
+  node_id: 187
+  primary_description: http://localhost:8889/4_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id189 [10, -5]
+  neighbors: [82, 242, 91]
+  node_id: 188
+  primary_description: http://localhost:8889/10_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id189
+  neighbors: [82, 242, 91]
+  node_id: 188
+  primary_description: http://localhost:8889/10_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id190 [-2, -5]
+  neighbors: [180, 214, 9, 160]
+  node_id: 189
+  primary_description: http://localhost:8889/-2_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id190
+  neighbors: [180, 214, 9, 160]
+  node_id: 189
+  primary_description: http://localhost:8889/-2_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id191 [-7, 6]
+  neighbors: [134, 127, 274, 133]
+  node_id: 190
+  primary_description: http://localhost:8889/-7_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id191
+  neighbors: [134, 127, 274, 133]
+  node_id: 190
+  primary_description: http://localhost:8889/-7_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id192 [5, 4]
+  neighbors: [57, 268, 175, 269]
+  node_id: 191
+  primary_description: http://localhost:8889/5_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id192
+  neighbors: [57, 268, 175, 269]
+  node_id: 191
+  primary_description: http://localhost:8889/5_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id193 [-6, -3]
+  neighbors: [208, 177, 419, 97]
+  node_id: 192
+  primary_description: http://localhost:8889/-6_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id193
+  neighbors: [208, 177, 419, 97]
+  node_id: 192
+  primary_description: http://localhost:8889/-6_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id194 [6, 2]
+  neighbors: [393, 202, 207, 429]
+  node_id: 193
+  primary_description: http://localhost:8889/6_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id194
+  neighbors: [393, 202, 207, 429]
+  node_id: 193
+  primary_description: http://localhost:8889/6_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id195 [-3, -1]
+  neighbors: [425, 146, 280, 373]
+  node_id: 194
+  primary_description: http://localhost:8889/-3_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id195
+  neighbors: [425, 146, 280, 373]
+  node_id: 194
+  primary_description: http://localhost:8889/-3_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id196 [10, -8]
+  neighbors: [345, 422, 119]
+  node_id: 195
+  primary_description: http://localhost:8889/10_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id196
+  neighbors: [345, 422, 119]
+  node_id: 195
+  primary_description: http://localhost:8889/10_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id197 [-1, -6]
+  neighbors: [9, 178, 358, 214]
+  node_id: 196
+  primary_description: http://localhost:8889/-1_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id197
+  neighbors: [9, 178, 358, 214]
+  node_id: 196
+  primary_description: http://localhost:8889/-1_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id198 [5, -9]
+  neighbors: [226, 369, 35, 66]
+  node_id: 197
+  primary_description: http://localhost:8889/5_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id198
+  neighbors: [226, 369, 35, 66]
+  node_id: 197
+  primary_description: http://localhost:8889/5_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id199 [1, -8]
+  neighbors: [14, 254, 327, 115]
+  node_id: 198
+  primary_description: http://localhost:8889/1_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id199
+  neighbors: [14, 254, 327, 115]
+  node_id: 198
+  primary_description: http://localhost:8889/1_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id200 [10, 5]
+  neighbors: [410, 52, 322]
+  node_id: 199
+  primary_description: http://localhost:8889/10_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id200
+  neighbors: [410, 52, 322]
+  node_id: 199
+  primary_description: http://localhost:8889/10_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id201 [-1, 10]
+  neighbors: [109, 284, 77]
+  node_id: 200
+  primary_description: http://localhost:8889/-1_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id201
+  neighbors: [109, 284, 77]
+  node_id: 200
+  primary_description: http://localhost:8889/-1_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id202 [-5, -8]
+  neighbors: [168, 420, 333, 61]
+  node_id: 201
+  primary_description: http://localhost:8889/-5_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id202
+  neighbors: [168, 420, 333, 61]
+  node_id: 201
+  primary_description: http://localhost:8889/-5_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id203 [7, 2]
+  neighbors: [193, 116, 179, 361]
+  node_id: 202
+  primary_description: http://localhost:8889/7_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id203
+  neighbors: [193, 116, 179, 361]
+  node_id: 202
+  primary_description: http://localhost:8889/7_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id204 [8, -6]
+  neighbors: [315, 140, 205, 19]
+  node_id: 203
+  primary_description: http://localhost:8889/8_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id204
+  neighbors: [315, 140, 205, 19]
+  node_id: 203
+  primary_description: http://localhost:8889/8_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id205 [6, -6]
+  neighbors: [402, 315, 271, 131]
+  node_id: 204
+  primary_description: http://localhost:8889/6_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id205
+  neighbors: [402, 315, 271, 131]
+  node_id: 204
+  primary_description: http://localhost:8889/6_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id206 [8, -7]
+  neighbors: [26, 325, 435, 203]
+  node_id: 205
+  primary_description: http://localhost:8889/8_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id206
+  neighbors: [26, 325, 435, 203]
+  node_id: 205
+  primary_description: http://localhost:8889/8_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id207 [1, -3]
+  neighbors: [28, 294, 409, 371]
+  node_id: 206
+  primary_description: http://localhost:8889/1_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id207
+  neighbors: [28, 294, 409, 371]
+  node_id: 206
+  primary_description: http://localhost:8889/1_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id208 [6, 1]
+  neighbors: [401, 179, 398, 193]
+  node_id: 207
+  primary_description: http://localhost:8889/6_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id208
+  neighbors: [401, 179, 398, 193]
+  node_id: 207
+  primary_description: http://localhost:8889/6_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id209 [-7, -3]
+  neighbors: [439, 192, 363, 272]
+  node_id: 208
+  primary_description: http://localhost:8889/-7_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id209
+  neighbors: [439, 192, 363, 272]
+  node_id: 208
+  primary_description: http://localhost:8889/-7_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id210 [-5, 4]
+  neighbors: [125, 94, 375, 85]
+  node_id: 209
+  primary_description: http://localhost:8889/-5_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id210
+  neighbors: [125, 94, 375, 85]
+  node_id: 209
+  primary_description: http://localhost:8889/-5_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id211 [5, 8]
+  neighbors: [390, 348, 24, 212]
+  node_id: 210
+  primary_description: http://localhost:8889/5_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id211
+  neighbors: [390, 348, 24, 212]
+  node_id: 210
+  primary_description: http://localhost:8889/5_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id212 [6, 6]
+  neighbors: [34, 173, 347, 295]
+  node_id: 211
+  primary_description: http://localhost:8889/6_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id212
+  neighbors: [34, 173, 347, 295]
+  node_id: 211
+  primary_description: http://localhost:8889/6_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id213 [5, 9]
+  neighbors: [53, 1, 210, 300]
+  node_id: 212
+  primary_description: http://localhost:8889/5_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id213
+  neighbors: [53, 1, 210, 300]
+  node_id: 212
+  primary_description: http://localhost:8889/5_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id214 [7, -8]
+  neighbors: [278, 435, 139, 26]
+  node_id: 213
+  primary_description: http://localhost:8889/7_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id214
+  neighbors: [278, 435, 139, 26]
+  node_id: 213
+  primary_description: http://localhost:8889/7_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id215 [-1, -5]
+  neighbors: [189, 47, 196, 148]
+  node_id: 214
+  primary_description: http://localhost:8889/-1_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id215
+  neighbors: [189, 47, 196, 148]
+  node_id: 214
+  primary_description: http://localhost:8889/-1_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id216 [-1, 2]
+  neighbors: [60, 331, 51, 137]
+  node_id: 215
+  primary_description: http://localhost:8889/-1_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id216
+  neighbors: [60, 331, 51, 137]
+  node_id: 215
+  primary_description: http://localhost:8889/-1_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id217 [-10, -7]
+  neighbors: [45, 335, 312]
+  node_id: 216
+  primary_description: http://localhost:8889/-10_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id217
+  neighbors: [45, 335, 312]
+  node_id: 216
+  primary_description: http://localhost:8889/-10_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id218 [9, -1]
+  neighbors: [161, 74, 237, 368]
+  node_id: 217
+  primary_description: http://localhost:8889/9_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id218
+  neighbors: [161, 74, 237, 368]
+  node_id: 217
+  primary_description: http://localhost:8889/9_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id219 [3, 3]
+  neighbors: [433, 277, 370, 80]
+  node_id: 218
+  primary_description: http://localhost:8889/3_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id219
+  neighbors: [433, 277, 370, 80]
+  node_id: 218
+  primary_description: http://localhost:8889/3_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id220 [9, -4]
+  neighbors: [264, 91, 82, 120]
+  node_id: 219
+  primary_description: http://localhost:8889/9_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id220
+  neighbors: [264, 91, 82, 120]
+  node_id: 219
+  primary_description: http://localhost:8889/9_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id221 [-10, 8]
+  neighbors: [105, 244, 164]
+  node_id: 220
+  primary_description: http://localhost:8889/-10_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id221
+  neighbors: [105, 244, 164]
+  node_id: 220
+  primary_description: http://localhost:8889/-10_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id222 [5, -3]
+  neighbors: [421, 387, 23, 122]
+  node_id: 221
+  primary_description: http://localhost:8889/5_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id222
+  neighbors: [421, 387, 23, 122]
+  node_id: 221
+  primary_description: http://localhost:8889/5_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id223 [7, 5]
+  neighbors: [347, 381, 89, 173]
+  node_id: 222
+  primary_description: http://localhost:8889/7_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id223
+  neighbors: [347, 381, 89, 173]
+  node_id: 222
+  primary_description: http://localhost:8889/7_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id224 [-5, 10]
+  neighbors: [169, 104, 228]
+  node_id: 223
+  primary_description: http://localhost:8889/-5_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id224
+  neighbors: [169, 104, 228]
+  node_id: 223
+  primary_description: http://localhost:8889/-5_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id225 [-4, -2]
+  neighbors: [103, 280, 38, 425]
+  node_id: 224
+  primary_description: http://localhost:8889/-4_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id225
+  neighbors: [103, 280, 38, 425]
+  node_id: 224
+  primary_description: http://localhost:8889/-4_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id226 [-9, -8]
+  neighbors: [335, 317, 32, 45]
+  node_id: 225
+  primary_description: http://localhost:8889/-9_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id226
+  neighbors: [335, 317, 32, 45]
+  node_id: 225
+  primary_description: http://localhost:8889/-9_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id227 [4, -9]
+  neighbors: [152, 197, 355, 397]
+  node_id: 226
+  primary_description: http://localhost:8889/4_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id227
+  neighbors: [152, 197, 355, 397]
+  node_id: 226
+  primary_description: http://localhost:8889/4_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id228 [-5, 0]
+  neighbors: [384, 13, 394, 376]
+  node_id: 227
+  primary_description: http://localhost:8889/-5_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id228
+  neighbors: [384, 13, 394, 376]
+  node_id: 227
+  primary_description: http://localhost:8889/-5_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id229 [-5, 9]
+  neighbors: [241, 386, 129, 223]
+  node_id: 228
+  primary_description: http://localhost:8889/-5_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id229
+  neighbors: [241, 386, 129, 223]
+  node_id: 228
+  primary_description: http://localhost:8889/-5_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id230 [-10, 3]
+  neighbors: [395, 4, 76]
+  node_id: 229
+  primary_description: http://localhost:8889/-10_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id230
+  neighbors: [395, 4, 76]
+  node_id: 229
+  primary_description: http://localhost:8889/-10_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id231 [-3, -10]
+  neighbors: [96, 392, 314]
+  node_id: 230
+  primary_description: http://localhost:8889/-3_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id231
+  neighbors: [96, 392, 314]
+  node_id: 230
+  primary_description: http://localhost:8889/-3_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id232 [2, 4]
+  neighbors: [415, 80, 433, 308]
+  node_id: 231
+  primary_description: http://localhost:8889/2_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id232
+  neighbors: [415, 80, 433, 308]
+  node_id: 231
+  primary_description: http://localhost:8889/2_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id233 [-9, -6]
+  neighbors: [312, 15, 45, 240]
+  node_id: 232
+  primary_description: http://localhost:8889/-9_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id233
+  neighbors: [312, 15, 45, 240]
+  node_id: 232
+  primary_description: http://localhost:8889/-9_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id234 [-3, 5]
+  neighbors: [151, 287, 319, 330]
+  node_id: 233
+  primary_description: http://localhost:8889/-3_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id234
+  neighbors: [151, 287, 319, 330]
+  node_id: 233
+  primary_description: http://localhost:8889/-3_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id235 [-6, 5]
+  neighbors: [274, 85, 125, 127]
+  node_id: 234
+  primary_description: http://localhost:8889/-6_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id235
+  neighbors: [274, 85, 125, 127]
+  node_id: 234
+  primary_description: http://localhost:8889/-6_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id236 [2, -1]
+  neighbors: [405, 81, 251, 364]
+  node_id: 235
+  primary_description: http://localhost:8889/2_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id236
+  neighbors: [405, 81, 251, 364]
+  node_id: 235
+  primary_description: http://localhost:8889/2_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id237 [1, 10]
+  neighbors: [284, 339, 79]
+  node_id: 236
+  primary_description: http://localhost:8889/1_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id237
+  neighbors: [284, 339, 79]
+  node_id: 236
+  primary_description: http://localhost:8889/1_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id238 [9, -2]
+  neighbors: [253, 63, 120, 217]
+  node_id: 237
+  primary_description: http://localhost:8889/9_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id238
+  neighbors: [253, 63, 120, 217]
+  node_id: 237
+  primary_description: http://localhost:8889/9_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id239 [7, 8]
+  neighbors: [348, 10, 17, 430]
+  node_id: 238
+  primary_description: http://localhost:8889/7_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id239
+  neighbors: [348, 10, 17, 430]
+  node_id: 238
+  primary_description: http://localhost:8889/7_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id240 [0, 7]
+  neighbors: [338, 123, 293, 428]
+  node_id: 239
+  primary_description: http://localhost:8889/0_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id240
+  neighbors: [338, 123, 293, 428]
+  node_id: 239
+  primary_description: http://localhost:8889/0_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id241 [-9, -5]
+  neighbors: [181, 121, 232, 18]
+  node_id: 240
+  primary_description: http://localhost:8889/-9_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id241
+  neighbors: [181, 121, 232, 18]
+  node_id: 240
+  primary_description: http://localhost:8889/-9_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id242 [-6, 9]
+  neighbors: [352, 228, 112, 169]
+  node_id: 241
+  primary_description: http://localhost:8889/-6_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id242
+  neighbors: [352, 228, 112, 169]
+  node_id: 241
+  primary_description: http://localhost:8889/-6_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id243 [10, -6]
+  neighbors: [140, 119, 188]
+  node_id: 242
+  primary_description: http://localhost:8889/10_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id243
+  neighbors: [140, 119, 188]
+  node_id: 242
+  primary_description: http://localhost:8889/10_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id244 [3, 0]
+  neighbors: [364, 44, 81, 438]
+  node_id: 243
+  primary_description: http://localhost:8889/3_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id244
+  neighbors: [364, 44, 81, 438]
+  node_id: 243
+  primary_description: http://localhost:8889/3_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id245 [-10, 7]
+  neighbors: [3, 184, 220]
+  node_id: 244
+  primary_description: http://localhost:8889/-10_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id245
+  neighbors: [3, 184, 220]
+  node_id: 244
+  primary_description: http://localhost:8889/-10_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id246 [4, -5]
+  neighbors: [50, 40, 187, 353]
+  node_id: 245
+  primary_description: http://localhost:8889/4_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id246
+  neighbors: [50, 40, 187, 353]
+  node_id: 245
+  primary_description: http://localhost:8889/4_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id247 [0, -1]
+  neighbors: [163, 405, 285, 403]
+  node_id: 246
+  primary_description: http://localhost:8889/0_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id247
+  neighbors: [163, 405, 285, 403]
+  node_id: 246
+  primary_description: http://localhost:8889/0_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id248 [-1, -2]
+  neighbors: [311, 285, 436, 163]
+  node_id: 247
+  primary_description: http://localhost:8889/-1_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id248
+  neighbors: [311, 285, 436, 163]
+  node_id: 247
+  primary_description: http://localhost:8889/-1_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id249 [1, 1]
+  neighbors: [256, 427, 316, 270]
+  node_id: 248
+  primary_description: http://localhost:8889/1_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id249
+  neighbors: [256, 427, 316, 270]
+  node_id: 248
+  primary_description: http://localhost:8889/1_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id250 [-9, -3]
+  neighbors: [171, 439, 18, 357]
+  node_id: 249
+  primary_description: http://localhost:8889/-9_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id250
+  neighbors: [171, 439, 18, 357]
+  node_id: 249
+  primary_description: http://localhost:8889/-9_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id251 [-9, -1]
+  neighbors: [367, 186, 357, 407]
+  node_id: 250
+  primary_description: http://localhost:8889/-9_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id251
+  neighbors: [367, 186, 357, 407]
+  node_id: 250
+  primary_description: http://localhost:8889/-9_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id252 [2, -2]
+  neighbors: [371, 340, 294, 235]
+  node_id: 251
+  primary_description: http://localhost:8889/2_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id252
+  neighbors: [371, 340, 294, 235]
+  node_id: 251
+  primary_description: http://localhost:8889/2_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id253 [-8, -10]
+  neighbors: [73, 382, 434]
+  node_id: 252
+  primary_description: http://localhost:8889/-8_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id253
+  neighbors: [73, 382, 434]
+  node_id: 252
+  primary_description: http://localhost:8889/-8_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id254 [8, -2]
+  neighbors: [41, 237, 69, 161]
+  node_id: 253
+  primary_description: http://localhost:8889/8_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id254
+  neighbors: [41, 237, 69, 161]
+  node_id: 253
+  primary_description: http://localhost:8889/8_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id255 [2, -8]
+  neighbors: [198, 289, 142, 290]
+  node_id: 254
+  primary_description: http://localhost:8889/2_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id255
+  neighbors: [198, 289, 142, 290]
+  node_id: 254
+  primary_description: http://localhost:8889/2_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id256 [-3, 7]
+  neighbors: [118, 72, 330, 385]
+  node_id: 255
+  primary_description: http://localhost:8889/-3_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id256
+  neighbors: [118, 72, 330, 385]
+  node_id: 255
+  primary_description: http://localhost:8889/-3_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id257 [0, 1]
+  neighbors: [51, 248, 403, 331]
+  node_id: 256
+  primary_description: http://localhost:8889/0_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id257
+  neighbors: [51, 248, 403, 331]
+  node_id: 256
+  primary_description: http://localhost:8889/0_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id258 [-7, -6]
+  neighbors: [15, 378, 49, 412]
+  node_id: 257
+  primary_description: http://localhost:8889/-7_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id258
+  neighbors: [15, 378, 49, 412]
+  node_id: 257
+  primary_description: http://localhost:8889/-7_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id259 [8, 7]
+  neighbors: [17, 132, 416, 10]
+  node_id: 258
+  primary_description: http://localhost:8889/8_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id259
+  neighbors: [17, 132, 416, 10]
+  node_id: 258
+  primary_description: http://localhost:8889/8_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id260 [-6, 3]
+  neighbors: [86, 375, 413, 125]
+  node_id: 259
+  primary_description: http://localhost:8889/-6_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id260
+  neighbors: [86, 375, 413, 125]
+  node_id: 259
+  primary_description: http://localhost:8889/-6_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id261 [-5, -4]
+  neighbors: [419, 389, 304, 177]
+  node_id: 260
+  primary_description: http://localhost:8889/-5_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id261
+  neighbors: [419, 389, 304, 177]
+  node_id: 260
+  primary_description: http://localhost:8889/-5_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id262 [-1, 8]
+  neighbors: [298, 428, 338, 77]
+  node_id: 261
+  primary_description: http://localhost:8889/-1_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id262
+  neighbors: [298, 428, 338, 77]
+  node_id: 261
+  primary_description: http://localhost:8889/-1_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id263 [-6, -1]
+  neighbors: [106, 394, 97, 384]
+  node_id: 262
+  primary_description: http://localhost:8889/-6_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id263
+  neighbors: [106, 394, 97, 384]
+  node_id: 262
+  primary_description: http://localhost:8889/-6_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id264 [10, 9]
+  neighbors: [70, 27, 93]
+  node_id: 263
+  primary_description: http://localhost:8889/10_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id264
+  neighbors: [70, 27, 93]
+  node_id: 263
+  primary_description: http://localhost:8889/10_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id265 [8, -4]
+  neighbors: [332, 219, 19, 69]
+  node_id: 264
+  primary_description: http://localhost:8889/8_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id265
+  neighbors: [332, 219, 19, 69]
+  node_id: 264
+  primary_description: http://localhost:8889/8_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id266 [-3, -4]
+  neighbors: [389, 160, 180, 362]
+  node_id: 265
+  primary_description: http://localhost:8889/-3_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id266
+  neighbors: [389, 160, 180, 362]
+  node_id: 265
+  primary_description: http://localhost:8889/-3_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id267 [-3, -6]
+  neighbors: [334, 9, 21, 180]
+  node_id: 266
+  primary_description: http://localhost:8889/-3_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id267
+  neighbors: [334, 9, 21, 180]
+  node_id: 266
+  primary_description: http://localhost:8889/-3_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id268 [4, 7]
+  neighbors: [350, 24, 379, 390]
+  node_id: 267
+  primary_description: http://localhost:8889/4_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id268
+  neighbors: [350, 24, 379, 390]
+  node_id: 267
+  primary_description: http://localhost:8889/4_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id269 [6, 4]
+  neighbors: [191, 89, 429, 347]
+  node_id: 268
+  primary_description: http://localhost:8889/6_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id269
+  neighbors: [191, 89, 429, 347]
+  node_id: 268
+  primary_description: http://localhost:8889/6_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id270 [5, 5]
+  neighbors: [366, 347, 191, 34]
+  node_id: 269
+  primary_description: http://localhost:8889/5_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id270
+  neighbors: [366, 347, 191, 34]
+  node_id: 269
+  primary_description: http://localhost:8889/5_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id271 [1, 2]
+  neighbors: [331, 0, 248, 25]
+  node_id: 270
+  primary_description: http://localhost:8889/1_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id271
+  neighbors: [331, 0, 248, 25]
+  node_id: 270
+  primary_description: http://localhost:8889/1_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id272 [6, -7]
+  neighbors: [20, 26, 278, 204]
+  node_id: 271
+  primary_description: http://localhost:8889/6_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id272
+  neighbors: [20, 26, 278, 204]
+  node_id: 271
+  primary_description: http://localhost:8889/6_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id273 [-7, -2]
+  neighbors: [165, 97, 208, 106]
+  node_id: 272
+  primary_description: http://localhost:8889/-7_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id273
+  neighbors: [165, 97, 208, 106]
+  node_id: 272
+  primary_description: http://localhost:8889/-7_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id274 [9, 4]
+  neighbors: [64, 52, 150, 410]
+  node_id: 273
+  primary_description: http://localhost:8889/9_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id274
+  neighbors: [64, 52, 150, 410]
+  node_id: 273
+  primary_description: http://localhost:8889/9_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id275 [-7, 5]
+  neighbors: [359, 234, 343, 190]
+  node_id: 274
+  primary_description: http://localhost:8889/-7_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id275
+  neighbors: [359, 234, 343, 190]
+  node_id: 274
+  primary_description: http://localhost:8889/-7_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id276 [-7, 2]
+  neighbors: [36, 413, 418, 86]
+  node_id: 275
+  primary_description: http://localhost:8889/-7_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id276
+  neighbors: [36, 413, 418, 86]
+  node_id: 275
+  primary_description: http://localhost:8889/-7_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id277 [-9, 2]
+  neighbors: [4, 36, 98, 395]
+  node_id: 276
+  primary_description: http://localhost:8889/-9_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id277
+  neighbors: [4, 36, 98, 395]
+  node_id: 276
+  primary_description: http://localhost:8889/-9_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id278 [4, 3]
+  neighbors: [218, 175, 75, 57]
+  node_id: 277
+  primary_description: http://localhost:8889/4_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id278
+  neighbors: [218, 175, 75, 57]
+  node_id: 277
+  primary_description: http://localhost:8889/4_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id279 [6, -8]
+  neighbors: [66, 213, 369, 271]
+  node_id: 278
+  primary_description: http://localhost:8889/6_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id279
+  neighbors: [66, 213, 369, 271]
+  node_id: 278
+  primary_description: http://localhost:8889/6_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id280 [-7, 8]
+  neighbors: [283, 112, 133, 352]
+  node_id: 279
+  primary_description: http://localhost:8889/-7_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id280
+  neighbors: [283, 112, 133, 352]
+  node_id: 279
+  primary_description: http://localhost:8889/-7_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id281 [-3, -2]
+  neighbors: [224, 311, 362, 194]
+  node_id: 280
+  primary_description: http://localhost:8889/-3_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id281
+  neighbors: [224, 311, 362, 194]
+  node_id: 280
+  primary_description: http://localhost:8889/-3_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id282 [-2, -7]
+  neighbors: [21, 358, 299, 9]
+  node_id: 281
+  primary_description: http://localhost:8889/-2_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id282
+  neighbors: [21, 358, 299, 9]
+  node_id: 281
+  primary_description: http://localhost:8889/-2_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id283 [-7, -8]
+  neighbors: [317, 168, 128, 49]
+  node_id: 282
+  primary_description: http://localhost:8889/-7_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id283
+  neighbors: [317, 168, 128, 49]
+  node_id: 282
+  primary_description: http://localhost:8889/-7_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id284 [-8, 8]
+  neighbors: [105, 279, 400, 313]
+  node_id: 283
+  primary_description: http://localhost:8889/-8_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id284
+  neighbors: [105, 279, 400, 313]
+  node_id: 283
+  primary_description: http://localhost:8889/-8_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id285 [0, 10]
+  neighbors: [200, 236, 303]
+  node_id: 284
+  primary_description: http://localhost:8889/0_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id285
+  neighbors: [200, 236, 303]
+  node_id: 284
+  primary_description: http://localhost:8889/0_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id286 [0, -2]
+  neighbors: [247, 371, 28, 246]
+  node_id: 285
+  primary_description: http://localhost:8889/0_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id286
+  neighbors: [247, 371, 28, 246]
+  node_id: 285
+  primary_description: http://localhost:8889/0_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id287 [-8, 0]
+  neighbors: [407, 95, 186, 8]
+  node_id: 286
+  primary_description: http://localhost:8889/-8_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id287
+  neighbors: [407, 95, 186, 8]
+  node_id: 286
+  primary_description: http://localhost:8889/-8_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id288 [-2, 5]
+  neighbors: [233, 59, 166, 344]
+  node_id: 287
+  primary_description: http://localhost:8889/-2_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id288
+  neighbors: [233, 59, 166, 344]
+  node_id: 287
+  primary_description: http://localhost:8889/-2_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id289 [5, 0]
+  neighbors: [44, 398, 388, 401]
+  node_id: 288
+  primary_description: http://localhost:8889/5_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id289
+  neighbors: [44, 398, 388, 401]
+  node_id: 288
+  primary_description: http://localhost:8889/5_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id290 [3, -8]
+  neighbors: [254, 397, 152, 321]
+  node_id: 289
+  primary_description: http://localhost:8889/3_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id290
+  neighbors: [254, 397, 152, 321]
+  node_id: 289
+  primary_description: http://localhost:8889/3_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id291 [2, -7]
+  neighbors: [115, 321, 254, 323]
+  node_id: 290
+  primary_description: http://localhost:8889/2_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id291
+  neighbors: [115, 321, 254, 323]
+  node_id: 290
+  primary_description: http://localhost:8889/2_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id292 [-5, -6]
+  neighbors: [378, 334, 61, 304]
+  node_id: 291
+  primary_description: http://localhost:8889/-5_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id292
+  neighbors: [378, 334, 61, 304]
+  node_id: 291
+  primary_description: http://localhost:8889/-5_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id293 [-2, 3]
+  neighbors: [351, 137, 60, 166]
+  node_id: 292
+  primary_description: http://localhost:8889/-2_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id293
+  neighbors: [351, 137, 60, 166]
+  node_id: 292
+  primary_description: http://localhost:8889/-2_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id294 [0, 6]
+  neighbors: [126, 159, 71, 239]
+  node_id: 293
+  primary_description: http://localhost:8889/0_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id294
+  neighbors: [126, 159, 71, 239]
+  node_id: 293
+  primary_description: http://localhost:8889/0_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id295 [2, -3]
+  neighbors: [206, 84, 7, 251]
+  node_id: 294
+  primary_description: http://localhost:8889/2_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id295
+  neighbors: [206, 84, 7, 251]
+  node_id: 294
+  primary_description: http://localhost:8889/2_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id296 [6, 7]
+  neighbors: [24, 17, 211, 348]
+  node_id: 295
+  primary_description: http://localhost:8889/6_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id296
+  neighbors: [24, 17, 211, 348]
+  node_id: 295
+  primary_description: http://localhost:8889/6_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id297 [1, -10]
+  neighbors: [391, 318, 327]
+  node_id: 296
+  primary_description: http://localhost:8889/1_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id297
+  neighbors: [391, 318, 327]
+  node_id: 296
+  primary_description: http://localhost:8889/1_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id298 [-4, -5]
+  neighbors: [304, 180, 334, 389]
+  node_id: 297
+  primary_description: http://localhost:8889/-4_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id298
+  neighbors: [304, 180, 334, 389]
+  node_id: 297
+  primary_description: http://localhost:8889/-4_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id299 [-2, 8]
+  neighbors: [385, 261, 72, 147]
+  node_id: 298
+  primary_description: http://localhost:8889/-2_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id299
+  neighbors: [385, 261, 72, 147]
+  node_id: 298
+  primary_description: http://localhost:8889/-2_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id300 [-2, -8]
+  neighbors: [143, 114, 162, 281]
+  node_id: 299
+  primary_description: http://localhost:8889/-2_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id300
+  neighbors: [143, 114, 162, 281]
+  node_id: 299
+  primary_description: http://localhost:8889/-2_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id301 [5, 10]
+  neighbors: [417, 33, 212]
+  node_id: 300
+  primary_description: http://localhost:8889/5_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id301
+  neighbors: [417, 33, 212]
+  node_id: 300
+  primary_description: http://localhost:8889/5_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id302 [-1, -10]
+  neighbors: [392, 391, 22]
+  node_id: 301
+  primary_description: http://localhost:8889/-1_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id302
+  neighbors: [392, 391, 22]
+  node_id: 301
+  primary_description: http://localhost:8889/-1_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id303 [2, 8]
+  neighbors: [404, 87, 423, 153]
+  node_id: 302
+  primary_description: http://localhost:8889/2_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id303
+  neighbors: [404, 87, 423, 153]
+  node_id: 302
+  primary_description: http://localhost:8889/2_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id304 [0, 9]
+  neighbors: [77, 79, 428, 284]
+  node_id: 303
+  primary_description: http://localhost:8889/0_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id304
+  neighbors: [77, 79, 428, 284]
+  node_id: 303
+  primary_description: http://localhost:8889/0_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id305 [-5, -5]
+  neighbors: [399, 297, 291, 260]
+  node_id: 304
+  primary_description: http://localhost:8889/-5_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id305
+  neighbors: [399, 297, 291, 260]
+  node_id: 304
+  primary_description: http://localhost:8889/-5_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id306 [-8, -4]
+  neighbors: [18, 363, 121, 439]
+  node_id: 305
+  primary_description: http://localhost:8889/-8_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id306
+  neighbors: [18, 363, 121, 439]
+  node_id: 305
+  primary_description: http://localhost:8889/-8_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id307 [-9, 9]
+  neighbors: [164, 313, 105, 157]
+  node_id: 306
+  primary_description: http://localhost:8889/-9_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id307
+  neighbors: [164, 313, 105, 157]
+  node_id: 306
+  primary_description: http://localhost:8889/-9_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id308 [10, 0]
+  neighbors: [368, 74, 356]
+  node_id: 307
+  primary_description: http://localhost:8889/10_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id308
+  neighbors: [368, 74, 356]
+  node_id: 307
+  primary_description: http://localhost:8889/10_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id309 [2, 5]
+  neighbors: [108, 130, 231, 176]
+  node_id: 308
+  primary_description: http://localhost:8889/2_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id309
+  neighbors: [108, 130, 231, 176]
+  node_id: 308
+  primary_description: http://localhost:8889/2_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id310 [6, -4]
+  neighbors: [23, 332, 131, 387]
+  node_id: 309
+  primary_description: http://localhost:8889/6_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id310
+  neighbors: [23, 332, 131, 387]
+  node_id: 309
+  primary_description: http://localhost:8889/6_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id311 [-8, 10]
+  neighbors: [157, 320, 313]
+  node_id: 310
+  primary_description: http://localhost:8889/-8_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id311
+  neighbors: [157, 320, 313]
+  node_id: 310
+  primary_description: http://localhost:8889/-8_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id312 [-2, -2]
+  neighbors: [280, 247, 337, 146]
+  node_id: 311
+  primary_description: http://localhost:8889/-2_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id312
+  neighbors: [280, 247, 337, 146]
+  node_id: 311
+  primary_description: http://localhost:8889/-2_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id313 [-10, -6]
+  neighbors: [232, 216, 181]
+  node_id: 312
+  primary_description: http://localhost:8889/-10_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id313
+  neighbors: [232, 216, 181]
+  node_id: 312
+  primary_description: http://localhost:8889/-10_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id314 [-8, 9]
+  neighbors: [306, 352, 283, 310]
+  node_id: 313
+  primary_description: http://localhost:8889/-8_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id314
+  neighbors: [306, 352, 283, 310]
+  node_id: 313
+  primary_description: http://localhost:8889/-8_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id315 [-3, -9]
+  neighbors: [30, 162, 230, 143]
+  node_id: 314
+  primary_description: http://localhost:8889/-3_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id315
+  neighbors: [30, 162, 230, 143]
+  node_id: 314
+  primary_description: http://localhost:8889/-3_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id316 [7, -6]
+  neighbors: [204, 203, 26, 182]
+  node_id: 315
+  primary_description: http://localhost:8889/7_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id316
+  neighbors: [204, 203, 26, 182]
+  node_id: 315
+  primary_description: http://localhost:8889/7_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id317 [1, 0]
+  neighbors: [403, 364, 405, 248]
+  node_id: 316
+  primary_description: http://localhost:8889/1_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id317
+  neighbors: [403, 364, 405, 248]
+  node_id: 316
+  primary_description: http://localhost:8889/1_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id318 [-8, -8]
+  neighbors: [225, 282, 434, 113]
+  node_id: 317
+  primary_description: http://localhost:8889/-8_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id318
+  neighbors: [225, 282, 434, 113]
+  node_id: 317
+  primary_description: http://localhost:8889/-8_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id319 [2, -10]
+  neighbors: [296, 380, 142]
+  node_id: 318
+  primary_description: http://localhost:8889/2_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id319
+  neighbors: [296, 380, 142]
+  node_id: 318
+  primary_description: http://localhost:8889/2_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id320 [-3, 4]
+  neighbors: [94, 166, 351, 233]
+  node_id: 319
+  primary_description: http://localhost:8889/-3_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id320
+  neighbors: [94, 166, 351, 233]
+  node_id: 319
+  primary_description: http://localhost:8889/-3_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id321 [-7, 10]
+  neighbors: [310, 169, 352]
+  node_id: 320
+  primary_description: http://localhost:8889/-7_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id321
+  neighbors: [310, 169, 352]
+  node_id: 320
+  primary_description: http://localhost:8889/-7_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id322 [3, -7]
+  neighbors: [290, 11, 289, 354]
+  node_id: 321
+  primary_description: http://localhost:8889/3_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id322
+  neighbors: [290, 11, 289, 354]
+  node_id: 321
+  primary_description: http://localhost:8889/3_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id323 [10, 6]
+  neighbors: [54, 199, 144]
+  node_id: 322
+  primary_description: http://localhost:8889/10_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id323
+  neighbors: [54, 199, 144]
+  node_id: 322
+  primary_description: http://localhost:8889/10_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id324 [2, -6]
+  neighbors: [149, 354, 290, 377]
+  node_id: 323
+  primary_description: http://localhost:8889/2_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id324
+  neighbors: [149, 354, 290, 377]
+  node_id: 323
+  primary_description: http://localhost:8889/2_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id325 [-4, 2]
+  neighbors: [372, 12, 183, 138]
+  node_id: 324
+  primary_description: http://localhost:8889/-4_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id325
+  neighbors: [372, 12, 183, 138]
+  node_id: 324
+  primary_description: http://localhost:8889/-4_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id326 [9, -7]
+  neighbors: [205, 119, 345, 140]
+  node_id: 325
+  primary_description: http://localhost:8889/9_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id326
+  neighbors: [205, 119, 345, 140]
+  node_id: 325
+  primary_description: http://localhost:8889/9_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id327 [-3, 10]
+  neighbors: [104, 109, 2]
+  node_id: 326
+  primary_description: http://localhost:8889/-3_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id327
+  neighbors: [104, 109, 2]
+  node_id: 326
+  primary_description: http://localhost:8889/-3_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id328 [1, -9]
+  neighbors: [346, 142, 296, 198]
+  node_id: 327
+  primary_description: http://localhost:8889/1_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id328
+  neighbors: [346, 142, 296, 198]
+  node_id: 327
+  primary_description: http://localhost:8889/1_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id329 [8, 1]
+  neighbors: [179, 83, 349, 116]
+  node_id: 328
+  primary_description: http://localhost:8889/8_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id329
+  neighbors: [179, 83, 349, 116]
+  node_id: 328
+  primary_description: http://localhost:8889/8_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id330 [9, -9]
+  neighbors: [110, 422, 78, 345]
+  node_id: 329
+  primary_description: http://localhost:8889/9_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id330
+  neighbors: [110, 422, 78, 345]
+  node_id: 329
+  primary_description: http://localhost:8889/9_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id331 [-3, 6]
+  neighbors: [158, 344, 233, 255]
+  node_id: 330
+  primary_description: http://localhost:8889/-3_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id331
+  neighbors: [158, 344, 233, 255]
+  node_id: 330
+  primary_description: http://localhost:8889/-3_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id332 [0, 2]
+  neighbors: [215, 270, 256, 39]
+  node_id: 331
+  primary_description: http://localhost:8889/0_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id332
+  neighbors: [215, 270, 256, 39]
+  node_id: 331
+  primary_description: http://localhost:8889/0_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id333 [7, -4]
+  neighbors: [309, 264, 182, 145]
+  node_id: 332
+  primary_description: http://localhost:8889/7_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id333
+  neighbors: [309, 264, 182, 145]
+  node_id: 332
+  primary_description: http://localhost:8889/7_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id334 [-5, -9]
+  neighbors: [31, 30, 101, 201]
+  node_id: 333
+  primary_description: http://localhost:8889/-5_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id334
+  neighbors: [31, 30, 101, 201]
+  node_id: 333
+  primary_description: http://localhost:8889/-5_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id335 [-4, -6]
+  neighbors: [291, 266, 5, 297]
+  node_id: 334
+  primary_description: http://localhost:8889/-4_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id335
+  neighbors: [291, 266, 5, 297]
+  node_id: 334
+  primary_description: http://localhost:8889/-4_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id336 [-10, -8]
+  neighbors: [225, 102, 216]
+  node_id: 335
+  primary_description: http://localhost:8889/-10_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id336
+  neighbors: [225, 102, 216]
+  node_id: 335
+  primary_description: http://localhost:8889/-10_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id337 [8, 9]
+  neighbors: [430, 70, 10, 100]
+  node_id: 336
+  primary_description: http://localhost:8889/8_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id337
+  neighbors: [430, 70, 10, 100]
+  node_id: 336
+  primary_description: http://localhost:8889/8_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id338 [-2, -3]
+  neighbors: [362, 436, 160, 311]
+  node_id: 337
+  primary_description: http://localhost:8889/-2_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id338
+  neighbors: [362, 436, 160, 311]
+  node_id: 337
+  primary_description: http://localhost:8889/-2_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id339 [-1, 7]
+  neighbors: [72, 239, 126, 261]
+  node_id: 338
+  primary_description: http://localhost:8889/-1_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id339
+  neighbors: [72, 239, 126, 261]
+  node_id: 338
+  primary_description: http://localhost:8889/-1_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id340 [2, 10]
+  neighbors: [236, 406, 153]
+  node_id: 339
+  primary_description: http://localhost:8889/2_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id340
+  neighbors: [236, 406, 153]
+  node_id: 339
+  primary_description: http://localhost:8889/2_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id341 [3, -2]
+  neighbors: [251, 117, 84, 81]
+  node_id: 340
+  primary_description: http://localhost:8889/3_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id341
+  neighbors: [251, 117, 84, 81]
+  node_id: 340
+  primary_description: http://localhost:8889/3_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id342 [-2, 1]
+  neighbors: [432, 51, 396, 60]
+  node_id: 341
+  primary_description: http://localhost:8889/-2_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id342
+  neighbors: [432, 51, 396, 60]
+  node_id: 341
+  primary_description: http://localhost:8889/-2_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id343 [-5, 6]
+  neighbors: [127, 158, 85, 68]
+  node_id: 342
+  primary_description: http://localhost:8889/-5_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id343
+  neighbors: [127, 158, 85, 68]
+  node_id: 342
+  primary_description: http://localhost:8889/-5_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id344 [-7, 4]
+  neighbors: [408, 125, 86, 274]
+  node_id: 343
+  primary_description: http://localhost:8889/-7_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id344
+  neighbors: [408, 125, 86, 274]
+  node_id: 343
+  primary_description: http://localhost:8889/-7_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id345 [-2, 6]
+  neighbors: [330, 126, 287, 72]
+  node_id: 344
+  primary_description: http://localhost:8889/-2_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id345
+  neighbors: [330, 126, 287, 72]
+  node_id: 344
+  primary_description: http://localhost:8889/-2_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id346 [9, -8]
+  neighbors: [435, 195, 329, 325]
+  node_id: 345
+  primary_description: http://localhost:8889/9_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id346
+  neighbors: [435, 195, 329, 325]
+  node_id: 345
+  primary_description: http://localhost:8889/9_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id347 [0, -9]
+  neighbors: [22, 327, 391, 14]
+  node_id: 346
+  primary_description: http://localhost:8889/0_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id347
+  neighbors: [22, 327, 391, 14]
+  node_id: 346
+  primary_description: http://localhost:8889/0_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id348 [6, 5]
+  neighbors: [269, 222, 268, 211]
+  node_id: 347
+  primary_description: http://localhost:8889/6_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id348
+  neighbors: [269, 222, 268, 211]
+  node_id: 347
+  primary_description: http://localhost:8889/6_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id349 [6, 8]
+  neighbors: [210, 238, 295, 1]
+  node_id: 348
+  primary_description: http://localhost:8889/6_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id349
+  neighbors: [210, 238, 295, 1]
+  node_id: 348
+  primary_description: http://localhost:8889/6_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id350 [8, 0]
+  neighbors: [58, 368, 161, 328]
+  node_id: 349
+  primary_description: http://localhost:8889/8_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id350
+  neighbors: [58, 368, 161, 328]
+  node_id: 349
+  primary_description: http://localhost:8889/8_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id351 [3, 7]
+  neighbors: [423, 267, 174, 87]
+  node_id: 350
+  primary_description: http://localhost:8889/3_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id351
+  neighbors: [423, 267, 174, 87]
+  node_id: 350
+  primary_description: http://localhost:8889/3_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id352 [-3, 3]
+  neighbors: [138, 292, 12, 319]
+  node_id: 351
+  primary_description: http://localhost:8889/-3_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id352
+  neighbors: [138, 292, 12, 319]
+  node_id: 351
+  primary_description: http://localhost:8889/-3_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id353 [-7, 9]
+  neighbors: [313, 241, 279, 320]
+  node_id: 352
+  primary_description: http://localhost:8889/-7_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id353
+  neighbors: [313, 241, 279, 320]
+  node_id: 352
+  primary_description: http://localhost:8889/-7_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id354 [4, -4]
+  neighbors: [37, 23, 245, 421]
+  node_id: 353
+  primary_description: http://localhost:8889/4_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id354
+  neighbors: [37, 23, 245, 421]
+  node_id: 353
+  primary_description: http://localhost:8889/4_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id355 [3, -6]
+  neighbors: [323, 187, 321, 50]
+  node_id: 354
+  primary_description: http://localhost:8889/3_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id355
+  neighbors: [323, 187, 321, 50]
+  node_id: 354
+  primary_description: http://localhost:8889/3_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id356 [4, -10]
+  neighbors: [380, 35, 226]
+  node_id: 355
+  primary_description: http://localhost:8889/4_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id356
+  neighbors: [380, 35, 226]
+  node_id: 355
+  primary_description: http://localhost:8889/4_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id357 [10, 1]
+  neighbors: [83, 307, 67]
+  node_id: 356
+  primary_description: http://localhost:8889/10_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id357
+  neighbors: [83, 307, 67]
+  node_id: 356
+  primary_description: http://localhost:8889/10_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id358 [-9, -2]
+  neighbors: [141, 165, 249, 250]
+  node_id: 357
+  primary_description: http://localhost:8889/-9_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id358
+  neighbors: [141, 165, 249, 250]
+  node_id: 357
+  primary_description: http://localhost:8889/-9_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id359 [-1, -7]
+  neighbors: [281, 437, 114, 196]
+  node_id: 358
+  primary_description: http://localhost:8889/-1_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id359
+  neighbors: [281, 437, 114, 196]
+  node_id: 358
+  primary_description: http://localhost:8889/-1_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id360 [-8, 5]
+  neighbors: [185, 274, 408, 134]
+  node_id: 359
+  primary_description: http://localhost:8889/-8_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id360
+  neighbors: [185, 274, 408, 134]
+  node_id: 359
+  primary_description: http://localhost:8889/-8_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id361 [-9, 4]
+  neighbors: [76, 408, 395, 185]
+  node_id: 360
+  primary_description: http://localhost:8889/-9_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id361
+  neighbors: [76, 408, 395, 185]
+  node_id: 360
+  primary_description: http://localhost:8889/-9_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id362 [7, 3]
+  neighbors: [429, 43, 202, 89]
+  node_id: 361
+  primary_description: http://localhost:8889/7_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id362
+  neighbors: [429, 43, 202, 89]
+  node_id: 361
+  primary_description: http://localhost:8889/7_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id363 [-3, -3]
+  neighbors: [38, 337, 265, 280]
+  node_id: 362
+  primary_description: http://localhost:8889/-3_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id363
+  neighbors: [38, 337, 265, 280]
+  node_id: 362
+  primary_description: http://localhost:8889/-3_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id364 [-7, -4]
+  neighbors: [305, 419, 412, 208]
+  node_id: 363
+  primary_description: http://localhost:8889/-7_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id364
+  neighbors: [305, 419, 412, 208]
+  node_id: 363
+  primary_description: http://localhost:8889/-7_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id365 [2, 0]
+  neighbors: [316, 243, 235, 427]
+  node_id: 364
+  primary_description: http://localhost:8889/2_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id365
+  neighbors: [316, 243, 235, 427]
+  node_id: 364
+  primary_description: http://localhost:8889/2_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id366 [-4, 8]
+  neighbors: [129, 385, 118, 386]
+  node_id: 365
+  primary_description: http://localhost:8889/-4_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id366
+  neighbors: [129, 385, 118, 386]
+  node_id: 365
+  primary_description: http://localhost:8889/-4_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id367 [4, 5]
+  neighbors: [130, 269, 57, 379]
+  node_id: 366
+  primary_description: http://localhost:8889/4_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id367
+  neighbors: [130, 269, 57, 379]
+  node_id: 366
+  primary_description: http://localhost:8889/4_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id368 [-10, -1]
+  neighbors: [250, 141, 170]
+  node_id: 367
+  primary_description: http://localhost:8889/-10_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id368
+  neighbors: [250, 141, 170]
+  node_id: 367
+  primary_description: http://localhost:8889/-10_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id369 [9, 0]
+  neighbors: [349, 307, 217, 83]
+  node_id: 368
+  primary_description: http://localhost:8889/9_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id369
+  neighbors: [349, 307, 217, 83]
+  node_id: 368
+  primary_description: http://localhost:8889/9_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id370 [6, -9]
+  neighbors: [197, 139, 111, 278]
+  node_id: 369
+  primary_description: http://localhost:8889/6_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id370
+  neighbors: [197, 139, 111, 278]
+  node_id: 369
+  primary_description: http://localhost:8889/6_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id371 [3, 2]
+  neighbors: [0, 75, 438, 218]
+  node_id: 370
+  primary_description: http://localhost:8889/3_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id371
+  neighbors: [0, 75, 438, 218]
+  node_id: 370
+  primary_description: http://localhost:8889/3_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id372 [1, -2]
+  neighbors: [285, 251, 206, 405]
+  node_id: 371
+  primary_description: http://localhost:8889/1_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id372
+  neighbors: [285, 251, 206, 405]
+  node_id: 371
+  primary_description: http://localhost:8889/1_-2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id373 [-5, 2]
+  neighbors: [413, 324, 376, 375]
+  node_id: 372
+  primary_description: http://localhost:8889/-5_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id373
+  neighbors: [413, 324, 376, 375]
+  node_id: 372
+  primary_description: http://localhost:8889/-5_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id374 [-3, 0]
+  neighbors: [13, 396, 194, 432]
+  node_id: 373
+  primary_description: http://localhost:8889/-3_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id374
+  neighbors: [13, 396, 194, 432]
+  node_id: 373
+  primary_description: http://localhost:8889/-3_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id375 [-6, 1]
+  neighbors: [418, 376, 384, 413]
+  node_id: 374
+  primary_description: http://localhost:8889/-6_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id375
+  neighbors: [418, 376, 384, 413]
+  node_id: 374
+  primary_description: http://localhost:8889/-6_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id376 [-5, 3]
+  neighbors: [259, 138, 372, 209]
+  node_id: 375
+  primary_description: http://localhost:8889/-5_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id376
+  neighbors: [259, 138, 372, 209]
+  node_id: 375
+  primary_description: http://localhost:8889/-5_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id377 [-5, 1]
+  neighbors: [374, 183, 227, 372]
+  node_id: 376
+  primary_description: http://localhost:8889/-5_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id377
+  neighbors: [374, 183, 227, 372]
+  node_id: 376
+  primary_description: http://localhost:8889/-5_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id378 [2, -5]
+  neighbors: [29, 50, 323, 7]
+  node_id: 377
+  primary_description: http://localhost:8889/2_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id378
+  neighbors: [29, 50, 323, 7]
+  node_id: 377
+  primary_description: http://localhost:8889/2_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id379 [-6, -6]
+  neighbors: [257, 291, 99, 399]
+  node_id: 378
+  primary_description: http://localhost:8889/-6_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id379
+  neighbors: [257, 291, 99, 399]
+  node_id: 378
+  primary_description: http://localhost:8889/-6_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id380 [4, 6]
+  neighbors: [174, 34, 366, 267]
+  node_id: 379
+  primary_description: http://localhost:8889/4_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id380
+  neighbors: [174, 34, 366, 267]
+  node_id: 379
+  primary_description: http://localhost:8889/4_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id381 [3, -10]
+  neighbors: [318, 355, 152]
+  node_id: 380
+  primary_description: http://localhost:8889/3_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id381
+  neighbors: [318, 355, 152]
+  node_id: 380
+  primary_description: http://localhost:8889/3_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id382 [8, 5]
+  neighbors: [222, 410, 64, 416]
+  node_id: 381
+  primary_description: http://localhost:8889/8_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id382
+  neighbors: [222, 410, 64, 416]
+  node_id: 381
+  primary_description: http://localhost:8889/8_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id383 [-7, -10]
+  neighbors: [252, 431, 128]
+  node_id: 382
+  primary_description: http://localhost:8889/-7_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id383
+  neighbors: [252, 431, 128]
+  node_id: 382
+  primary_description: http://localhost:8889/-7_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id384 [-1, 0]
+  neighbors: [396, 403, 163, 51]
+  node_id: 383
+  primary_description: http://localhost:8889/-1_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id384
+  neighbors: [396, 403, 163, 51]
+  node_id: 383
+  primary_description: http://localhost:8889/-1_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id385 [-6, 0]
+  neighbors: [95, 227, 262, 374]
+  node_id: 384
+  primary_description: http://localhost:8889/-6_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id385
+  neighbors: [95, 227, 262, 374]
+  node_id: 384
+  primary_description: http://localhost:8889/-6_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id386 [-3, 8]
+  neighbors: [365, 298, 255, 2]
+  node_id: 385
+  primary_description: http://localhost:8889/-3_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id386
+  neighbors: [365, 298, 255, 2]
+  node_id: 385
+  primary_description: http://localhost:8889/-3_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id387 [-4, 9]
+  neighbors: [228, 2, 365, 104]
+  node_id: 386
+  primary_description: http://localhost:8889/-4_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id387
+  neighbors: [228, 2, 365, 104]
+  node_id: 386
+  primary_description: http://localhost:8889/-4_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id388 [6, -3]
+  neighbors: [221, 145, 309, 46]
+  node_id: 387
+  primary_description: http://localhost:8889/6_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id388
+  neighbors: [221, 145, 309, 46]
+  node_id: 387
+  primary_description: http://localhost:8889/6_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id389 [5, -1]
+  neighbors: [154, 167, 122, 288]
+  node_id: 388
+  primary_description: http://localhost:8889/5_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id389
+  neighbors: [154, 167, 122, 288]
+  node_id: 388
+  primary_description: http://localhost:8889/5_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id390 [-4, -4]
+  neighbors: [260, 265, 297, 38]
+  node_id: 389
+  primary_description: http://localhost:8889/-4_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id390
+  neighbors: [260, 265, 297, 38]
+  node_id: 389
+  primary_description: http://localhost:8889/-4_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id391 [4, 8]
+  neighbors: [87, 210, 267, 53]
+  node_id: 390
+  primary_description: http://localhost:8889/4_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id391
+  neighbors: [87, 210, 267, 53]
+  node_id: 390
+  primary_description: http://localhost:8889/4_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id392 [0, -10]
+  neighbors: [301, 296, 346]
+  node_id: 391
+  primary_description: http://localhost:8889/0_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id392
+  neighbors: [301, 296, 346]
+  node_id: 391
+  primary_description: http://localhost:8889/0_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id393 [-2, -10]
+  neighbors: [230, 301, 162]
+  node_id: 392
+  primary_description: http://localhost:8889/-2_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id393
+  neighbors: [230, 301, 162]
+  node_id: 392
+  primary_description: http://localhost:8889/-2_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id394 [5, 2]
+  neighbors: [75, 193, 401, 175]
+  node_id: 393
+  primary_description: http://localhost:8889/5_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id394
+  neighbors: [75, 193, 401, 175]
+  node_id: 393
+  primary_description: http://localhost:8889/5_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id395 [-5, -1]
+  neighbors: [262, 425, 103, 227]
+  node_id: 394
+  primary_description: http://localhost:8889/-5_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id395
+  neighbors: [262, 425, 103, 227]
+  node_id: 394
+  primary_description: http://localhost:8889/-5_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id396 [-9, 3]
+  neighbors: [229, 155, 276, 360]
+  node_id: 395
+  primary_description: http://localhost:8889/-9_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id396
+  neighbors: [229, 155, 276, 360]
+  node_id: 395
+  primary_description: http://localhost:8889/-9_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id397 [-2, 0]
+  neighbors: [373, 383, 146, 341]
+  node_id: 396
+  primary_description: http://localhost:8889/-2_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id397
+  neighbors: [373, 383, 146, 341]
+  node_id: 396
+  primary_description: http://localhost:8889/-2_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id398 [4, -8]
+  neighbors: [289, 66, 226, 11]
+  node_id: 397
+  primary_description: http://localhost:8889/4_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id398
+  neighbors: [289, 66, 226, 11]
+  node_id: 397
+  primary_description: http://localhost:8889/4_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id399 [6, 0]
+  neighbors: [288, 58, 167, 207]
+  node_id: 398
+  primary_description: http://localhost:8889/6_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id399
+  neighbors: [288, 58, 167, 207]
+  node_id: 398
+  primary_description: http://localhost:8889/6_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id400 [-6, -5]
+  neighbors: [412, 304, 378, 419]
+  node_id: 399
+  primary_description: http://localhost:8889/-6_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id400
+  neighbors: [412, 304, 378, 419]
+  node_id: 399
+  primary_description: http://localhost:8889/-6_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id401 [-8, 7]
+  neighbors: [3, 133, 134, 283]
+  node_id: 400
+  primary_description: http://localhost:8889/-8_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id401
+  neighbors: [3, 133, 134, 283]
+  node_id: 400
+  primary_description: http://localhost:8889/-8_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id402 [5, 1]
+  neighbors: [56, 207, 288, 393]
+  node_id: 401
+  primary_description: http://localhost:8889/5_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id402
+  neighbors: [56, 207, 288, 393]
+  node_id: 401
+  primary_description: http://localhost:8889/5_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id403 [5, -6]
+  neighbors: [187, 204, 20, 40]
+  node_id: 402
+  primary_description: http://localhost:8889/5_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id403
+  neighbors: [187, 204, 20, 40]
+  node_id: 402
+  primary_description: http://localhost:8889/5_-6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id404 [0, 0]
+  neighbors: [383, 316, 246, 256]
+  node_id: 403
+  primary_description: http://localhost:8889/0_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id404
+  neighbors: [383, 316, 246, 256]
+  node_id: 403
+  primary_description: http://localhost:8889/0_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id405 [1, 8]
+  neighbors: [428, 302, 123, 79]
+  node_id: 404
+  primary_description: http://localhost:8889/1_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id405
+  neighbors: [428, 302, 123, 79]
+  node_id: 404
+  primary_description: http://localhost:8889/1_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id406 [1, -1]
+  neighbors: [246, 235, 371, 316]
+  node_id: 405
+  primary_description: http://localhost:8889/1_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id406
+  neighbors: [246, 235, 371, 316]
+  node_id: 405
+  primary_description: http://localhost:8889/1_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id407 [3, 10]
+  neighbors: [339, 417, 48]
+  node_id: 406
+  primary_description: http://localhost:8889/3_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id407
+  neighbors: [339, 417, 48]
+  node_id: 406
+  primary_description: http://localhost:8889/3_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id408 [-9, 0]
+  neighbors: [170, 286, 250, 98]
+  node_id: 407
+  primary_description: http://localhost:8889/-9_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id408
+  neighbors: [170, 286, 250, 98]
+  node_id: 407
+  primary_description: http://localhost:8889/-9_0.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id409 [-8, 4]
+  neighbors: [360, 343, 155, 359]
+  node_id: 408
+  primary_description: http://localhost:8889/-8_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id409
+  neighbors: [360, 343, 155, 359]
+  node_id: 408
+  primary_description: http://localhost:8889/-8_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id410 [1, -4]
+  neighbors: [440, 7, 29, 206]
+  node_id: 409
+  primary_description: http://localhost:8889/1_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id410
+  neighbors: [440, 7, 29, 206]
+  node_id: 409
+  primary_description: http://localhost:8889/1_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id411 [9, 5]
+  neighbors: [381, 199, 273, 54]
+  node_id: 410
+  primary_description: http://localhost:8889/9_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id411
+  neighbors: [381, 199, 273, 54]
+  node_id: 410
+  primary_description: http://localhost:8889/9_5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id412 [9, 2]
+  neighbors: [116, 67, 83, 150]
+  node_id: 411
+  primary_description: http://localhost:8889/9_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id412
+  neighbors: [116, 67, 83, 150]
+  node_id: 411
+  primary_description: http://localhost:8889/9_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id413 [-7, -5]
+  neighbors: [121, 399, 257, 363]
+  node_id: 412
+  primary_description: http://localhost:8889/-7_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id413
+  neighbors: [121, 399, 257, 363]
+  node_id: 412
+  primary_description: http://localhost:8889/-7_-5.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id414 [-6, 2]
+  neighbors: [275, 372, 374, 259]
+  node_id: 413
+  primary_description: http://localhost:8889/-6_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id414
+  neighbors: [275, 372, 374, 259]
+  node_id: 413
+  primary_description: http://localhost:8889/-6_2.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id415 [-10, 1]
+  neighbors: [98, 170, 4]
+  node_id: 414
+  primary_description: http://localhost:8889/-10_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id415
+  neighbors: [98, 170, 4]
+  node_id: 414
+  primary_description: http://localhost:8889/-10_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id416 [1, 4]
+  neighbors: [124, 231, 25, 108]
+  node_id: 415
+  primary_description: http://localhost:8889/1_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id416
+  neighbors: [124, 231, 25, 108]
+  node_id: 415
+  primary_description: http://localhost:8889/1_4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id417 [8, 6]
+  neighbors: [173, 54, 381, 258]
+  node_id: 416
+  primary_description: http://localhost:8889/8_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id417
+  neighbors: [173, 54, 381, 258]
+  node_id: 416
+  primary_description: http://localhost:8889/8_6.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id418 [4, 10]
+  neighbors: [406, 300, 53]
+  node_id: 417
+  primary_description: http://localhost:8889/4_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id418
+  neighbors: [406, 300, 53]
+  node_id: 417
+  primary_description: http://localhost:8889/4_10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id419 [-7, 1]
+  neighbors: [8, 374, 95, 275]
+  node_id: 418
+  primary_description: http://localhost:8889/-7_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id419
+  neighbors: [8, 374, 95, 275]
+  node_id: 418
+  primary_description: http://localhost:8889/-7_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id420 [-6, -4]
+  neighbors: [363, 260, 399, 192]
+  node_id: 419
+  primary_description: http://localhost:8889/-6_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id420
+  neighbors: [363, 260, 399, 192]
+  node_id: 419
+  primary_description: http://localhost:8889/-6_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id421 [-4, -8]
+  neighbors: [201, 143, 30, 5]
+  node_id: 420
+  primary_description: http://localhost:8889/-4_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id421
+  neighbors: [201, 143, 30, 5]
+  node_id: 420
+  primary_description: http://localhost:8889/-4_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id422 [4, -3]
+  neighbors: [84, 221, 353, 117]
+  node_id: 421
+  primary_description: http://localhost:8889/4_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id422
+  neighbors: [84, 221, 353, 117]
+  node_id: 421
+  primary_description: http://localhost:8889/4_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id423 [10, -9]
+  neighbors: [329, 6, 195]
+  node_id: 422
+  primary_description: http://localhost:8889/10_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id423
+  neighbors: [329, 6, 195]
+  node_id: 422
+  primary_description: http://localhost:8889/10_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id424 [2, 7]
+  neighbors: [123, 350, 176, 302]
+  node_id: 423
+  primary_description: http://localhost:8889/2_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id424
+  neighbors: [123, 350, 176, 302]
+  node_id: 423
+  primary_description: http://localhost:8889/2_7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id425 [7, -1]
+  neighbors: [167, 161, 41, 58]
+  node_id: 424
+  primary_description: http://localhost:8889/7_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id425
+  neighbors: [167, 161, 41, 58]
+  node_id: 424
+  primary_description: http://localhost:8889/7_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id426 [-4, -1]
+  neighbors: [394, 194, 224, 13]
+  node_id: 425
+  primary_description: http://localhost:8889/-4_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id426
+  neighbors: [394, 194, 224, 13]
+  node_id: 425
+  primary_description: http://localhost:8889/-4_-1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id427 [10, 3]
+  neighbors: [150, 67, 52]
+  node_id: 426
+  primary_description: http://localhost:8889/10_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id427
+  neighbors: [150, 67, 52]
+  node_id: 426
+  primary_description: http://localhost:8889/10_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id428 [2, 1]
+  neighbors: [248, 438, 364, 0]
+  node_id: 427
+  primary_description: http://localhost:8889/2_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id428
+  neighbors: [248, 438, 364, 0]
+  node_id: 427
+  primary_description: http://localhost:8889/2_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id429 [0, 8]
+  neighbors: [261, 404, 239, 303]
+  node_id: 428
+  primary_description: http://localhost:8889/0_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id429
+  neighbors: [261, 404, 239, 303]
+  node_id: 428
+  primary_description: http://localhost:8889/0_8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id430 [6, 3]
+  neighbors: [175, 361, 193, 268]
+  node_id: 429
+  primary_description: http://localhost:8889/6_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id430
+  neighbors: [175, 361, 193, 268]
+  node_id: 429
+  primary_description: http://localhost:8889/6_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id431 [7, 9]
+  neighbors: [1, 336, 238, 42]
+  node_id: 430
+  primary_description: http://localhost:8889/7_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id431
+  neighbors: [1, 336, 238, 42]
+  node_id: 430
+  primary_description: http://localhost:8889/7_9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id432 [-6, -10]
+  neighbors: [382, 101, 31]
+  node_id: 431
+  primary_description: http://localhost:8889/-6_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id432
+  neighbors: [382, 101, 31]
+  node_id: 431
+  primary_description: http://localhost:8889/-6_-10.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id433 [-3, 1]
+  neighbors: [183, 341, 373, 12]
+  node_id: 432
+  primary_description: http://localhost:8889/-3_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id433
+  neighbors: [183, 341, 373, 12]
+  node_id: 432
+  primary_description: http://localhost:8889/-3_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id434 [2, 3]
+  neighbors: [25, 218, 0, 231]
+  node_id: 433
+  primary_description: http://localhost:8889/2_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id434
+  neighbors: [25, 218, 0, 231]
+  node_id: 433
+  primary_description: http://localhost:8889/2_3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id435 [-8, -9]
+  neighbors: [32, 128, 252, 317]
+  node_id: 434
+  primary_description: http://localhost:8889/-8_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id435
+  neighbors: [32, 128, 252, 317]
+  node_id: 434
+  primary_description: http://localhost:8889/-8_-9.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id436 [8, -8]
+  neighbors: [213, 345, 110, 205]
+  node_id: 435
+  primary_description: http://localhost:8889/8_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id436
+  neighbors: [213, 345, 110, 205]
+  node_id: 435
+  primary_description: http://localhost:8889/8_-8.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id437 [-1, -3]
+  neighbors: [337, 28, 148, 247]
+  node_id: 436
+  primary_description: http://localhost:8889/-1_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id437
+  neighbors: [337, 28, 148, 247]
+  node_id: 436
+  primary_description: http://localhost:8889/-1_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id438 [0, -7]
+  neighbors: [358, 115, 14, 178]
+  node_id: 437
+  primary_description: http://localhost:8889/0_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id438
+  neighbors: [358, 115, 14, 178]
+  node_id: 437
+  primary_description: http://localhost:8889/0_-7.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id439 [3, 1]
+  neighbors: [427, 56, 243, 370]
+  node_id: 438
+  primary_description: http://localhost:8889/3_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id439
+  neighbors: [427, 56, 243, 370]
+  node_id: 438
+  primary_description: http://localhost:8889/3_1.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id440 [-8, -3]
+  neighbors: [249, 208, 305, 165]
+  node_id: 439
+  primary_description: http://localhost:8889/-8_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id440
+  neighbors: [249, 208, 305, 165]
+  node_id: 439
+  primary_description: http://localhost:8889/-8_-3.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 0
+  location: &id441 [0, -4]
+  neighbors: [148, 409, 47, 28]
+  node_id: 440
+  primary_description: http://localhost:8889/0_-4.png
+  primary_type: image
+- alt_description: ''
+  alt_type: ''
+  graph_id: 1
+  location: *id441
+  neighbors: [148, 409, 47, 28]
+  node_id: 440
+  primary_description: http://localhost:8889/0_-4.png
+  primary_type: image
+
