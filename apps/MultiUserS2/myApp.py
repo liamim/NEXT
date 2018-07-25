@@ -26,12 +26,26 @@ class MyApp:
         self.TargetManager.set_targetset(butler.exp_uid, targets)
         del args['targets']
 
-        ### reconstruct & save the graph
-        G = _nx_from_neighbors(targets)
-        # i would prefer to_dict_of_lists, but that doesn't store node attrs!
-        butler.experiment.set(key='G', value=json_graph.node_link_data(G))
+        ### reconstruct & save the graphs
+        new_ids = itertools.count()
+        id_map = collections.defaultdict(lambda: __builtin__.next(new_ids)) # thanks for naming the root module `next`
+        Gs = {}
+        for target in targets:
+            # print(target)
+            gid = id_map[target['graph_id']]
+            if Gs.get(gid) is None:
+                Gs[gid] = nx.Graph()
 
-        alg_data = {'n': args['n']}
+            i = target['node_id']
+            Gs[gid].add_node(i)
+
+            for j in target['neighbors']:
+                Gs[gid].add_edge(i, j)
+
+        for gid, graph in Gs.items():
+            butler.experiment.set(key='G_{}'.format(gid), value=json_graph.node_link_data(graph))
+
+        alg_data = {'n_graphs': len(Gs), 'graph_sizes': [G.order() for _, G in Gs.items()], 'required_votes': args['required_votes']}
         init_algs(alg_data)
         return args
 
