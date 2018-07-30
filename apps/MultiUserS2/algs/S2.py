@@ -14,9 +14,15 @@ class Status:
     WAITING      = 'waiting'
     COMPLETED    = 'completed'
 
-class Master:
-    def __init__(self):
-        pass
+class Master(object):
+    def __init__(self, exp_uid, n_graphs, job_list, required_votes):
+        self.exp_uid = exp_uid
+        self.job_list = job_list
+        self.required_votes = required_votes
+        self.n_graphs = n_graphs
+
+        # one per graph_id
+        self.s2_instances = []
 
     def init_jobs(self):
         pass
@@ -38,7 +44,7 @@ class MyAlg:
         # we're just, uh. gonna bypass the Butler, and also DatabaseAPI, because we really should be using
         # a /collection/ to store the priority list (-_-;)
         db = butler.db.client[butler.db.db_name]
-        master = Master(butler.exp_uid, db.s2_job_list, required_votes)
+        master = Master(butler.exp_uid, n_graphs, db.s2_job_list, required_votes)
         master.init_job_list()
 
         return True
