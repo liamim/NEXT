@@ -31,7 +31,6 @@ class MyApp:
         id_map = collections.defaultdict(lambda: __builtin__.next(new_ids)) # thanks for naming the root module `next`
         Gs = {}
         for target in targets:
-            # print(target)
             gid = id_map[target['graph_id']]
             if Gs.get(gid) is None:
                 Gs[gid] = nx.Graph()

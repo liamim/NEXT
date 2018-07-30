@@ -34,8 +34,12 @@ class Master:
             pass
 
 class MyAlg:
-    def initExp(self, butler, n):
-        butler.algorithms.set(key='n', value=n)
+    def initExp(self, butler, n_graphs, graph_sizes, required_votes):
+        # we're just, uh. gonna bypass the Butler, and also DatabaseAPI, because we really should be using
+        # a /collection/ to store the priority list (-_-;)
+        db = butler.db.client[butler.db.db_name]
+        master = Master(butler.exp_uid, db.s2_job_list, required_votes)
+        master.init_job_list()
 
         return True
 
