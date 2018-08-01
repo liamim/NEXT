@@ -39,7 +39,6 @@ class Master(object):
         Gs = []
         for gid in range(n_graphs):
             targets_query = self.db.targets.find({'exp_uid': exp_uid, 'graph_id': gid})
-            # print(next(targets_query))
 
             G = nx.Graph()
             for target in targets_query:
@@ -69,6 +68,8 @@ class Master(object):
             } for bid in range(self.required_votes)])
 
         debug_print("computed jobs: {}".format(jobs))
+
+        db.job_list.insert_many(jobs)
 
     def get_vertex_for(self, user, priority):
         if self.db.job_list.count({"_id": self.exp_uid}):
