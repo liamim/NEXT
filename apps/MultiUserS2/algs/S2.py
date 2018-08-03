@@ -33,8 +33,6 @@ class Master(object):
         self.n_graphs = n_graphs
         self.graph_sizes = graph_sizes
 
-        butler.algorithms.set(key='graph_sizes', value=graph_sizes)
-
         # reconstitute graphs
         Gs = []
         for gid in range(n_graphs):
@@ -69,7 +67,7 @@ class Master(object):
 
         debug_print("computed jobs: {}".format(jobs))
 
-        db.job_list.insert_many(jobs)
+        self.db.job_list.insert_many(jobs)
 
     def get_vertex_for(self, user, priority):
         if self.db.job_list.count({"_id": self.exp_uid}):
@@ -78,8 +76,8 @@ class Master(object):
 
         state = None # TODO
         opt_job = max([{'job': job, 'priority': priority(job, user, state)}
-                        for job in self.db.job_list.find({"_id": self.exp_uid,
-                                                       "status": Status.NOT_ASSIGNED})],
+                        for job in self.db.job_list.find({"exp_uid": self.exp_uid,
+                                                          "status": Status.NOT_ASSIGNED})],
                       key=operator.itemgetter('priority'))
 
         if opt_job['priority'] == -np.inf:
@@ -90,6 +88,10 @@ class Master(object):
 
 class MyAlg:
     def initExp(self, butler, n_graphs, graph_sizes, required_votes):
+        butler.algorithms.set(key='n_graphs', value=n_graphs)
+        butler.algorithms.set(key='graph_sizes', value=graph_sizes)
+        butler.algorithms.set(key='required_votes', value=required_votes)
+
         # we're just, uh. gonna bypass the Butler, and also DatabaseAPI, because we really should be using
         # a /collection/ to store the priority list (-_-;)
         db = butler.db.client[butler.db.db_name]
@@ -99,6 +101,16 @@ class MyAlg:
         return True
 
     def getQuery(self, butler, participant_uid):
+        n_graphs = butler.algorithms.get(key='n_graphs')
+        graph_sizes = butler.algorithms.get(key='graph_sizes')
+        required_votes = butler.algorithms.get(key='required_votes')
+
+        db = butler.db.client[butler.db.db_name]
+        master = Master(butler, db, butler.exp_uid, n_graphs, graph_sizes, required_votes)
+
+        job = master.get_vertex_for(participant_uid, lambda _, __, ___: 0)
+        debug_print("job: {}".format(job))
+
         return 0
 
     def processAnswer(self, butler, target_index, target_label, participant_uid):
