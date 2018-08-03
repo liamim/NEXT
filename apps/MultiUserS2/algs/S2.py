@@ -41,7 +41,7 @@ class Master(object):
             G = nx.Graph()
             for target in targets_query:
                 i = target['node_id']
-                G.add_node(i)
+                G.add_node(i) # node ids are target ids
                 for j in target['neighbors']:
                     G.add_edge(i, j)
 
@@ -109,9 +109,9 @@ class MyAlg:
         master = Master(butler, db, butler.exp_uid, n_graphs, graph_sizes, required_votes)
 
         job = master.get_vertex_for(participant_uid, lambda _, __, ___: 0)
-        debug_print("job: {}".format(job))
+        debug_print("assigning job: {}".format(job))
 
-        return 0
+        return job['node_id']
 
     def processAnswer(self, butler, target_index, target_label, participant_uid):
         return True
