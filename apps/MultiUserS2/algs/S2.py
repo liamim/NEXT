@@ -75,14 +75,21 @@ class Master(object):
             return None
 
         state = None # TODO
-        opt_job = max([{'job': job, 'priority': priority(job, user, state)}
+        jobs = [{'job': job, 'priority': priority(job, user, state)}
                         for job in self.db.job_list.find({"exp_uid": self.exp_uid,
-                                                          "status": Status.NOT_ASSIGNED})],
-                      key=operator.itemgetter('priority'))
+                                                          "status": Status.NOT_ASSIGNED})]
+        if jobs == []:
+            # TODO: handle all jobs assigned case
+            return None
+
+        opt_job = max(jobs, key=operator.itemgetter('priority'))
 
         if opt_job['priority'] == -np.inf:
             # TODO: handle no assignable jobs case
             return None
+
+        # giving a job to a user switches that job to Status.WAITING
+        self.db.job_list.update_one({"_id": opt_job['job']['_id']}, {"$set": {"status": Status.WAITING}})
 
         return opt_job['job']
 
