@@ -47,11 +47,17 @@
     </div>
   </div>
   <div class="col-md-6 h-full bordered">
-    <img class="center-block" src="data:image/png;base64,{{query.graph_img_data}}" style="width: 20em;" />
+    <div class="center-block" style="width: 40em">
+      {{query.graph_svg}}
+    </div>
+    <!-- <img class="center-block" src="data:image/png;base64,{{query.graph_img_data}}" style="width: 20em;" /> -->
   </div>
   {% else %}
   <div class="col-md-12 h-full bordered">
-    <img class="center-block" src="data:image/png;base64,{{query.graph_img_data}}" style="width: 20em;" />
+    <div class="center-block" style="width: 40em">
+      {{query.graph_svg}}
+    </div>
+    <!-- <img class="center-block" src="data:image/png;base64,{{query.graph_img_data}}" style="width: 20em;" /> -->
   </div>
   {% endif %}
 </div>

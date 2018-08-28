@@ -9,6 +9,7 @@ from networkx.readwrite import json_graph
 import matplotlib.pyplot as plt
 from cStringIO import StringIO
 import base64
+import svgwrite
 
 
 class MyApp:
@@ -32,7 +33,7 @@ class MyApp:
         init_algs(alg_data)
         return args
 
-    @profile_each_line
+    # @profile_each_line
     def getQuery(self, butler, alg, args):
         participant_uid = args['participant_uid']
         user_graph_dat = butler.participants.get(uid=participant_uid, key='G')
@@ -46,31 +47,13 @@ class MyApp:
 
         alg_response = alg({'participant_uid':participant_uid})
 
-        # draw it
-        fig = plt.figure(figsize=(10, 10), frameon=False)
-        ax = fig.add_subplot(111)
-        def oracle(n):
-            return G.nodes.data('label')[n]
-        def pos(n):
-            targ = self.TargetManager.get_target_item(butler.exp_uid, n)
-            x, y = targ['location']
-            return x, y
-        draw_labeled_graph(G, oracle, pos, ax=ax)
-        ax.set_axis_off()
-        ax.get_xaxis().set_visible(False)
-        ax.get_yaxis().set_visible(False)
-        ax.autoscale(tight=True)
-        ax.set_frame_on(False)
-
-        img = StringIO()
-        fig.savefig(img, format='png', aspect='normal', bbox_inches='tight', pad_inches=0)
-        img_data = base64.encodestring(img.getvalue())
+        graph_svg = render_graph_svg(G).tostring()
 
         if alg_response is not None:
             target = self.TargetManager.get_target_item(butler.exp_uid, alg_response)
-            return {'target_indices':target, 'graph_img_data': img_data, 'done': False}
+            return {'target_indices':target, 'graph_svg': graph_svg, 'done': False}
         else:
-            return {'graph_img_data': img_data, 'done': True}
+            return {'graph_svg': graph_svg, 'done': True}
 
 
     def processAnswer(self, butler, alg, args):
@@ -92,18 +75,32 @@ class MyApp:
 def _nx_from_neighbors(targets):
     G = nx.Graph()
     for i, target in enumerate(targets):
-        G.add_node(i)
+        G.add_node(i, location=target['location'])
         for j in target['neighbors']:
             G.add_edge(i, j)
 
     return G
 
-def draw_labeled_graph(G, oracle, pos, ax=None):
+def render_graph_svg(G, dotsize=0.25, edgewidth=0.1):
+    dwg = svgwrite.Drawing(profile='tiny')
+
+    g = dwg.g(stroke='black', stroke_width=edgewidth)
+    for i, j in G.edges():
+        g.add(dwg.line(G.nodes[i]['location'], G.nodes[j]['location']))
+    dwg.add(g)
+
     def label_to_color(l):
         if l is None: return 'grey'
-        return 'r' if l > 0 else 'b'
+        return 'red' if l > 0 else 'blue'
 
-    nx.draw(G,
-        pos={n: pos(n) for n in G.nodes()},
-        node_color=[label_to_color(oracle(n)) for n in G.nodes()],
-        ax=ax)
+    for node, data in G.nodes.items():
+        color = label_to_color(data.get('label'))
+        dwg.add(dwg.circle(center=data['location'], r=0.25, fill=color))
+
+    minx = min([v[0] for _, v in G.nodes(data='location')])
+    miny = min([v[1] for _, v in G.nodes(data='location')])
+    maxx = max([v[0] for _, v in G.nodes(data='location')])
+    maxy = max([v[1] for _, v in G.nodes(data='location')])
+
+    dwg.viewbox(minx - dotsize, miny - dotsize, maxx + dotsize*2, maxy + dotsize*2)
+    return dwg
